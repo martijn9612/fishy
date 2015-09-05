@@ -13,7 +13,7 @@ hs_err_pid*
 
 # IntelliJ folders and files
 .idea/
-fishy.iml
+*.iml
 
 # Output folder when running fishy
 out/
