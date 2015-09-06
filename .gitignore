@@ -17,3 +17,6 @@ hs_err_pid*
 
 # Output folder when running fishy
 out/
+
+# Ignore maven output
+target/
