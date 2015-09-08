@@ -18,12 +18,12 @@ hs_err_pid*
 # Output folder when running fishy
 out/
 
+# Add jars from libs
+!libs/**/*.jar
+
 # Ignore maven output
 target/
 /bin/
-
-# Ignore libraries
-libs/
 
 # Eclipse project files
 .settings/
