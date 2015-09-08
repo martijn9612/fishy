@@ -19,9 +19,9 @@ public class Main extends StateBasedGame
     public static final int menu = 0;
     public static final int play = 1;
 
-	public Main(String gamename)
+	public Main(String gameName)
 	{
-		super(gamename);
+		super(gameName);
         this.addState(new Menu(menu));
         this.addState(new Play(play));
 	}
@@ -32,7 +32,6 @@ public class Main extends StateBasedGame
         this.getState(play).init(gc, this);
         this.enterState(menu);
     }
-
 
 	public static void main(String[] args)
 	{
