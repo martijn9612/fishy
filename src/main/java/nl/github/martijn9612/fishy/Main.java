@@ -32,7 +32,7 @@ public class Main extends BasicGame
 		try
 		{
 			AppGameContainer appgc;
-			appgc = new AppGameContainer(new Main("Simple Slick Game"));
+			appgc = new AppGameContainer(new Main("Fishy"));
 			appgc.setDisplayMode(640, 480, false);
 			appgc.start();
 		}
