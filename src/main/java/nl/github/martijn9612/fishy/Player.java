@@ -9,18 +9,10 @@ public class Player extends Object {
 
     private String left = "fishleft";
     private String right = "fishright";
-    private int counterA = 0;
-    private int accelA = 0;
-    private int speedA = 0;
-    private int counterD = 0;
-    private int accelD = 0;
-    private int speedD = 0;
-    private int counterW = 0;
-    private int accelW = 0;
-    private int speedW = 0;
-    private int counterS = 0;
-    private int accelS = 0;
-    private int speedS = 0;
+    private int counterA, accelA, speedA = 0;
+    private int counterD, accelD, speedD = 0;
+    private int counterW, accelW, speedW = 0;
+    private int counterS, accelS, speedS = 0;
 
     public Player() {
         this.loadImage(left);
@@ -29,84 +21,38 @@ public class Player extends Object {
         this.setSpeed(1);
         this.createRectangle();
     }
-
+    /**
+     * updates the object logic, also used for controls
+     */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
         Input input = gc.getInput();
 
         if (input.isKeyDown(Input.KEY_A)) {
             this.loadImage(left);
-            this.x -= speed + speedA;
-            this.objectRect.x -= speed + speedA;
-            counterA++;
-            if (counterA == 5) {
-                counterA = 0;
-                accelA = 1;
-            }
+            left(1);
         } else {
-            this.x -= speed + speedA;
-            this.objectRect.x -= speed + speedA;
-            counterA++;
-            if (counterA == 5) {
-                counterA = 0;
-                accelA = -1;
-            }
+            left(-1);
         }
 
         if (input.isKeyDown(Input.KEY_D)) {
             this.loadImage(right);
-            this.x += speed + speedD;
-            this.objectRect.x += speed + speedD;
-            counterD++;
-            if (counterD == 5) {
-                counterD = 0;
-                accelD = 1;
-            }
+            right(1);
         } else {
-            this.x += speed + speedD;
-            this.objectRect.x += speed + speedD;
-            counterD++;
-            if (counterD == 5) {
-                counterD = 0;
-                accelD = -1;
-            }
+            right(-1);
         }
 
         if (input.isKeyDown(Input.KEY_W)) {
-            this.y -= speed + speedW;
-            this.objectRect.y -= speed + speedW;
-            counterW++;
-            if (counterW == 5) {
-                counterW = 0;
-                accelW = 1;
-            } 
-        }else {
-                this.y -= speed + speedW;
-                this.objectRect.y -= speed + speedW;
-                counterW++;
-                if (counterW == 5) {
-                    counterW = 0;
-                    accelW = -1;
-                }
-            }
+            up(1);
+        } else {
+            up(-1);
+        }
 
-            if (input.isKeyDown(Input.KEY_S)) {
-                this.y += speed + speedS;
-                this.objectRect.y += speed + speedS;
-                counterS++;
-                if (counterS == 5) {
-                    counterS = 0;
-                    accelS = 1;
-                }
-            } else {
-                this.y += speed + speedS;
-                this.objectRect.y += speed + speedS;
-                counterS++;
-                if (counterS == 5) {
-                    counterS = 0;
-                    accelS = -1;
-                }
-            }
+        if (input.isKeyDown(Input.KEY_S)) {
+            down(1);
+        } else {
+            down(-1);
+        }
 
         checkBounds();
         momentum(accelA, accelD, accelW, accelS);
@@ -134,7 +80,65 @@ public class Player extends Object {
             this.y = 0;
         }
     }
-
+    /**
+     * controls the acceleration and deceleration to the left
+     * @param accel wether to increase or decrease speed.
+     */
+    private void left(int accel) {
+        this.x -= speed + speedA;
+        this.objectRect.x -= speed + speedA;
+        counterA++;
+        if (counterA == 5) {
+            counterA = 0;
+            accelA = accel;
+        }
+    }
+    /**
+     * controls the acceleration and deceleration to the right
+     * @param accel wether to increase or decrease speed.
+     */
+    private void right(int accel) {
+        this.x += speed + speedD;
+        this.objectRect.x += speed + speedD;
+        counterD++;
+        if (counterD == 5) {
+            counterD = 0;
+            accelD = accel;
+        }
+    }
+    /**
+     * controls the acceleration and deceleration upward
+     * @param accel wether to increase or decrease speed.
+     */
+    private void up(int accel) {
+        this.y -= speed + speedW;
+        this.objectRect.y -= speed + speedW;
+        counterW++;
+        if (counterW == 5) {
+            counterW = 0;
+            accelW = accel;
+        }
+    }
+    /**
+     * controls the acceleration and deceleration downward
+     * @param accel wether to increase or decrease speed.
+     */
+    private void down(int accel) {
+        this.y += speed + speedS;
+        this.objectRect.y += speed + speedS;
+        counterS++;
+        if (counterS == 5) {
+            counterS = 0;
+            accelS = accel;
+        }
+    }
+    /**
+     * this method increases or decreases the speed to the individual directions
+     * @param a whether to increase or decrease the speed to the left
+     * @param d whether to increase or decrease the speed to the right
+     * @param w whether to increase or decrease the speed upward
+     * @param s whether to increase or decrease the speed downward
+     */
     private void momentum(int a, int d, int w, int s) {
         if (a == 1 && speedA < 5) {
             speedA++;
