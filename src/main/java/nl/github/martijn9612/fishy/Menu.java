@@ -9,7 +9,6 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by Skullyhoofd on 08/09/2015.
  */
 public class Menu extends BasicGameState{
-
     public String menu = "Menu";
     Image play;
     Image exit;
