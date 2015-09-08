@@ -36,20 +36,20 @@
             <version>2.3.1</version>
             <executions>
 
-                <execution>
-                    <id>SLICK</id>
-                    <phase>initialize</phase>
-                    <goals>
-                        <goal>install-file</goal>
-                    </goals>
-                    <configuration>
-                        <version>1.0.1</version>
-                        <groupId>org.slick2d</groupId>
-                        <artifactId>slick2d-core</artifactId>
-                        <packaging>jar</packaging>
-                        <file>${basedir}/libs/slick.jar</file>
-                    </configuration>
-                </execution>
+                <!--<execution>-->
+                    <!--<id>SLICK</id>-->
+                    <!--<phase>initialize</phase>-->
+                    <!--<goals>-->
+                        <!--<goal>install-file</goal>-->
+                    <!--</goals>-->
+                    <!--<configuration>-->
+                        <!--<version>1.0.1</version>-->
+                        <!--<groupId>org.slick2d</groupId>-->
+                        <!--<artifactId>slick2d-core</artifactId>-->
+                        <!--<packaging>jar</packaging>-->
+                        <!--<file>${basedir}/libs/slick.jar</file>-->
+                    <!--</configuration>-->
+                <!--</execution>-->
                 <execution>
                     <id>JINPUT</id>
                     <phase>initialize</phase>
@@ -124,11 +124,11 @@
             <artifactId>lwjgl</artifactId>
             <version>3.0.0a</version>
         </dependency>
-        <dependency>
-            <groupId>org.slick2d</groupId>
-            <artifactId>slick2d-core</artifactId>
-            <version>1.0.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.slick2d</groupId>-->
+            <!--<artifactId>slick2d-core</artifactId>-->
+            <!--<version>1.0.1</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.lwjgl.lwjgl</groupId>
             <artifactId>lwjgl_util</artifactId>
