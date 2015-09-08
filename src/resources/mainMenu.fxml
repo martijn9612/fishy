@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/css" href="mainMenu.css"?>
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
-<Pane fx:controller="nl.github.martijn9612.fishy.controllers.mainMenu" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <Button fx:id="exit">Exit</Button>
-</Pane>
