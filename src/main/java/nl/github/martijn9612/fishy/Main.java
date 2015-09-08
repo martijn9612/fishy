@@ -4,32 +4,35 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tests.StateBasedTest;
 
-public class Main extends BasicGame
+public class Main extends StateBasedGame
 {
 	public static final String gameName = "Fishy";
-	public static final int xSize = 640;
-	public static final int ySize = 480;
+    public static final int xSize = 640;
+    public static final int ySize = 480;
+    public static final int menu = 0;
+    public static final int play = 1;
 
 	public Main(String gamename)
 	{
 		super(gamename);
+        this.addState(new Menu(menu));
+        this.addState(new Play(play));
 	}
 
 	@Override
-	public void init(GameContainer gc) throws SlickException {}
+	public void initStatesList(GameContainer gc) throws SlickException {
+        this.getState(menu).init(gc, this);
+        this.getState(play).init(gc, this);
+        this.enterState(menu);
+    }
 
-	@Override
-	public void update(GameContainer gc, int i) throws SlickException {}
-
-	@Override
-	public void render(GameContainer gc, Graphics g) throws SlickException
-	{
-		g.drawString("Hello World!", 100, 100);
-	}
 
 	public static void main(String[] args)
 	{
