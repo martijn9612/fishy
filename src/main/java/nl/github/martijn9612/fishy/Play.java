@@ -10,6 +10,10 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by Skullyhoofd on 08/09/2015.
  */
 public class Play extends BasicGameState{
+
+    public String state = "Playing";
+
+
     public Play(int state){
 
     }
@@ -19,6 +23,7 @@ public class Play extends BasicGameState{
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
+        g.drawString(state,300,10);
 
     }
 
