@@ -35,12 +35,13 @@ public class Menu extends BasicGameState{
         Input input = gc.getInput();
         int xPos = Mouse.getX();
         int yPos = Mouse.getY();
-        if((xPos>150 && xPos<450) && (yPos>200 && yPos<350)){
+        menu = "("+xPos+","+yPos+")";
+        if((xPos>175 && xPos<425) && (yPos>225 && yPos<325)){
             if(input.isMouseButtonDown(0)){
                 sbg.enterState(1);
             }
         }
-        if((xPos>150 && xPos<450) && (yPos>375 && yPos<525)){
+        if((xPos>175 && xPos<425) && (yPos>50 && yPos<150)){
             if(input.isMouseButtonDown(0)){
                 System.exit(0);
             }
