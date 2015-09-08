@@ -2,6 +2,7 @@ package nl.github.martijn9612.fishy;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -19,6 +20,9 @@ public class Menu extends BasicGameState{
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
+        g.drawString("Are you ready to eat some fish?",100,100);
+        Image play = new Image("resources/play-button.gif");
+        g.drawImage(play,200,200);
 
     }
 
