@@ -43,9 +43,9 @@
                         <goal>install-file</goal>
                     </goals>
                     <configuration>
-                        <version>1.0</version>
-                        <groupId>org.newdawn.slick</groupId>
-                        <artifactId>slick</artifactId>
+                        <version>1.0.1</version>
+                        <groupId>org.slick2d</groupId>
+                        <artifactId>slick2d-core</artifactId>
                         <packaging>jar</packaging>
                         <file>${basedir}/libraries/slick.jar</file>
                     </configuration>
