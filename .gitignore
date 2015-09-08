@@ -22,9 +22,6 @@ out/
 target/
 /bin/
 
-# Ignore libraries
-libs/
-
 # Eclipse project files
 .classpath
 .project
