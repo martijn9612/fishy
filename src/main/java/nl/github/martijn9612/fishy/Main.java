@@ -33,6 +33,7 @@ public class Main extends StateBasedGame {
       AppGameContainer appgc;
       appgc = new AppGameContainer(new Main(gameName));
       appgc.setDisplayMode(xSize, ySize, false);
+      appgc.setTargetFrameRate(60);
       appgc.start();
     } catch (SlickException ex) {
       Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
