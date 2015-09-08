@@ -61,7 +61,7 @@
                         <groupId>net.java.games</groupId>
                         <artifactId>jinput</artifactId>
                         <packaging>jar</packaging>
-                        <file>${basedir}/libs/jinput.jar</file>
+                        <file>${basedir}/libraries/jinput.jar</file>
                     </configuration>
                 </execution>
                 <execution>
