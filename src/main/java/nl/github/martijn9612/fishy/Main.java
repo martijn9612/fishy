@@ -10,6 +10,10 @@ import org.newdawn.slick.SlickException;
 
 public class Main extends BasicGame
 {
+	public static final String gameName = "Fishy";
+	public static final int xSize = 640;
+	public static final int ySize = 480;
+
 	public Main(String gamename)
 	{
 		super(gamename);
@@ -32,8 +36,8 @@ public class Main extends BasicGame
 		try
 		{
 			AppGameContainer appgc;
-			appgc = new AppGameContainer(new Main("Fishy"));
-			appgc.setDisplayMode(640, 480, false);
+			appgc = new AppGameContainer(new Main(gameName));
+			appgc.setDisplayMode(xSize, ySize, false);
 			appgc.start();
 		}
 		catch (SlickException ex)
