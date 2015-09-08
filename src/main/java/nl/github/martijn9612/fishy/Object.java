@@ -14,7 +14,7 @@ public class Object {
 
   public void loadImage(String imageName) {
     try {
-      objectImage = new Image("C:/Users/xox/Documents/fishy1/resources/" + imageName + ".png");
+      objectImage = new Image("resources/" + imageName + ".png");
     } catch (Exception e) {
       e.printStackTrace();
     }
