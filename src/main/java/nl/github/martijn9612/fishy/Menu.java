@@ -12,6 +12,7 @@ public class Menu extends BasicGameState{
 
     public String menu = "Menu";
     Image play;
+    Image exit;
     int xPlay = 150;
     int yPlay = 200;
 
@@ -21,11 +22,13 @@ public class Menu extends BasicGameState{
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
         play = new Image("resources/play-button.gif");
+        exit = new Image("resources/exit-button.gif");
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
         g.drawString(menu,300,10);
         g.drawImage(play,xPlay,yPlay);
+        g.drawImage(exit,150,375);
 
     }
 
@@ -36,6 +39,11 @@ public class Menu extends BasicGameState{
         if((xPos>150 && xPos<450) && (yPos>200 && yPos<350)){
             if(input.isMouseButtonDown(0)){
                 sbg.enterState(1);
+            }
+        }
+        if((xPos>150 && xPos<450) && (yPos>375 && yPos<525)){
+            if(input.isMouseButtonDown(0)){
+                System.exit(0);
             }
         }
     }

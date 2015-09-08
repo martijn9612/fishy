@@ -15,7 +15,7 @@ public class Main extends StateBasedGame
 {
 	public static final String gameName = "Fishy";
     public static final int xSize = 650;
-    public static final int ySize = 480;
+    public static final int ySize = 550;
     public static final int menu = 0;
     public static final int play = 1;
 
