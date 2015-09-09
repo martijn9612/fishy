@@ -9,10 +9,10 @@ public class Player extends Object {
 
     private String left = "fishleft";
     private String right = "fishright";
-    private int counterA, accelA, speedA = 0;
-    private int counterD, accelD, speedD = 0;
-    private int counterW, accelW, speedW = 0;
-    private int counterS, accelS, speedS = 0;
+    public int counterA, accelA, speedA = 0;
+    public int counterD, accelD, speedD = 0;
+    public int counterW, accelW, speedW = 0;
+    public int counterS, accelS, speedS = 0;
 
     public Player() {
         this.loadImage(left);
@@ -84,7 +84,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration to the left
      * @param accel wether to increase or decrease speed.
      */
-    private void left(int accel) {
+    public void left(int accel) {
         this.x -= speed + speedA;
         this.objectRect.x -= speed + speedA;
         counterA++;
@@ -97,7 +97,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration to the right
      * @param accel wether to increase or decrease speed.
      */
-    private void right(int accel) {
+    public void right(int accel) {
         this.x += speed + speedD;
         this.objectRect.x += speed + speedD;
         counterD++;
@@ -110,7 +110,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration upward
      * @param accel wether to increase or decrease speed.
      */
-    private void up(int accel) {
+    public void up(int accel) {
         this.y -= speed + speedW;
         this.objectRect.y -= speed + speedW;
         counterW++;
@@ -123,7 +123,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration downward
      * @param accel wether to increase or decrease speed.
      */
-    private void down(int accel) {
+    public void down(int accel) {
         this.y += speed + speedS;
         this.objectRect.y += speed + speedS;
         counterS++;
@@ -139,7 +139,7 @@ public class Player extends Object {
      * @param w whether to increase or decrease the speed upward
      * @param s whether to increase or decrease the speed downward
      */
-    private void momentum(int a, int d, int w, int s) {
+    public void momentum(int a, int d, int w, int s) {
         if (a == 1 && speedA < 5) {
             speedA++;
             accelA = 0;
