@@ -2,7 +2,6 @@ package nl.github.martijn9612.fishy;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 
 public class Player extends Object {
@@ -13,14 +12,28 @@ public class Player extends Object {
     public int counterD, accelD, speedD = 0;
     public int counterW, accelW, speedW = 0;
     public int counterS, accelS, speedS = 0;
-
+    
+    /**
+     * Creates a new Player instance in the game window and loads its sprite.
+     */
     public Player() {
-        this.loadImage(left);
+        this(true);
+    }
+    
+    /**
+     * Creates a new Player instance in the game window.
+     * @param boolean loadSprite whether the player sprite should be loaded or not.
+     */
+    public Player(boolean loadSprite) {
+    	if(loadSprite) {
+    		this.loadImage(left);
+    	}
         this.setPosition(350, 450);
         this.setDimensions(100, 100);
         this.setSpeed(1);
         this.createRectangle();
     }
+    
     /**
      * updates the object logic, also used for controls
      */
@@ -82,7 +95,7 @@ public class Player extends Object {
     }
     /**
      * controls the acceleration and deceleration to the left
-     * @param accel wether to increase or decrease speed.
+     * @param accel whether to increase or decrease speed.
      */
     public void left(int accel) {
         this.x -= speed + speedA;
@@ -95,7 +108,7 @@ public class Player extends Object {
     }
     /**
      * controls the acceleration and deceleration to the right
-     * @param accel wether to increase or decrease speed.
+     * @param accel whether to increase or decrease speed.
      */
     public void right(int accel) {
         this.x += speed + speedD;
@@ -108,7 +121,7 @@ public class Player extends Object {
     }
     /**
      * controls the acceleration and deceleration upward
-     * @param accel wether to increase or decrease speed.
+     * @param accel whether to increase or decrease speed.
      */
     public void up(int accel) {
         this.y -= speed + speedW;
@@ -121,7 +134,7 @@ public class Player extends Object {
     }
     /**
      * controls the acceleration and deceleration downward
-     * @param accel wether to increase or decrease speed.
+     * @param accel whether to increase or decrease speed.
      */
     public void down(int accel) {
         this.y += speed + speedS;
