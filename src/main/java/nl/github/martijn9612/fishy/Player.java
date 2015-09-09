@@ -5,13 +5,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 public class Player extends Object {
-
   private String left = "fishleft";
   private String right = "fishright";
-  private int counterA, accelA, speedA = 0;
-  private int counterD, accelD, speedD = 0;
-  private int counterW, accelW, speedW = 0;
-  private int counterS, accelS, speedS = 0;
+  private int decreaseLeft, accelerateLeft, speedLeft = 0;
+  private int decreaseRight, accelerateRight, speedRight = 0;
+  private int decreaseUp, accelerateUp, speedUp = 0;
+  private int decreaseDown, accelerateDown, speedDown = 0;
 
   /**
    * constructor for the player.
@@ -58,7 +57,7 @@ public class Player extends Object {
     }
 
     checkBounds();
-    momentum(accelA, accelD, accelW, accelS);
+    momentum(accelerateLeft, accelerateRight, accelerateUp, accelerateDown);
   }
 
   @Override
@@ -91,12 +90,12 @@ public class Player extends Object {
    *          wether to increase or decrease speed.
    */
   private void left(int accel) {
-    this.x -= speed + speedA;
-    this.objectRect.x -= speed + speedA;
-    counterA++;
-    if (counterA == 5) {
-      counterA = 0;
-      accelA = accel;
+    this.x -= speed + speedLeft;
+    this.objectRect.x -= speed + speedLeft;
+    decreaseLeft++;
+    if (decreaseLeft == 5) {
+      decreaseLeft = 0;
+      accelerateLeft = accel;
     }
   }
 
@@ -107,12 +106,12 @@ public class Player extends Object {
    *          wether to increase or decrease speed.
    */
   private void right(int accel) {
-    this.x += speed + speedD;
-    this.objectRect.x += speed + speedD;
-    counterD++;
-    if (counterD == 5) {
-      counterD = 0;
-      accelD = accel;
+    this.x += speed + speedRight;
+    this.objectRect.x += speed + speedRight;
+    decreaseRight++;
+    if (decreaseRight == 5) {
+      decreaseRight = 0;
+      accelerateRight = accel;
     }
   }
 
@@ -123,12 +122,12 @@ public class Player extends Object {
    *          wether to increase or decrease speed.
    */
   private void up(int accel) {
-    this.y -= speed + speedW;
-    this.objectRect.y -= speed + speedW;
-    counterW++;
-    if (counterW == 5) {
-      counterW = 0;
-      accelW = accel;
+    this.y -= speed + speedUp;
+    this.objectRect.y -= speed + speedUp;
+    decreaseUp++;
+    if (decreaseUp == 5) {
+      decreaseUp = 0;
+      accelerateUp = accel;
     }
   }
 
@@ -139,12 +138,12 @@ public class Player extends Object {
    *          wether to increase or decrease speed.
    */
   private void down(int accel) {
-    this.y += speed + speedS;
-    this.objectRect.y += speed + speedS;
-    counterS++;
-    if (counterS == 5) {
-      counterS = 0;
-      accelS = accel;
+    this.y += speed + speedDown;
+    this.objectRect.y += speed + speedDown;
+    decreaseDown++;
+    if (decreaseDown == 5) {
+      decreaseDown = 0;
+      accelerateDown = accel;
     }
   }
 
@@ -161,37 +160,37 @@ public class Player extends Object {
    *          whether to increase or decrease the speed downward
    */
   private void momentum(int akey, int dkey, int wkey, int skey) {
-    if (akey == 1 && speedA < 5) {
-      speedA++;
-      accelA = 0;
+    if (akey == 1 && speedLeft < 5) {
+      speedLeft++;
+      accelerateLeft = 0;
     }
-    if (akey == -1 && speedA > 0) {
-      speedA--;
-      accelA = 0;
+    if (akey == -1 && speedLeft > 0) {
+      speedLeft--;
+      accelerateLeft = 0;
     }
-    if (dkey == 1 && speedD < 5) {
-      speedD++;
-      accelD = 0;
+    if (dkey == 1 && speedRight < 5) {
+      speedRight++;
+      accelerateRight = 0;
     }
-    if (dkey == -1 && speedD > 0) {
-      speedD--;
-      accelD = 0;
+    if (dkey == -1 && speedRight > 0) {
+      speedRight--;
+      accelerateRight = 0;
     }
-    if (wkey == 1 && speedW < 5) {
-      speedW++;
-      accelW = 0;
+    if (wkey == 1 && speedUp < 5) {
+      speedUp++;
+      accelerateUp = 0;
     }
-    if (wkey == -1 && speedW > 0) {
-      speedW--;
-      accelW = 0;
+    if (wkey == -1 && speedUp > 0) {
+      speedUp--;
+      accelerateUp = 0;
     }
-    if (skey == 1 && speedS < 5) {
-      speedS++;
-      accelS = 0;
+    if (skey == 1 && speedDown < 5) {
+      speedDown++;
+      accelerateDown = 0;
     }
-    if (skey == -1 && speedS > 0) {
-      speedS--;
-      accelS = 0;
+    if (skey == -1 && speedDown > 0) {
+      speedDown--;
+      accelerateDown = 0;
     }
   }
 }
