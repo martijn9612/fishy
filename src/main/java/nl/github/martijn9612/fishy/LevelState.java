@@ -11,25 +11,26 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * Created by Skullyhoofd on 08/09/2015.
  */
-public class Play extends BasicGameState {
-    
+public class LevelState extends BasicGameState {
   public String state = "Playing";
   private Player player;
   private Image background;
-  private Spawner spawner;
-  public String fishpos = "(" + 0 + "," + 0 + ")";
+  private OpponentHandler opponentHandler;
+  public String fishPosition = "(" + 0 + "," + 0 + ")";
 
-  public Play(int state) {
+  public LevelState(int state) {
 
   }
+
   /**
    * initialisation of the play screen.
    */
   public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
     player = new Player();
-    background = new Image("resources/sea.jpg");
-    spawner = new Spawner();
+    background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
+    opponentHandler = new OpponentHandler();
   }
+
   /**
    * render everything in the playscreen.
    */
@@ -38,20 +39,22 @@ public class Play extends BasicGameState {
     g.setColor(Color.black);
     g.drawString(state, 300, 10);
     g.drawImage(background, 0, 0);
-    g.drawString(fishpos, 300, 10);
+    g.drawString(fishPosition, 300, 10);
     player.renderObject(g);
-    spawner.renderFish(g);
+    opponentHandler.renderFish(g);
   }
+
   /**
    * update everything in the gamescreen.
    */
   public void update(GameContainer gc, StateBasedGame sbg, int delta)
       throws SlickException {
     player.objectLogic(gc, delta);
-    spawner.updateFish(gc, delta);
-    spawner.newFish();
-    fishpos = "(" + player.x + "," + player.y + ")";
+    opponentHandler.updateFish(gc, delta);
+    opponentHandler.newFish();
+    fishPosition = "(" + player.x + "," + player.y + ")";
   }
+
   /**
    * get id.
    */
