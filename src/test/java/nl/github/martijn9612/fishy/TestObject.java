@@ -17,7 +17,7 @@ public class TestObject {
 	
 	@Test
 	public void testSetPosition() {
-		Object obj = new Object();
+		Entity obj = new Entity();
 		obj.setPosition(X_VALUE, Y_VALUE);
 		Assert.assertEquals(X_VALUE, obj.getX());
 		Assert.assertEquals(Y_VALUE, obj.getY());
@@ -25,7 +25,7 @@ public class TestObject {
 	
 	@Test
 	public void testSetDimensions() {
-		Object obj = new Object();
+		Entity obj = new Entity();
 		obj.setDimensions(WIDTH, HEIGHT);
 		Assert.assertEquals(WIDTH, obj.getWidth());
 		Assert.assertEquals(HEIGHT, obj.getHeight());
@@ -33,7 +33,7 @@ public class TestObject {
 	
 	@Test
 	public void testCreateRectangle() {
-		Object obj = new Object();
+		Entity obj = new Entity();
 		obj.setPosition(X_VALUE, Y_VALUE);
 		obj.setDimensions(WIDTH, HEIGHT);
 		obj.createRectangle();
