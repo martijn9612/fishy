@@ -45,7 +45,7 @@ public class Fish extends Object {
   
   @Override
   public void renderObject(Graphics g) {
-    g.drawImage(this.getImage(), this.getX(), this.getY());
+    g.drawImage(this.getImage().getScaledCopy(this.getWidth(), this.getHeight()), this.getX(), this.getY());
   }
   /**
    * make the fish go left.
