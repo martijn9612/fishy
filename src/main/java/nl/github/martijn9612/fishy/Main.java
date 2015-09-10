@@ -9,30 +9,31 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Main extends StateBasedGame {
-  public static final String gameName = "Fishy";
-  public static final int xSize = 650;
-  public static final int ySize = 550;
-  public static final int menu = 0;
-  public static final int play = 1;
+  public static final String GAME_NAME = "Fishy";
+  public static final int WINDOW_WIDTH = 650;
+  public static final int WINDOW_HEIGHT = 550;
+  public static final int MENU_STATE = 0;
+  public static final int PLAY_STATE = 1;
+  public static final String PLAYER_CHARACTER = "fish";
 
   public Main(String gameName) {
     super(gameName);
-    this.addState(new Menu(menu));
-    this.addState(new Play(play));
+    this.addState(new Menu(MENU_STATE));
+    this.addState(new Play(PLAY_STATE));
   }
 
   @Override
   public void initStatesList(GameContainer gc) throws SlickException {
-    this.getState(menu).init(gc, this);
-    this.getState(play).init(gc, this);
-    this.enterState(menu);
+    this.getState(MENU_STATE).init(gc, this);
+    this.getState(PLAY_STATE).init(gc, this);
+    this.enterState(MENU_STATE);
   }
 
   public static void main(String[] args) {
     try {
       AppGameContainer appgc;
-      appgc = new AppGameContainer(new Main(gameName));
-      appgc.setDisplayMode(xSize, ySize, false);
+      appgc = new AppGameContainer(new Main(GAME_NAME));
+      appgc.setDisplayMode(WINDOW_WIDTH, WINDOW_HEIGHT, false);
       appgc.setTargetFrameRate(60);
       appgc.start();
     } catch (SlickException ex) {
