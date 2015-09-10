@@ -51,6 +51,7 @@ public class Play extends BasicGameState {
     spawner.updateFish(gc, delta);
     spawner.newFish();
     fishpos = "(" + player.x + "," + player.y + ")";
+    spawner.collide(player);
   }
   /**
    * get id.

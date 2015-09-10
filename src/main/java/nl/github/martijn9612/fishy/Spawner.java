@@ -69,4 +69,14 @@ public class Spawner {
   public void destroy(Fish fishy) {
     toRemove.add(fishy);
   }
+
+  public Fish collide(Player player) {
+    for (Fish fish : fishes) {
+      if (fish.objectRect.intersects(player.objectRect)) {
+        System.out.println("Collision");
+        return fish;
+      }
+    }
+    return null;
+  }
 }

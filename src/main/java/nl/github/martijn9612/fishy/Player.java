@@ -32,6 +32,12 @@ public class Player extends Object {
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
+        keyboardControl(gc);
+        checkBounds();
+        momentum(accelerateLeft, accelerateRight, accelerateUp, accelerateDown);
+    }
+
+    private void keyboardControl(GameContainer gc) {
         Input input = gc.getInput();
 
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
@@ -59,9 +65,6 @@ public class Player extends Object {
         } else {
             down(-1);
         }
-
-        checkBounds();
-        momentum(accelerateLeft, accelerateRight, accelerateUp, accelerateDown);
     }
 
     @Override
