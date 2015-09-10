@@ -4,71 +4,77 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-public class Player extends Object {
+public class Player extends Entity {
+    private static final int PLAYER_START_X = 350;
+    private static final int PLAYER_START_Y = 450;
+    private static final int PLAYER_WIDTH = 100;
+    private static final int PLAYER_HEIGHT = 100;
+    private static final int PLAYER_SPEED = 1;
+    private static final int PLAYER_SPRITE_WIDTH = 32;
+    private static final int PLAYER_SPRITE_HEIGHT = 32;
+    private String left = Main.PLAYER_CHARACTER + "left";
+    private String right = Main.PLAYER_CHARACTER + "right";
+    private int decelerateLeft, accelerateLeft, speedLeft = 0;
+    private int decelerateRight, accelerateRight, speedRight = 0;
+    private int decelerateUp, accelerateUp, speedUp = 0;
+    private int decelerateDown, accelerateDown, speedDown = 0;
 
-    private String left = "fishleft";
-    private String right = "fishright";
-    public int counterA, accelA, speedA = 0;
-    public int counterD, accelD, speedD = 0;
-    public int counterW, accelW, speedW = 0;
-    public int counterS, accelS, speedS = 0;
-    
     /**
      * Creates a new Player instance in the game window and loads its sprite.
      */
     public Player() {
         this(true);
     }
-    
+
     /**
      * Creates a new Player instance in the game window.
-     * @param boolean loadSprite whether the player sprite should be loaded or not.
+     * @param loadSprite loadSprite whether the player sprite should be loaded or not.
      */
     public Player(boolean loadSprite) {
-    	if(loadSprite) {
-    		this.loadImage(left);
-    	}
-        this.setPosition(350, 450);
-        this.setDimensions(100, 100);
-        this.setSpeed(1);
+        if(loadSprite) {
+            this.loadImage(left);
+        }
+        this.setPosition(PLAYER_START_X, PLAYER_START_Y);
+        this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        this.setSpeed(PLAYER_SPEED);
         this.createRectangle();
     }
-    
+
     /**
-     * updates the object logic, also used for controls
+     * updates the object logic, also used for controls.
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
         Input input = gc.getInput();
 
-        if (input.isKeyDown(Input.KEY_A)) {
+        if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
             this.loadImage(left);
             left(1);
         } else {
             left(-1);
         }
 
-        if (input.isKeyDown(Input.KEY_D)) {
+        if (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) {
             this.loadImage(right);
             right(1);
         } else {
             right(-1);
         }
 
-        if (input.isKeyDown(Input.KEY_W)) {
+        if (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) {
             up(1);
         } else {
             up(-1);
         }
 
-        if (input.isKeyDown(Input.KEY_S)) {
+        if (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) {
             down(1);
         } else {
             down(-1);
         }
 
         checkBounds();
-        momentum(accelA, accelD, accelW, accelS);
+        momentum(accelerateLeft, accelerateRight, accelerateUp, accelerateDown);
     }
 
     @Override
@@ -77,114 +83,118 @@ public class Player extends Object {
     }
 
     private void checkBounds() {
-        if (this.x > 615) {
-            this.x = 615;
+        if (this.x > Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH) {
+            this.x = Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH;
         }
 
         if (this.x < 0) {
             this.x = 0;
         }
 
-        if (this.y > 515) {
-            this.y = 515;
+        if (this.y > Main.WINDOW_HEIGHT - PLAYER_SPRITE_HEIGHT) {
+            this.y = Main.WINDOW_HEIGHT - PLAYER_SPRITE_HEIGHT;
         }
 
         if (this.y < 0) {
             this.y = 0;
         }
     }
+
     /**
-     * controls the acceleration and deceleration to the left
-     * @param accel whether to increase or decrease speed.
+     * controls the acceleration and deceleration to the left.
+     * @param accel wether to increase or decrease speed.
      */
     public void left(int accel) {
-        this.x -= speed + speedA;
-        this.objectRect.x -= speed + speedA;
-        counterA++;
-        if (counterA == 5) {
-            counterA = 0;
-            accelA = accel;
+        this.x -= speed + speedLeft;
+        this.objectRect.x -= speed + speedLeft;
+        decelerateLeft++;
+        if (decelerateLeft == 5) {
+            decelerateLeft = 0;
+            accelerateLeft = accel;
         }
     }
+
     /**
-     * controls the acceleration and deceleration to the right
-     * @param accel whether to increase or decrease speed.
+     * controls the acceleration and deceleration to the right.
+     * @param accel wether to increase or decrease speed.
      */
     public void right(int accel) {
-        this.x += speed + speedD;
-        this.objectRect.x += speed + speedD;
-        counterD++;
-        if (counterD == 5) {
-            counterD = 0;
-            accelD = accel;
+        this.x += speed + speedRight;
+        this.objectRect.x += speed + speedRight;
+        decelerateRight++;
+        if (decelerateRight == 5) {
+            decelerateRight = 0;
+            accelerateRight = accel;
         }
     }
+
     /**
-     * controls the acceleration and deceleration upward
-     * @param accel whether to increase or decrease speed.
+     * controls the acceleration and deceleration upward.
+     * @param accel wether to increase or decrease speed.
      */
     public void up(int accel) {
-        this.y -= speed + speedW;
-        this.objectRect.y -= speed + speedW;
-        counterW++;
-        if (counterW == 5) {
-            counterW = 0;
-            accelW = accel;
+        this.y -= speed + speedUp;
+        this.objectRect.y -= speed + speedUp;
+        decelerateUp++;
+        if (decelerateUp == 5) {
+            decelerateUp = 0;
+            accelerateUp = accel;
         }
     }
+
     /**
-     * controls the acceleration and deceleration downward
-     * @param accel whether to increase or decrease speed.
+     * controls the acceleration and deceleration downward.
+     * @param accel wether to increase or decrease speed.
      */
     public void down(int accel) {
-        this.y += speed + speedS;
-        this.objectRect.y += speed + speedS;
-        counterS++;
-        if (counterS == 5) {
-            counterS = 0;
-            accelS = accel;
+        this.y += speed + speedDown;
+        this.objectRect.y += speed + speedDown;
+        decelerateDown++;
+        if (decelerateDown == 5) {
+            decelerateDown = 0;
+            accelerateDown = accel;
         }
     }
-    /**
-     * this method increases or decreases the speed to the individual directions
-     * @param a whether to increase or decrease the speed to the left
-     * @param d whether to increase or decrease the speed to the right
-     * @param w whether to increase or decrease the speed upward
-     * @param s whether to increase or decrease the speed downward
-     */
-    public void momentum(int a, int d, int w, int s) {
-        if (a == 1 && speedA < 5) {
-            speedA++;
-            accelA = 0;
-        }
-        if (a == -1 && speedA > 0) {
-            speedA--;
-            accelA = 0;
-        }
-        if (d == 1 && speedD < 5) {
-            speedD++;
-            accelD = 0;
-        }
-        if (d == -1 && speedD > 0) {
-            speedD--;
-            accelD = 0;
-        }
-        if (w == 1 && speedW < 5) {
-            speedW++;
-            accelW = 0;
-        }
-        if (w == -1 && speedW > 0) {
-            speedW--;
-            accelW = 0;
-        }
-        if (s == 1 && speedS < 5) {
-            speedS++;
-            accelS = 0;
-        }
-        if (s == -1 && speedS > 0) {
-            speedS--;
-            accelS = 0;
-        }
 
+    /**
+     * this method increases or decreases the speed to the individual directions.
+     * @param left whether to increase or decrease the speed to the left
+     * @param right whether to increase or decrease the speed to the right
+     * @param up whether to increase or decrease the speed upward
+     * @param down whether to increase or decrease the speed downward
+     */
+    private void momentum(int left, int right, int up, int down) {
+        if (left == 1 && speedLeft < 5) {
+            speedLeft++;
+            accelerateLeft = 0;
+        }
+        if (left == -1 && speedLeft > 0) {
+            speedLeft--;
+            accelerateLeft = 0;
+        }
+        if (right == 1 && speedRight < 5) {
+            speedRight++;
+            accelerateRight = 0;
+        }
+        if (right == -1 && speedRight > 0) {
+            speedRight--;
+            accelerateRight = 0;
+        }
+        if (up == 1 && speedUp < 5) {
+            speedUp++;
+            accelerateUp = 0;
+        }
+        if (up == -1 && speedUp > 0) {
+            speedUp--;
+            accelerateUp = 0;
+        }
+        if (down == 1 && speedDown < 5) {
+            speedDown++;
+            accelerateDown = 0;
+        }
+        if (down == -1 && speedDown > 0) {
+            speedDown--;
+            accelerateDown = 0;
+        }
     }
 }

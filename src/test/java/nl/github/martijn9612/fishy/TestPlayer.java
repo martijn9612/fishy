@@ -28,7 +28,7 @@ public class TestPlayer extends TestCase {
 		Assert.assertEquals(startYValue, player.getY());
 		Assert.assertEquals(startXValue - 1, player.getX());
 	}
-	
+
 	/**
 	 * Tests whether the Player is able to move to the right.
 	 */
@@ -41,7 +41,7 @@ public class TestPlayer extends TestCase {
 		Assert.assertEquals(startYValue, player.getY());
 		Assert.assertEquals(startXValue + 1, player.getX());
 	}
-	
+
 	/**
 	 * Tests whether the Player is able to move up.
 	 */
@@ -54,7 +54,7 @@ public class TestPlayer extends TestCase {
 		Assert.assertEquals(startYValue - 1, player.getY()); // Moving up decreases the y-axis, because (0,0) is at the upper left corner.
 		Assert.assertEquals(startXValue, player.getX());
 	}
-	
+
 	/**
 	 * Tests whether the Player is able to move down.
 	 */
