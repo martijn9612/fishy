@@ -58,6 +58,8 @@ public class Spawner {
       if (isleft) {
         Fish fish = new Fish(isleft, 0 - (size * 50), ypos, size, speed, this);
         fishes.add(fish);
+        System.out.println(fish.getHeight());
+
       } else {
         Fish fish = new Fish(isleft, 615 + (size * 50), ypos, size, speed, this);
         fishes.add(fish);
@@ -74,6 +76,7 @@ public class Spawner {
     for (Fish fish : fishes) {
       if (fish.objectRect.intersects(player.objectRect)) {
         System.out.println("Collision");
+        Play.collide = "yes";
         return fish;
       }
     }
