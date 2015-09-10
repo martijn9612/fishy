@@ -19,8 +19,21 @@ public class Player extends Entity {
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
 
+    /**
+     * Creates a new Player instance in the game window and loads its sprite.
+     */
     public Player() {
-        this.loadImage(left);
+        this(true);
+    }
+
+    /**
+     * Creates a new Player instance in the game window.
+     * @param loadSprite loadSprite whether the player sprite should be loaded or not.
+     */
+    public Player(boolean loadSprite) {
+        if(loadSprite) {
+            this.loadImage(left);
+        }
         this.setPosition(PLAYER_START_X, PLAYER_START_Y);
         this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         this.setSpeed(PLAYER_SPEED);
@@ -91,7 +104,7 @@ public class Player extends Entity {
      * controls the acceleration and deceleration to the left.
      * @param accel wether to increase or decrease speed.
      */
-    private void left(int accel) {
+    public void left(int accel) {
         this.x -= speed + speedLeft;
         this.objectRect.x -= speed + speedLeft;
         decelerateLeft++;
@@ -105,7 +118,7 @@ public class Player extends Entity {
      * controls the acceleration and deceleration to the right.
      * @param accel wether to increase or decrease speed.
      */
-    private void right(int accel) {
+    public void right(int accel) {
         this.x += speed + speedRight;
         this.objectRect.x += speed + speedRight;
         decelerateRight++;
@@ -119,7 +132,7 @@ public class Player extends Entity {
      * controls the acceleration and deceleration upward.
      * @param accel wether to increase or decrease speed.
      */
-    private void up(int accel) {
+    public void up(int accel) {
         this.y -= speed + speedUp;
         this.objectRect.y -= speed + speedUp;
         decelerateUp++;
@@ -133,7 +146,7 @@ public class Player extends Entity {
      * controls the acceleration and deceleration downward.
      * @param accel wether to increase or decrease speed.
      */
-    private void down(int accel) {
+    public void down(int accel) {
         this.y += speed + speedDown;
         this.objectRect.y += speed + speedDown;
         decelerateDown++;
