@@ -16,17 +16,23 @@ public class Play extends BasicGameState {
   public String state = "Playing";
   private Player player;
   private Image background;
-  public String fishpos = "("+0+","+0+")";
+  private Spawner spawner;
+  public String fishpos = "(" + 0 + "," + 0 + ")";
 
   public Play(int state) {
 
   }
-
+  /**
+   * initialisation of the play screen.
+   */
   public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
     player = new Player();
     background = new Image("resources/sea.jpg");
+    spawner = new Spawner();
   }
-
+  /**
+   * render everything in the playscreen.
+   */
   public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
       throws SlickException {
     g.setColor(Color.black);
@@ -34,14 +40,21 @@ public class Play extends BasicGameState {
     g.drawImage(background, 0, 0);
     g.drawString(fishpos, 300, 10);
     player.renderObject(g);
+    spawner.renderFish(g);
   }
-
+  /**
+   * update everything in the gamescreen.
+   */
   public void update(GameContainer gc, StateBasedGame sbg, int delta)
       throws SlickException {
     player.objectLogic(gc, delta);
-    fishpos = "("+player.x+","+player.y+")";
+    spawner.updateFish(gc, delta);
+    spawner.newFish();
+    fishpos = "(" + player.x + "," + player.y + ")";
   }
-
+  /**
+   * get id.
+   */
   public int getID() {
     return 1;
   }

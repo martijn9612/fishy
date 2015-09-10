@@ -5,7 +5,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 public class Player extends Object {
-
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
     private static final int PLAYER_WIDTH = 100;
