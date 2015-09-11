@@ -11,15 +11,16 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * Created by Skullyhoofd on 08/09/2015.
  */
-public class Play extends BasicGameState {
-  public String state = "Playing";
-  public Player player;
-  private Image background;
-  private Spawner spawner;
-  public static String score =  "0";
-  public String fishpos = "(" + 0 + "," + 0 + ")";
+public class LevelState extends BasicGameState {
+    public String state = "Playing";
+    public Player player;
+    private Image background;
+    public static String score =  "0";
+    private OpponentHandler opponentHandler;
+    public String fishPosition = "(" + 0 + "," + 0 + ")";
 
-  public Play(int state) {
+  public LevelState(int state) {
+
   }
 
   /**
@@ -27,8 +28,8 @@ public class Play extends BasicGameState {
    */
   public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
     player = new Player();
-    background = new Image("resources/sea.jpg");
-    spawner = new Spawner();
+    background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
+    opponentHandler = new OpponentHandler();
   }
 
   /**
@@ -39,11 +40,12 @@ public class Play extends BasicGameState {
     g.setColor(Color.black);
     g.drawString(state, 300, 10);
     g.drawImage(background, 0, 0);
-    g.drawString(fishpos, 300, 10);
+    g.drawString(fishPosition, 300, 10);
     g.drawString(score, 450, 10);
     player.renderObject(g);
-    spawner.renderFish(g);
+    opponentHandler.renderOpponents(g);
   }
+
 
   /**
    * update everything in the gamescreen.
@@ -51,11 +53,11 @@ public class Play extends BasicGameState {
   public void update(GameContainer gc, StateBasedGame sbg, int delta)
       throws SlickException {
     player.objectLogic(gc, delta);
-    spawner.updateFish(gc, delta);
     player.objectRect.setLocation(player.x,player.y);
-    spawner.newFish(player);
-    fishpos = "(" + player.x + "," + player.y + ")";
-    spawner.collide(player, sbg);
+    opponentHandler.collide(player, sbg);
+    opponentHandler.updateOpponents(gc, delta);
+    opponentHandler.newOpponent(player);
+    fishPosition = "(" + player.x + "," + player.y + ")";
   }
 
   /**

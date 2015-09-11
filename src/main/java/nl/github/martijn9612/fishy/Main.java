@@ -1,26 +1,26 @@
 package nl.github.martijn9612.fishy;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Main extends StateBasedGame {
-  public static final String GAME_NAME = "Fishy";
-  public static final int WINDOW_WIDTH = 650;
-  public static final int WINDOW_HEIGHT = 550;
   public static final int MENU_STATE = 0;
   public static final int PLAY_STATE = 1;
   public static final int GAME_END_STATE = 2;
+  private static final String GAME_NAME = "Fishy";
+  public static final int WINDOW_WIDTH = 650;
+  public static final int WINDOW_HEIGHT = 550;
   public static final String PLAYER_CHARACTER = "fish";
+  public static final String OPPONENT_CHARACTER = "fish";
+  public static final String LEVEL_BACKGROUND = "seabed";
 
   public Main(String gameName) {
     super(gameName);
-    this.addState(new Menu(MENU_STATE));
-    this.addState(new Play(PLAY_STATE));
+    this.addState(new MenuState(MENU_STATE));
+    this.addState(new LevelState(PLAY_STATE));
     this.addState(new GameEnd(GAME_END_STATE));
   }
 
@@ -40,7 +40,7 @@ public class Main extends StateBasedGame {
       appgc.setTargetFrameRate(60);
       appgc.start();
     } catch (SlickException ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
   }
 }

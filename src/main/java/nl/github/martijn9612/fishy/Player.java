@@ -4,14 +4,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
-public class Player extends Object {
+public class Player extends Entity {
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
     private static final int PLAYER_WIDTH = 32;
     private static final int PLAYER_HEIGHT = 32;
     private static final int PLAYER_SPEED = 1;
-    private static final int PLAYER_SPRITE_WIDTH = 32;
-    private static final int PLAYER_SPRITE_HEIGHT = 32;
     private String left = Main.PLAYER_CHARACTER + "left";
     private String right = Main.PLAYER_CHARACTER + "right";
     private int decelerateLeft, accelerateLeft, speedLeft = 0;
@@ -20,12 +18,25 @@ public class Player extends Object {
     private int decelerateDown, accelerateDown, speedDown = 0;
     public double score = 0;
 
+    /**
+     * Creates a new Player instance in the game window and loads its sprite.
+     */
     public Player() {
-        loadImage(left);
-        setPosition(PLAYER_START_X, PLAYER_START_Y);
-        setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        setSpeed(PLAYER_SPEED);
-        calculateRectangle();
+        this(true);
+    }
+
+    /**
+     * Creates a new Player instance in the game window.
+     * @param loadSprite loadSprite whether the player sprite should be loaded or not.
+     */
+    public Player(boolean loadSprite) {
+        if(loadSprite) {
+            this.loadImage(left);
+        }
+        this.setPosition(PLAYER_START_X, PLAYER_START_Y);
+        this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        this.setSpeed(PLAYER_SPEED);
+        this.calculateRectangle();
     }
 
     /**
@@ -71,7 +82,6 @@ public class Player extends Object {
     @Override
     public void renderObject(Graphics g) {
         g.drawImage(getImage().getScaledCopy(getWidth(), getHeight()), getX(), getY());
-        g.drawRect(getX(), getY(), getWidth(), getHeight());
     }
 
     private void checkBounds() {
@@ -96,7 +106,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration to the left.
      * @param accel wether to increase or decrease speed.
      */
-    private void left(int accel) {
+    public void left(int accel) {
         this.x -= speed + speedLeft;
         this.objectRect.x -= speed + speedLeft;
         decelerateLeft++;
@@ -110,7 +120,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration to the right.
      * @param accel wether to increase or decrease speed.
      */
-    private void right(int accel) {
+    public void right(int accel) {
         this.x += speed + speedRight;
         this.objectRect.x += speed + speedRight;
         decelerateRight++;
@@ -124,7 +134,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration upward.
      * @param accel wether to increase or decrease speed.
      */
-    private void up(int accel) {
+    public void up(int accel) {
         this.y -= speed + speedUp;
         this.objectRect.y -= speed + speedUp;
         decelerateUp++;
@@ -138,7 +148,7 @@ public class Player extends Object {
      * controls the acceleration and deceleration downward.
      * @param accel wether to increase or decrease speed.
      */
-    private void down(int accel) {
+    public void down(int accel) {
         y += speed + speedDown;
         objectRect.y += speed + speedDown;
         decelerateDown++;
@@ -202,9 +212,9 @@ public class Player extends Object {
         score += sc;
     }
 
-    public void eat(Fish fish) {
+    public void eat(Opponent fish) {
         addScore(fish.getSize() * 0.2);
-        Play.score = String.valueOf(Math.round(getScore()));
+        LevelState.score = String.valueOf(Math.round(getScore()));
         int newDim = 32 + (int) Math.round(getScore());
         setDimensions(newDim,newDim);
         calculateRectangle();
@@ -212,7 +222,7 @@ public class Player extends Object {
 
     public void die() {
         setScore(0);
-        Play.score = "0";
+        LevelState.score = "0";
         setDimensions(32, 32);
     }
 }

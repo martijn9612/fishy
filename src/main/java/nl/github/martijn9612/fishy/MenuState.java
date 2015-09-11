@@ -8,14 +8,14 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * Created by Skullyhoofd on 08/09/2015.
  */
-public class Menu extends BasicGameState{
+public class MenuState extends BasicGameState{
     public String menu = "Menu";
     Image play;
     Image exit;
     int xPlay = 150;
     int yPlay = 200;
 
-    public Menu(int state){
+    public MenuState(int state){
 
     }
 

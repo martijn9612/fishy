@@ -3,12 +3,12 @@ package nl.github.martijn9612.fishy;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-public class Fish extends Object {
-  private String left = "fishleft";
-  private String right = "fishright";
+public class Opponent extends Entity {
+  private String left = Main.OPPONENT_CHARACTER + "left";
+  private String right = Main.OPPONENT_CHARACTER + "right";
   private boolean isleft;
-  double size;
-  public Spawner spawn;
+  private double size;
+  public OpponentHandler opponentHandler;
 
   /**
    * constructor for fishes.
@@ -17,11 +17,12 @@ public class Fish extends Object {
    * @param ypos the y position.
    * @param size the size of the fish.
    * @param speed the speed of the fish.
+   * @param opponentHandler the handler of all the opponents
    */
-  public Fish(boolean isleft, int xpos, int ypos, double size, int speed, Spawner spawn) {
+  public Opponent(boolean isleft, int xpos, int ypos, double size, int speed, OpponentHandler opponentHandler) {
     this.isleft = isleft;
     this.size = size;
-    this.spawn = spawn;
+    this.opponentHandler = opponentHandler;
     if (isleft) {
       this.loadImage(right);
     } else {
@@ -46,7 +47,6 @@ public class Fish extends Object {
   @Override
   public void renderObject(Graphics g) {
     g.drawImage(this.getImage().getScaledCopy(this.getWidth(), this.getHeight()), this.getX(), this.getY());
-    g.drawRect(this.getX(), this.getY(),this.getWidth(),this.getHeight());
   }
   /**
    * make the fish go left.
@@ -74,7 +74,6 @@ public class Fish extends Object {
   }
   
   public void destroy() {
-    spawn.destroy(this);
-    System.out.println("destroy fish");
+    opponentHandler.destroy(this);
   }
 }

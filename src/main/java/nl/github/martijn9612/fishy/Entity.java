@@ -6,7 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Graphics;
 
-public class Object {
+public class Entity {
 
   public Image objectImage;
   public int x, y, width, height, speed;
