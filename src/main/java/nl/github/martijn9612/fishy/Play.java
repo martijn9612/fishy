@@ -12,7 +12,6 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by Skullyhoofd on 08/09/2015.
  */
 public class Play extends BasicGameState {
-    
   public String state = "Playing";
   public Player player;
   private Image background;
@@ -21,8 +20,8 @@ public class Play extends BasicGameState {
   public String fishpos = "(" + 0 + "," + 0 + ")";
 
   public Play(int state) {
-
   }
+
   /**
    * initialisation of the play screen.
    */
@@ -31,6 +30,7 @@ public class Play extends BasicGameState {
     background = new Image("resources/sea.jpg");
     spawner = new Spawner();
   }
+
   /**
    * render everything in the playscreen.
    */
@@ -44,6 +44,7 @@ public class Play extends BasicGameState {
     player.renderObject(g);
     spawner.renderFish(g);
   }
+
   /**
    * update everything in the gamescreen.
    */
@@ -56,6 +57,7 @@ public class Play extends BasicGameState {
     fishpos = "(" + player.x + "," + player.y + ")";
     spawner.collide(player, sbg);
   }
+
   /**
    * get id.
    */

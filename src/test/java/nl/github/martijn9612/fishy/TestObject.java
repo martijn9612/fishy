@@ -36,7 +36,7 @@ public class TestObject {
 		Object obj = new Object();
 		obj.setPosition(X_VALUE, Y_VALUE);
 		obj.setDimensions(WIDTH, HEIGHT);
-		obj.createRectangle();
+		obj.calculateRectangle();
 		Assert.assertTrue(obj.objectRect instanceof Rectangle);
 		Dimension dim = obj.objectRect.getSize();
 		Assert.assertEquals((int) dim.getWidth(), WIDTH);

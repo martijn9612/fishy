@@ -58,7 +58,7 @@ public class Object {
     return objectImage;
   }
 
-  public void createRectangle() {
+  public void calculateRectangle() {
     objectRect = new Rectangle(getX(), getY(), getWidth(), getHeight());
   }
 

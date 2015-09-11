@@ -59,13 +59,10 @@ public class Spawner {
       if (isleft) {
         Fish fish = new Fish(isleft, 0 - ((int) Math.round(size) * 50), ypos, size, speed, this);
         fishes.add(fish);
-        System.out.println(fish.getHeight());
-
       } else {
         Fish fish = new Fish(isleft, 615 + ((int) Math.round(size) * 50), ypos, size, speed, this);
         fishes.add(fish);
       }
-      System.out.println("new fish");
     }
     for(Fish f : fishes){
       f.objectRect.setLocation(f.x,f.y);
@@ -77,28 +74,19 @@ public class Spawner {
     toRemove.add(fishy);
   }
 
-  public Fish collide(Player player, StateBasedGame sbg) {
+  public void collide(Player player, StateBasedGame sbg) {
     for (Fish fish : fishes) {
-      if (fish.objectRect.intersects(player.objectRect)) {
-        System.out.println("Collision");
+      if (!fish.objectRect.intersects(player.objectRect)) {
+      } else {
         if(player.getWidth() > fish.getWidth()){
-          player.addScore(fish.getSize()*0.2);
-          Play.score = String.valueOf(Math.round(player.getScore()));
-          int newDim = 32 + (int) Math.round(player.getScore()*0.2);
-          player.setDimensions(newDim,newDim);
-
+          player.eat(fish);
           destroy(fish);
           //ADD SCORE
-
         } else {
-          player.setScore(0);
-          Play.score = "0";
-          player.setDimensions(32,32);
+          player.die();
           sbg.enterState(Main.GAME_END_STATE);
         }
-        return fish;
       }
     }
-    return null;
   }
 }

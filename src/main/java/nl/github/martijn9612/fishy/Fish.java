@@ -30,7 +30,7 @@ public class Fish extends Object {
     this.setPosition(xpos, ypos);
     this.setDimensions((int) Math.round(this.size), (int) Math.round(this.size));
     this.setSpeed(speed);
-    this.createRectangle();
+    this.calculateRectangle();
   }
   /**
    * logic.

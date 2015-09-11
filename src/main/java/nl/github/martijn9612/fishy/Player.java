@@ -20,13 +20,12 @@ public class Player extends Object {
     private int decelerateDown, accelerateDown, speedDown = 0;
     public double score = 0;
 
-
     public Player() {
-        this.loadImage(left);
-        this.setPosition(PLAYER_START_X, PLAYER_START_Y);
-        this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        this.setSpeed(PLAYER_SPEED);
-        this.createRectangle();
+        loadImage(left);
+        setPosition(PLAYER_START_X, PLAYER_START_Y);
+        setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        setSpeed(PLAYER_SPEED);
+        calculateRectangle();
     }
 
     /**
@@ -43,14 +42,14 @@ public class Player extends Object {
         Input input = gc.getInput();
 
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
-            this.loadImage(left);
+            loadImage(left);
             left(1);
         } else {
             left(-1);
         }
 
         if (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) {
-            this.loadImage(right);
+            loadImage(right);
             right(1);
         } else {
             right(-1);
@@ -71,12 +70,9 @@ public class Player extends Object {
 
     @Override
     public void renderObject(Graphics g) {
-        g.drawImage(this.getImage().getScaledCopy(this.getWidth(), this.getHeight()), this.getX(), this.getY());
-        g.drawRect(this.getX(), this.getY(),this.getWidth(),this.getHeight());
-
+        g.drawImage(getImage().getScaledCopy(getWidth(), getHeight()), getX(), getY());
+        g.drawRect(getX(), getY(), getWidth(), getHeight());
     }
-
-
 
     private void checkBounds() {
         if (this.x > Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH) {
@@ -143,8 +139,8 @@ public class Player extends Object {
      * @param accel wether to increase or decrease speed.
      */
     private void down(int accel) {
-        this.y += speed + speedDown;
-        this.objectRect.y += speed + speedDown;
+        y += speed + speedDown;
+        objectRect.y += speed + speedDown;
         decelerateDown++;
         if (decelerateDown == 5) {
             decelerateDown = 0;
@@ -199,12 +195,24 @@ public class Player extends Object {
     }
 
     public void setScore(double sc){
-        this.score = sc;
+        score = sc;
     }
 
     public void addScore(double sc){
-        this.score += sc;
+        score += sc;
     }
 
+    public void eat(Fish fish) {
+        addScore(fish.getSize() * 0.2);
+        Play.score = String.valueOf(Math.round(getScore()));
+        int newDim = 32 + (int) Math.round(getScore());
+        setDimensions(newDim,newDim);
+        calculateRectangle();
+    }
 
+    public void die() {
+        setScore(0);
+        Play.score = "0";
+        setDimensions(32, 32);
+    }
 }
