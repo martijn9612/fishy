@@ -23,6 +23,7 @@ public class Spawner {
   public void renderFish(Graphics graph) {
     for (Fish f : fishes) {
       f.renderObject(graph);
+
     }
   }
 
@@ -65,6 +66,10 @@ public class Spawner {
         fishes.add(fish);
       }
       System.out.println("new fish");
+    }
+    for(Fish f : fishes){
+      f.objectRect.setLocation(f.x,f.y);
+
     }
   }
   

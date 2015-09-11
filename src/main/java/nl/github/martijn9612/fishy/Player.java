@@ -7,8 +7,8 @@ import org.newdawn.slick.Input;
 public class Player extends Object {
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
-    private static final int PLAYER_WIDTH = 100;
-    private static final int PLAYER_HEIGHT = 100;
+    private static final int PLAYER_WIDTH = 32;
+    private static final int PLAYER_HEIGHT = 32;
     private static final int PLAYER_SPEED = 1;
     private static final int PLAYER_SPRITE_WIDTH = 32;
     private static final int PLAYER_SPRITE_HEIGHT = 32;
@@ -70,6 +70,8 @@ public class Player extends Object {
     @Override
     public void renderObject(Graphics g) {
         g.drawImage(this.getImage(), this.getX(), this.getY());
+        g.drawRect(this.getX(), this.getY(),this.getWidth(),this.getHeight());
+
     }
 
     private void checkBounds() {

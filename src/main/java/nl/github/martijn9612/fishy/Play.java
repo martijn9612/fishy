@@ -51,6 +51,7 @@ public class Play extends BasicGameState {
       throws SlickException {
     player.objectLogic(gc, delta);
     spawner.updateFish(gc, delta);
+    player.objectRect.setLocation(player.x,player.y);
     spawner.newFish();
     fishpos = "(" + player.x + "," + player.y + ")";
     collide = "no";
