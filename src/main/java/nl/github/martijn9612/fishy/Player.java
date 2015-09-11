@@ -75,16 +75,16 @@ public class Player extends Object {
     }
 
     private void checkBounds() {
-        if (this.x > Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH) {
-            this.x = Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH;
+        if (this.x > Main.WINDOW_WIDTH - getWidth()) {
+            this.x = Main.WINDOW_WIDTH - getWidth();
         }
 
         if (this.x < 0) {
             this.x = 0;
         }
 
-        if (this.y > Main.WINDOW_HEIGHT - PLAYER_SPRITE_HEIGHT) {
-            this.y = Main.WINDOW_HEIGHT - PLAYER_SPRITE_HEIGHT;
+        if (this.y > Main.WINDOW_HEIGHT - getHeight()) {
+            this.y = Main.WINDOW_HEIGHT - getHeight();
         }
 
         if (this.y < 0) {
