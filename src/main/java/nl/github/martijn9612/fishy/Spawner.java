@@ -73,6 +73,12 @@ public class Spawner {
   public void destroy(Fish fishy) {
     toRemove.add(fishy);
   }
+  
+  public void destroyAllFish() {
+	  for (Fish fish : fishes) {
+		  fish.destroy();
+	  }
+  }
 
   public void collide(Player player, StateBasedGame sbg) {
     for (Fish fish : fishes) {
@@ -84,6 +90,7 @@ public class Spawner {
           //ADD SCORE
         } else {
           player.die();
+          destroyAllFish();
           sbg.enterState(Main.GAME_END_STATE);
         }
       }
