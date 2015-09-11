@@ -84,8 +84,12 @@ public class Spawner {
         Play.collide = "yes";
         if(player.getWidth() > fish.getWidth()){
           destroy(fish);
+          //ADD SCORE
+
         } else {
           sbg.enterState(0);
+          //NEEDS TO BE LOSING SCREEN, NOT MENU
+
           for(Fish f : fishes){
             destroy(f);
           }

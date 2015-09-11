@@ -18,7 +18,7 @@ public class Player extends Object {
     private int decelerateRight, accelerateRight, speedRight = 0;
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
-    
+
 
     public Player() {
         this.loadImage(left);
