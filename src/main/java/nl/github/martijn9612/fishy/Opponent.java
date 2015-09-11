@@ -7,7 +7,7 @@ public class Opponent extends Entity {
   private String left = Main.OPPONENT_CHARACTER + "left";
   private String right = Main.OPPONENT_CHARACTER + "right";
   private boolean isleft;
-  private int size;
+  private double size;
   public OpponentHandler opponentHandler;
 
   /**
@@ -19,9 +19,9 @@ public class Opponent extends Entity {
    * @param speed the speed of the fish.
    * @param opponentHandler the handler of all the opponents
    */
-  public Opponent(boolean isleft, int xpos, int ypos, int size, int speed, OpponentHandler opponentHandler) {
+  public Opponent(boolean isleft, int xpos, int ypos, double size, int speed, OpponentHandler opponentHandler) {
     this.isleft = isleft;
-    this.size = 50 * size;
+    this.size = size;
     this.opponentHandler = opponentHandler;
     if (isleft) {
       this.loadImage(right);
@@ -29,9 +29,9 @@ public class Opponent extends Entity {
       this.loadImage(left);
     }
     this.setPosition(xpos, ypos);
-    this.setDimensions(this.size, this.size);
+    this.setDimensions((int) Math.round(this.size), (int) Math.round(this.size));
     this.setSpeed(speed);
-    this.createRectangle();
+    this.calculateRectangle();
   }
   /**
    * logic.
@@ -46,7 +46,7 @@ public class Opponent extends Entity {
   
   @Override
   public void renderObject(Graphics g) {
-    g.drawImage(this.getImage(), this.getX(), this.getY());
+    g.drawImage(this.getImage().getScaledCopy(this.getWidth(), this.getHeight()), this.getX(), this.getY());
   }
   /**
    * make the fish go left.
@@ -67,6 +67,10 @@ public class Opponent extends Entity {
     if (this.x < (0 - this.size)) {
       destroy();
     }
+  }
+
+  public double getSize(){
+    return this.size;
   }
   
   public void destroy() {

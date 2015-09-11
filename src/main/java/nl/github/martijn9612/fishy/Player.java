@@ -7,17 +7,16 @@ import org.newdawn.slick.Input;
 public class Player extends Entity {
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
-    private static final int PLAYER_WIDTH = 100;
-    private static final int PLAYER_HEIGHT = 100;
+    private static final int PLAYER_WIDTH = 32;
+    private static final int PLAYER_HEIGHT = 32;
     private static final int PLAYER_SPEED = 1;
-    private static final int PLAYER_SPRITE_WIDTH = 32;
-    private static final int PLAYER_SPRITE_HEIGHT = 32;
     private String left = Main.PLAYER_CHARACTER + "left";
     private String right = Main.PLAYER_CHARACTER + "right";
     private int decelerateLeft, accelerateLeft, speedLeft = 0;
     private int decelerateRight, accelerateRight, speedRight = 0;
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
+    public double score = 0;
 
     /**
      * Creates a new Player instance in the game window and loads its sprite.
@@ -37,7 +36,7 @@ public class Player extends Entity {
         this.setPosition(PLAYER_START_X, PLAYER_START_Y);
         this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         this.setSpeed(PLAYER_SPEED);
-        this.createRectangle();
+        this.calculateRectangle();
     }
 
     /**
@@ -45,17 +44,23 @@ public class Player extends Entity {
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
+        keyboardControl(gc);
+        checkBounds();
+        momentum(accelerateLeft, accelerateRight, accelerateUp, accelerateDown);
+    }
+
+    private void keyboardControl(GameContainer gc) {
         Input input = gc.getInput();
 
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
-            this.loadImage(left);
+            loadImage(left);
             left(1);
         } else {
             left(-1);
         }
 
         if (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) {
-            this.loadImage(right);
+            loadImage(right);
             right(1);
         } else {
             right(-1);
@@ -72,27 +77,24 @@ public class Player extends Entity {
         } else {
             down(-1);
         }
-
-        checkBounds();
-        momentum(accelerateLeft, accelerateRight, accelerateUp, accelerateDown);
     }
 
     @Override
     public void renderObject(Graphics g) {
-        g.drawImage(this.getImage(), this.getX(), this.getY());
+        g.drawImage(getImage().getScaledCopy(getWidth(), getHeight()), getX(), getY());
     }
 
     private void checkBounds() {
-        if (this.x > Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH) {
-            this.x = Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH;
+        if (this.x > Main.WINDOW_WIDTH - getWidth()) {
+            this.x = Main.WINDOW_WIDTH - getWidth();
         }
 
         if (this.x < 0) {
             this.x = 0;
         }
 
-        if (this.y > Main.WINDOW_HEIGHT - PLAYER_SPRITE_HEIGHT) {
-            this.y = Main.WINDOW_HEIGHT - PLAYER_SPRITE_HEIGHT;
+        if (this.y > Main.WINDOW_HEIGHT - getHeight()) {
+            this.y = Main.WINDOW_HEIGHT - getHeight();
         }
 
         if (this.y < 0) {
@@ -147,8 +149,8 @@ public class Player extends Entity {
      * @param accel wether to increase or decrease speed.
      */
     public void down(int accel) {
-        this.y += speed + speedDown;
-        this.objectRect.y += speed + speedDown;
+        y += speed + speedDown;
+        objectRect.y += speed + speedDown;
         decelerateDown++;
         if (decelerateDown == 5) {
             decelerateDown = 0;
@@ -196,5 +198,31 @@ public class Player extends Entity {
             speedDown--;
             accelerateDown = 0;
         }
+    }
+
+    public double getScore(){
+        return this.score;
+    }
+
+    public void setScore(double sc){
+        score = sc;
+    }
+
+    public void addScore(double sc){
+        score += sc;
+    }
+
+    public void eat(Opponent fish) {
+        addScore(fish.getSize() * 0.2);
+        LevelState.score = String.valueOf(Math.round(getScore()));
+        int newDim = 32 + (int) Math.round(getScore());
+        setDimensions(newDim,newDim);
+        calculateRectangle();
+    }
+
+    public void die() {
+        setScore(0);
+        LevelState.score = "0";
+        setDimensions(32, 32);
     }
 }

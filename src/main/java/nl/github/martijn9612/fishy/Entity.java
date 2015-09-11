@@ -58,7 +58,7 @@ public class Entity {
     return objectImage;
   }
 
-  public void createRectangle() {
+  public void calculateRectangle() {
     objectRect = new Rectangle(getX(), getY(), getWidth(), getHeight());
   }
 

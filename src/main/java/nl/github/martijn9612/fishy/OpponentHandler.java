@@ -2,6 +2,7 @@ package nl.github.martijn9612.fishy;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,6 +11,7 @@ public class OpponentHandler {
   private ArrayList<Opponent> opponents;
   private ArrayList<Opponent> toRemove = new ArrayList<Opponent>();
   private Random random = new Random();
+
   public OpponentHandler() {
     opponents = new ArrayList<Opponent>();
   }
@@ -18,7 +20,7 @@ public class OpponentHandler {
    * render all opponents.
    * @param graph the graphics.
    */
-  public void renderFish(Graphics graph) {
+  public void renderOpponents(Graphics graph) {
     for (Opponent f : opponents) {
       f.renderObject(graph);
     }
@@ -29,7 +31,7 @@ public class OpponentHandler {
    * @param gc the screen.
    * @param deltaTime no clue.
    */
-  public void updateFish(GameContainer gc, int deltaTime) {
+  public void updateOpponents(GameContainer gc, int deltaTime) {
     for (Opponent f : opponents) {
       f.objectLogic(gc, deltaTime);
     }
@@ -41,25 +43,48 @@ public class OpponentHandler {
   /**
    * create a new fish.
    */
-  public void newFish() {
-    if (opponents.size() < 10) {
+  public void newOpponent(Player player) {
+    if (opponents.size() < 30) {
       boolean isleft = random.nextBoolean();
-      int size = random.nextInt(3) + 1;
+      double size = (Math.random() * 3 + 0.2) * player.getWidth();
       int speed = random.nextInt(5) + 1;
-      int max = 515 - (50 * size);
-      int min = 0 + (50 * size);
+      int max = 515 - (int) Math.round(size);
+      int min = (int) Math.round(size);
       int ypos = random.nextInt(max - min) + min;
       if (isleft) {
-        Opponent opponent = new Opponent(isleft, 0 - (size * 50), ypos, size, speed, this);
+        Opponent opponent = new Opponent(isleft, 0 - ((int) Math.round(size) * 50), ypos, size, speed, this);
         opponents.add(opponent);
       } else {
-        Opponent opponent = new Opponent(isleft, 615 + (size * 50), ypos, size, speed, this);
+        Opponent opponent = new Opponent(isleft, 615 + ((int) Math.round(size) * 50), ypos, size, speed, this);
         opponents.add(opponent);
       }
     }
   }
-  
+
   public void destroy(Opponent fishy) {
     toRemove.add(fishy);
+  }
+
+  public void destroyAllOpponents() {
+	  for (Opponent opponent : opponents) {
+		  opponent.destroy();
+	  }
+  }
+
+  public void collide(Player player, StateBasedGame sbg) {
+    for (Opponent opponent : opponents) {
+      if (!opponent.objectRect.intersects(player.objectRect)) {
+      } else {
+        if(player.getWidth() > opponent.getWidth()){
+          player.eat(opponent);
+          destroy(opponent);
+          //ADD SCORE
+        } else {
+          player.die();
+          destroyAllOpponents();
+          sbg.enterState(Main.GAME_END_STATE);
+        }
+      }
+    }
   }
 }

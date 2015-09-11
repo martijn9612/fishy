@@ -49,6 +49,6 @@ public class MenuState extends BasicGameState{
     }
 
     public int getID(){
-        return 0;
+        return Main.MENU_STATE;
     }
 }

@@ -12,11 +12,12 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by Skullyhoofd on 08/09/2015.
  */
 public class LevelState extends BasicGameState {
-  public String state = "Playing";
-  private Player player;
-  private Image background;
-  private OpponentHandler opponentHandler;
-  public String fishPosition = "(" + 0 + "," + 0 + ")";
+    public String state = "Playing";
+    public Player player;
+    private Image background;
+    public static String score =  "0";
+    private OpponentHandler opponentHandler;
+    public String fishPosition = "(" + 0 + "," + 0 + ")";
 
   public LevelState(int state) {
 
@@ -40,9 +41,11 @@ public class LevelState extends BasicGameState {
     g.drawString(state, 300, 10);
     g.drawImage(background, 0, 0);
     g.drawString(fishPosition, 300, 10);
+    g.drawString(score, 450, 10);
     player.renderObject(g);
-    opponentHandler.renderFish(g);
+    opponentHandler.renderOpponents(g);
   }
+
 
   /**
    * update everything in the gamescreen.
@@ -50,8 +53,10 @@ public class LevelState extends BasicGameState {
   public void update(GameContainer gc, StateBasedGame sbg, int delta)
       throws SlickException {
     player.objectLogic(gc, delta);
-    opponentHandler.updateFish(gc, delta);
-    opponentHandler.newFish();
+    player.objectRect.setLocation(player.x,player.y);
+    opponentHandler.collide(player, sbg);
+    opponentHandler.updateOpponents(gc, delta);
+    opponentHandler.newOpponent(player);
     fishPosition = "(" + player.x + "," + player.y + ")";
   }
 
@@ -59,6 +64,6 @@ public class LevelState extends BasicGameState {
    * get id.
    */
   public int getID() {
-    return 1;
+    return Main.PLAY_STATE;
   }
 }
