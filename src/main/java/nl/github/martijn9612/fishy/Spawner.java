@@ -94,12 +94,7 @@ public class Spawner {
           player.setScore(0);
           Play.score = "0";
           player.setDimensions(32,32);
-          sbg.enterState(0);
-          //NEEDS TO BE LOSING SCREEN, NOT MENU
-
-          for(Fish f : fishes){
-            destroy(f);
-          }
+          sbg.enterState(Main.GAME_END_STATE);
         }
         return fish;
       }

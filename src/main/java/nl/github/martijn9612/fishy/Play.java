@@ -60,6 +60,6 @@ public class Play extends BasicGameState {
    * get id.
    */
   public int getID() {
-    return 1;
+    return Main.PLAY_STATE;
   }
 }

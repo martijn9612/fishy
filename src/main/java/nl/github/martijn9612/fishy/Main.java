@@ -14,18 +14,21 @@ public class Main extends StateBasedGame {
   public static final int WINDOW_HEIGHT = 550;
   public static final int MENU_STATE = 0;
   public static final int PLAY_STATE = 1;
+  public static final int GAME_END_STATE = 2;
   public static final String PLAYER_CHARACTER = "fish";
 
   public Main(String gameName) {
     super(gameName);
     this.addState(new Menu(MENU_STATE));
     this.addState(new Play(PLAY_STATE));
+    this.addState(new GameEnd(GAME_END_STATE));
   }
 
   @Override
   public void initStatesList(GameContainer gc) throws SlickException {
     this.getState(MENU_STATE).init(gc, this);
     this.getState(PLAY_STATE).init(gc, this);
+    this.getState(GAME_END_STATE).init(gc, this);
     this.enterState(MENU_STATE);
   }
 
