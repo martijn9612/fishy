@@ -47,22 +47,22 @@ public class Spawner {
   /**
    * create a new fish.
    */
-  public void newFish() {
-    if (fishes.size() < 10) {
+  public void newFish(Player player) {
+    if (fishes.size() < 30) {
       Random rand = new Random();
       boolean isleft = rand.nextBoolean();
-      int size = rand.nextInt(3) + 1;
+      double size = (Math.random()*3 + 0.2) * player.getWidth();
       int speed = rand.nextInt(5) + 1;
-      int max = 515 - (50 * size);
-      int min = 0 + (50 * size);
+      int max = 515 - (int) Math.round(size);
+      int min = (int) Math.round(size);
       int ypos = rand.nextInt(max - min) + min;
       if (isleft) {
-        Fish fish = new Fish(isleft, 0 - (size * 50), ypos, size, speed, this);
+        Fish fish = new Fish(isleft, 0 - ((int) Math.round(size) * 50), ypos, size, speed, this);
         fishes.add(fish);
         System.out.println(fish.getHeight());
 
       } else {
-        Fish fish = new Fish(isleft, 615 + (size * 50), ypos, size, speed, this);
+        Fish fish = new Fish(isleft, 615 + ((int) Math.round(size) * 50), ypos, size, speed, this);
         fishes.add(fish);
       }
       System.out.println("new fish");

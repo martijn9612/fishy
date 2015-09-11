@@ -7,7 +7,7 @@ public class Fish extends Object {
   private String left = "fishleft";
   private String right = "fishright";
   private boolean isleft;
-  private int size;
+  private double size;
   public Spawner spawn;
 
   /**
@@ -18,9 +18,9 @@ public class Fish extends Object {
    * @param size the size of the fish.
    * @param speed the speed of the fish.
    */
-  public Fish(boolean isleft, int xpos, int ypos, int size, int speed, Spawner spawn) {
+  public Fish(boolean isleft, int xpos, int ypos, double size, int speed, Spawner spawn) {
     this.isleft = isleft;
-    this.size = 50 * size;
+    this.size = size;
     this.spawn = spawn;
     if (isleft) {
       this.loadImage(right);
@@ -28,7 +28,7 @@ public class Fish extends Object {
       this.loadImage(left);
     }
     this.setPosition(xpos, ypos);
-    this.setDimensions(this.size, this.size);
+    this.setDimensions((int) Math.round(this.size), (int) Math.round(this.size));
     this.setSpeed(speed);
     this.createRectangle();
   }

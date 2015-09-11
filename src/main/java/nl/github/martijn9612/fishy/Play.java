@@ -52,7 +52,7 @@ public class Play extends BasicGameState {
     player.objectLogic(gc, delta);
     spawner.updateFish(gc, delta);
     player.objectRect.setLocation(player.x,player.y);
-    spawner.newFish();
+    spawner.newFish(player);
     fishpos = "(" + player.x + "," + player.y + ")";
     collide = "no";
     spawner.collide(player, sbg);
