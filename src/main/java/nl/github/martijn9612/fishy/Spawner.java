@@ -55,7 +55,7 @@ public class Spawner {
       int speed = rand.nextInt(5) + 1;
       int max = 515 - (int) Math.round(size);
       int min = (int) Math.round(size);
-      int ypos = rand.nextInt(max - min) + min;
+      int ypos = rand.nextInt(Math.abs(max - min)) + min;
       if (isleft) {
         Fish fish = new Fish(isleft, 0 - ((int) Math.round(size) * 50), ypos, size, speed, this);
         fishes.add(fish);
@@ -83,13 +83,17 @@ public class Spawner {
         System.out.println("Collision");
         if(player.getWidth() > fish.getWidth()){
           player.addScore(fish.getSize()*0.2);
-          Play.score = String.valueOf(player.getScore());
-
+          Play.score = String.valueOf(Math.round(player.getScore()));
+          int newDim = 32 + (int) Math.round(player.getScore()*0.2);
+          player.setDimensions(newDim,newDim);
 
           destroy(fish);
           //ADD SCORE
 
         } else {
+          player.setScore(0);
+          Play.score = "0";
+          player.setDimensions(32,32);
           sbg.enterState(0);
           //NEEDS TO BE LOSING SCREEN, NOT MENU
 

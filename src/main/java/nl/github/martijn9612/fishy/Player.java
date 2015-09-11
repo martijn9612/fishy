@@ -71,10 +71,12 @@ public class Player extends Object {
 
     @Override
     public void renderObject(Graphics g) {
-        g.drawImage(this.getImage(), this.getX(), this.getY());
+        g.drawImage(this.getImage().getScaledCopy(this.getWidth(), this.getHeight()), this.getX(), this.getY());
         g.drawRect(this.getX(), this.getY(),this.getWidth(),this.getHeight());
 
     }
+
+
 
     private void checkBounds() {
         if (this.x > Main.WINDOW_WIDTH - PLAYER_SPRITE_WIDTH) {
