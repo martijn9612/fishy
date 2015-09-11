@@ -2,6 +2,7 @@ package nl.github.martijn9612.fishy;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,7 +24,6 @@ public class Spawner {
   public void renderFish(Graphics graph) {
     for (Fish f : fishes) {
       f.renderObject(graph);
-
     }
   }
 
@@ -77,11 +77,19 @@ public class Spawner {
     toRemove.add(fishy);
   }
 
-  public Fish collide(Player player) {
+  public Fish collide(Player player, StateBasedGame sbg) {
     for (Fish fish : fishes) {
       if (fish.objectRect.intersects(player.objectRect)) {
         System.out.println("Collision");
         Play.collide = "yes";
+        if(player.getWidth() > fish.getWidth()){
+          destroy(fish);
+        } else {
+          sbg.enterState(0);
+          for(Fish f : fishes){
+            destroy(f);
+          }
+        }
         return fish;
       }
     }

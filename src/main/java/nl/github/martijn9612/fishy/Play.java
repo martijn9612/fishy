@@ -14,7 +14,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Play extends BasicGameState {
     
   public String state = "Playing";
-  private Player player;
+  public Player player;
   private Image background;
   private Spawner spawner;
   public static String collide =  "no";
@@ -55,7 +55,7 @@ public class Play extends BasicGameState {
     spawner.newFish();
     fishpos = "(" + player.x + "," + player.y + ")";
     collide = "no";
-    spawner.collide(player);
+    spawner.collide(player, sbg);
   }
   /**
    * get id.
