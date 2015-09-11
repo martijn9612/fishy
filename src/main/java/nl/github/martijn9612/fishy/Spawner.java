@@ -81,8 +81,11 @@ public class Spawner {
     for (Fish fish : fishes) {
       if (fish.objectRect.intersects(player.objectRect)) {
         System.out.println("Collision");
-        Play.collide = "yes";
         if(player.getWidth() > fish.getWidth()){
+          player.addScore(fish.getSize()*0.2);
+          Play.score = String.valueOf(player.getScore());
+
+
           destroy(fish);
           //ADD SCORE
 

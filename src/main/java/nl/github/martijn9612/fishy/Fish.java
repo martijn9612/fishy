@@ -7,7 +7,7 @@ public class Fish extends Object {
   private String left = "fishleft";
   private String right = "fishright";
   private boolean isleft;
-  private double size;
+  double size;
   public Spawner spawn;
 
   /**
@@ -67,6 +67,10 @@ public class Fish extends Object {
     if (this.x < (0 - this.size)) {
       destroy();
     }
+  }
+
+  public double getSize(){
+    return this.size;
   }
   
   public void destroy() {

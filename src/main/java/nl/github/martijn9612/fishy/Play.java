@@ -17,7 +17,7 @@ public class Play extends BasicGameState {
   public Player player;
   private Image background;
   private Spawner spawner;
-  public static String collide =  "no";
+  public static String score =  "0";
   public String fishpos = "(" + 0 + "," + 0 + ")";
 
   public Play(int state) {
@@ -40,7 +40,7 @@ public class Play extends BasicGameState {
     g.drawString(state, 300, 10);
     g.drawImage(background, 0, 0);
     g.drawString(fishpos, 300, 10);
-    g.drawString(collide, 450, 10);
+    g.drawString(score, 450, 10);
     player.renderObject(g);
     spawner.renderFish(g);
   }
@@ -54,7 +54,6 @@ public class Play extends BasicGameState {
     player.objectRect.setLocation(player.x,player.y);
     spawner.newFish(player);
     fishpos = "(" + player.x + "," + player.y + ")";
-    collide = "no";
     spawner.collide(player, sbg);
   }
   /**

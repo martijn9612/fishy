@@ -18,6 +18,7 @@ public class Player extends Object {
     private int decelerateRight, accelerateRight, speedRight = 0;
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
+    public double score = 0;
 
 
     public Player() {
@@ -190,4 +191,18 @@ public class Player extends Object {
             accelerateDown = 0;
         }
     }
+
+    public double getScore(){
+        return this.score;
+    }
+
+    public void setScore(double sc){
+        this.score = sc;
+    }
+
+    public void addScore(double sc){
+        this.score += sc;
+    }
+
+
 }
