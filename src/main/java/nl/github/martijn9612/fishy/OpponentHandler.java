@@ -46,11 +46,11 @@ public class OpponentHandler {
   public void newOpponent(Player player) {
     if (opponents.size() < 30) {
       boolean isleft = random.nextBoolean();
-      double size = (Math.random() * 3 + 0.2) * player.getWidth();
+      double size = (random.nextDouble() * 3 + 0.2) * player.getWidth();
       int speed = random.nextInt(5) + 1;
       int max = 515 - (int) Math.round(size);
       int min = (int) Math.round(size);
-      int ypos = random.nextInt(max - min) + min;
+      int ypos = random.nextInt(Math.abs(max - min)) + min;
       if (isleft) {
         Opponent opponent = new Opponent(isleft, 0 - ((int) Math.round(size) * 50), ypos, size, speed, this);
         opponents.add(opponent);
