@@ -3,9 +3,7 @@ package nl.github.martijn9612.fishy;
 import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class TestPlayer extends TestCase {
+public class TestPlayer {
 	
 	/**
 	 * Tests if a created Player instance doesn't return an invalid Object;

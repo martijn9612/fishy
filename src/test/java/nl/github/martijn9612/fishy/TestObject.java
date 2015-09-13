@@ -3,16 +3,15 @@ package nl.github.martijn9612.fishy;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.Assert;
-
 public class TestObject {
+	
 	public static final int X_VALUE = 10;
 	public static final int Y_VALUE = 100;
 	public static final int WIDTH = 19;
 	public static final int HEIGHT = 76;
-	
 	
 	@Test
 	public void testSetPosition() {
