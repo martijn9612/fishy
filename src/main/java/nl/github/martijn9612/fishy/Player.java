@@ -8,6 +8,7 @@ import org.newdawn.slick.Input;
  * Implements the playable character of the game.
  */
 public class Player extends Entity {
+	
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
     private static final int PLAYER_WIDTH = 16;
@@ -46,18 +47,20 @@ public class Player extends Entity {
     }
 
     /**
-     * updates the object logic, also used for controls.
+     * Updates the object logic, also used for controls.
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
-        keyboardControl(gc);
+        keyboardControl(gc.getInput());
         checkBounds();
-        momentum(accelerateLeft, accelerateRight, accelerateUp, accelerateDown);
+        momentum();
     }
 
-    private void keyboardControl(GameContainer gc) {
-        Input input = gc.getInput();
-
+    /**
+     * Handles the keyboard controls so the player is able to move around.
+     * @param input object to access keyboard button states.
+     */
+    private void keyboardControl(Input input) {
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
             loadImage(left);
             left(1);
@@ -71,7 +74,7 @@ public class Player extends Entity {
         } else {
             right(-1);
         }
-
+        
         if (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) {
             up(1);
         } else {
@@ -84,12 +87,23 @@ public class Player extends Entity {
             down(-1);
         }
     }
-
+    
+    /**
+     * Checks whether the player is within the screen bounds and corrects them if necessary.
+     */
     private void checkBounds() {
         x = getBetweenBounds(x, 0, Main.WINDOW_WIDTH - getWidth());
         y = getBetweenBounds(y, 0, Main.WINDOW_HEIGHT - getHeight());
     }
 
+    /**
+     * Validates whether the given number is within the given bounds. If the number
+     * is not within the given bounds, the closest bound value is returned.
+     * @param number integer to test
+     * @param min lower bound value
+     * @param max upper bound value
+     * @return integer
+     */
     private int getBetweenBounds(int number, int min, int max) {
     	return Math.max(Math.min(number, max), min);
     }
@@ -123,6 +137,7 @@ public class Player extends Entity {
     }
 
     /**
+<<<<<<< HEAD
      * controls the acceleration and deceleration upward.
      * @param acceleration wether to increase or decrease speed.
      */
@@ -152,42 +167,38 @@ public class Player extends Entity {
 
     @SuppressWarnings("checkstyle:methodlength")
     /**
-     * this method increases or decreases the speed to the individual directions.
-     * @param left whether to increase or decrease the speed to the left
-     * @param right whether to increase or decrease the speed to the right
-     * @param up whether to increase or decrease the speed upward
-     * @param down whether to increase or decrease the speed downward
+     * This method increases or decreases the speed to the individual directions.
      */
-    private void momentum(int left, int right, int up, int down) {
-        if (left == 1 && speedLeft < SPEED_TRESHOLD) {
+    private void momentum() {
+        if (accelerateLeft == 1 && speedLeft < SPEED_TRESHOLD) {
             speedLeft++;
             accelerateLeft = 0;
         }
-        if (right == 1 && speedRight < SPEED_TRESHOLD) {
-            speedRight++;
-            accelerateRight = 0;
-        }
-        if (up == 1 && speedUp < SPEED_TRESHOLD) {
-            speedUp++;
-            accelerateUp = 0;
-        }
-        if (down == 1 && speedDown < SPEED_TRESHOLD) {
-            speedDown++;
-            accelerateDown = 0;
-        }
-        if (left == -1 && speedLeft > 0) {
+        if (accelerateLeft == -1 && speedLeft > 0) {
             speedLeft--;
             accelerateLeft = 0;
         }
-        if (right == -1 && speedRight > 0) {
+        if (accelerateRight == 1 && speedRight < SPEED_TRESHOLD) {
+            speedRight++;
+            accelerateRight = 0;
+        }
+        if (accelerateRight == -1 && speedRight > 0) {
             speedRight--;
             accelerateRight = 0;
         }
-        if (up == -1 && speedUp > 0) {
+        if (accelerateUp == 1 && speedUp < SPEED_TRESHOLD) {
+            speedUp++;
+            accelerateUp = 0;
+        }
+        if (accelerateUp == -1 && speedUp > 0) {
             speedUp--;
             accelerateUp = 0;
         }
-        if (down == -1 && speedDown > 0) {
+        if (accelerateDown == 1 && speedDown < SPEED_TRESHOLD) {
+            speedDown++;
+            accelerateDown = 0;
+        }
+        if (accelerateDown == -1 && speedDown > 0) {
             speedDown--;
             accelerateDown = 0;
         }
