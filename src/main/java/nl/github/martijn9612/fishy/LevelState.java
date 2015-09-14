@@ -53,7 +53,7 @@ public class LevelState extends BasicGameState {
   public void update(GameContainer gc, StateBasedGame sbg, int delta)
       throws SlickException {
     player.objectLogic(gc, delta);
-    player.objectRect.setLocation(player.x,player.y);
+//    player.ellipse.setLocation(player.x - player.ellipse.getWidth() / 2, player.y - player.ellipse.getHeight() / 2);
     opponentHandler.collide(player, sbg);
     opponentHandler.updateOpponents(gc, delta);
     opponentHandler.newOpponent(player);

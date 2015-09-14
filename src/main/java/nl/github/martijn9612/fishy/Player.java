@@ -35,7 +35,7 @@ public class Player extends Entity {
         this.setPosition(PLAYER_START_X, PLAYER_START_Y);
         this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         this.setSpeed(PLAYER_SPEED);
-        this.calculateRectangle();
+        this.calculateInitialBoundingbox();
     }
 
     /**
@@ -93,7 +93,7 @@ public class Player extends Entity {
      */
     public void left(int accel) {
         this.x -= speed + speedLeft;
-        this.objectRect.x -= speed + speedLeft;
+        this.ellipse.setCenterX(ellipse.getCenterX() - (speed + speedLeft));
         decelerateLeft++;
         if (decelerateLeft == 5) {
             decelerateLeft = 0;
@@ -107,7 +107,7 @@ public class Player extends Entity {
      */
     public void right(int accel) {
         this.x += speed + speedRight;
-        this.objectRect.x += speed + speedRight;
+        this.ellipse.setCenterX(ellipse.getCenterX() + speed + speedLeft);
         decelerateRight++;
         if (decelerateRight == 5) {
             decelerateRight = 0;
@@ -121,7 +121,7 @@ public class Player extends Entity {
      */
     public void up(int accel) {
         this.y -= speed + speedUp;
-        this.objectRect.y -= speed + speedUp;
+        this.ellipse.setCenterY(ellipse.getCenterY() - (speed + speedLeft));
         decelerateUp++;
         if (decelerateUp == 5) {
             decelerateUp = 0;
@@ -135,7 +135,7 @@ public class Player extends Entity {
      */
     public void down(int accel) {
         y += speed + speedDown;
-        objectRect.y += speed + speedDown;
+        this.ellipse.setCenterY(ellipse.getCenterY() + speed + speedLeft);
         decelerateDown++;
         if (decelerateDown == 5) {
             decelerateDown = 0;
@@ -194,7 +194,6 @@ public class Player extends Entity {
         LevelState.score = String.valueOf(Math.round(getScore()));
         int newDim = PLAYER_WIDTH + (int) Math.round((getScore() * 0.8));
         setDimensions(newDim, newDim);
-        calculateRectangle();
     }
 
     public void die() {

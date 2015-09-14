@@ -1,16 +1,15 @@
 package nl.github.martijn9612.fishy;
 
-import java.awt.Rectangle;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Ellipse;
 
 public class Entity {
 
 	public Image objectImage;
 	public int x, y, width, height, speed;
-	public Rectangle objectRect;
+	public Ellipse ellipse;
 
 	public void loadImage(String imageName) {
 		try {
@@ -58,12 +57,20 @@ public class Entity {
   		return objectImage;
   	}
   
- 	public void calculateRectangle() {
- 		objectRect = new Rectangle(getX(), getY(), getWidth(), getHeight());
+ 	public void calculateBoundingbox() {
+ 		ellipse.setCenterX(getX() + getWidth() / 2);
+        ellipse.setCenterY(getY() + getHeight() / 2);
+        ellipse.setRadii(getWidth() / 2, getHeight() / 2);
  	}
 
+    public void calculateInitialBoundingbox() {
+        ellipse = new Ellipse(getX() + getWidth() / 2, getY() + getHeight() / 2, getWidth() / 2, getHeight() / 2);
+    }
+
 	public void renderObject(Graphics g) {
+        calculateBoundingbox();
 		g.drawImage(objectImage.getScaledCopy(width, height), x, y);
+        g.drawOval(getX(), getY(), ellipse.getWidth(), ellipse.getHeight());
 	}
 	
 	public void objectLogic(GameContainer gc, int deltaTime) {}
