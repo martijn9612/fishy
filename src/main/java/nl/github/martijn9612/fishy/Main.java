@@ -17,6 +17,7 @@ public class Main extends StateBasedGame {
   public static final String PLAYER_CHARACTER = "fish";
   public static final String OPPONENT_CHARACTER = "fish";
   public static final String LEVEL_BACKGROUND = "seabed";
+  public static final boolean DRAWBOUNDINGBOXES = false;
 
   public Main(String gameName) {
     super(gameName);
