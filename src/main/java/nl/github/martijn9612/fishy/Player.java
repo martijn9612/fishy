@@ -3,19 +3,26 @@ package nl.github.martijn9612.fishy;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
+
+/**
+ * Implements the playable character of the game.
+ */
 public class Player extends Entity {
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
     private static final int PLAYER_WIDTH = 16;
     private static final int PLAYER_HEIGHT = 16;
     private static final int PLAYER_SPEED = 1;
+    public static final int SPEED_TRESHOLD = 5;
+    public static final double PLAYER_EAT_SCORE_FACTOR = 0.2;
+    public static final double PLAYER_EAT_GROW_FACTOR = 0.8;
     private String left = Main.PLAYER_CHARACTER + "left";
     private String right = Main.PLAYER_CHARACTER + "right";
     private int decelerateLeft, accelerateLeft, speedLeft = 0;
     private int decelerateRight, accelerateRight, speedRight = 0;
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
-    public double score = 0;
+    private double score = 0;
 
     /**
      * Creates a new Player instance in the game window and loads its sprite.
@@ -29,13 +36,13 @@ public class Player extends Entity {
      * @param loadSprite loadSprite whether the player sprite should be loaded or not.
      */
     public Player(boolean loadSprite) {
-        if(loadSprite) {
-            this.loadImage(left);
+        if (loadSprite) {
+            loadImage(left);
         }
-        this.setPosition(PLAYER_START_X, PLAYER_START_Y);
-        this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        this.setSpeed(PLAYER_SPEED);
-        this.calculateInitialBoundingbox();
+        setPosition(PLAYER_START_X, PLAYER_START_Y);
+        setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        setSpeed(PLAYER_SPEED);
+        calculateInitialBoundingbox();
     }
 
     /**
@@ -50,7 +57,7 @@ public class Player extends Entity {
 
     private void keyboardControl(GameContainer gc) {
         Input input = gc.getInput();
-        
+
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
             loadImage(left);
             left(1);
@@ -82,67 +89,68 @@ public class Player extends Entity {
         x = getBetweenBounds(x, 0, Main.WINDOW_WIDTH - getWidth());
         y = getBetweenBounds(y, 0, Main.WINDOW_HEIGHT - getHeight());
     }
-    
+
     private int getBetweenBounds(int number, int min, int max) {
     	return Math.max(Math.min(number, max), min);
     }
 
     /**
      * controls the acceleration and deceleration to the left.
-     * @param accel wether to increase or decrease speed.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void left(int accel) {
-        this.x -= speed + speedLeft;
-        this.ellipse.setCenterX(ellipse.getCenterX() - (speed + speedLeft));
+    public void left(int acceleration) {
+        x -= speed + speedLeft;
+        ellipse.setCenterX(ellipse.getCenterX() - (speed + speedLeft));
         decelerateLeft++;
-        if (decelerateLeft == 5) {
+        if (decelerateLeft == SPEED_TRESHOLD) {
             decelerateLeft = 0;
-            accelerateLeft = accel;
+            accelerateLeft = acceleration;
         }
     }
 
     /**
      * controls the acceleration and deceleration to the right.
-     * @param accel wether to increase or decrease speed.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void right(int accel) {
-        this.x += speed + speedRight;
-        this.ellipse.setCenterX(ellipse.getCenterX() + speed + speedLeft);
+    public void right(int acceleration) {
+        x += speed + speedRight;
+        ellipse.setCenterX(ellipse.getCenterX() + speed + speedLeft);
         decelerateRight++;
-        if (decelerateRight == 5) {
+        if (decelerateRight == SPEED_TRESHOLD) {
             decelerateRight = 0;
-            accelerateRight = accel;
+            accelerateRight = acceleration;
         }
     }
 
     /**
      * controls the acceleration and deceleration upward.
-     * @param accel wether to increase or decrease speed.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void up(int accel) {
-        this.y -= speed + speedUp;
-        this.ellipse.setCenterY(ellipse.getCenterY() - (speed + speedLeft));
+    public void up(int acceleration) {
+        y -= speed + speedUp;
+        ellipse.setCenterY(ellipse.getCenterY() - (speed + speedLeft));
         decelerateUp++;
-        if (decelerateUp == 5) {
+        if (decelerateUp == SPEED_TRESHOLD) {
             decelerateUp = 0;
-            accelerateUp = accel;
+            accelerateUp = acceleration;
         }
     }
 
     /**
      * controls the acceleration and deceleration downward.
-     * @param accel wether to increase or decrease speed.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void down(int accel) {
+    public void down(int acceleration) {
         y += speed + speedDown;
-        this.ellipse.setCenterY(ellipse.getCenterY() + speed + speedLeft);
+        ellipse.setCenterY(ellipse.getCenterY() + speed + speedLeft);
         decelerateDown++;
-        if (decelerateDown == 5) {
+        if (decelerateDown == SPEED_TRESHOLD) {
             decelerateDown = 0;
-            accelerateDown = accel;
+            accelerateDown = acceleration;
         }
     }
 
+    @SuppressWarnings("checkstyle:methodlength")
     /**
      * this method increases or decreases the speed to the individual directions.
      * @param left whether to increase or decrease the speed to the left
@@ -151,33 +159,33 @@ public class Player extends Entity {
      * @param down whether to increase or decrease the speed downward
      */
     private void momentum(int left, int right, int up, int down) {
-        if (left == 1 && speedLeft < 5) {
+        if (left == 1 && speedLeft < SPEED_TRESHOLD) {
             speedLeft++;
             accelerateLeft = 0;
+        }
+        if (right == 1 && speedRight < SPEED_TRESHOLD) {
+            speedRight++;
+            accelerateRight = 0;
+        }
+        if (up == 1 && speedUp < SPEED_TRESHOLD) {
+            speedUp++;
+            accelerateUp = 0;
+        }
+        if (down == 1 && speedDown < SPEED_TRESHOLD) {
+            speedDown++;
+            accelerateDown = 0;
         }
         if (left == -1 && speedLeft > 0) {
             speedLeft--;
             accelerateLeft = 0;
         }
-        if (right == 1 && speedRight < 5) {
-            speedRight++;
-            accelerateRight = 0;
-        }
         if (right == -1 && speedRight > 0) {
             speedRight--;
             accelerateRight = 0;
         }
-        if (up == 1 && speedUp < 5) {
-            speedUp++;
-            accelerateUp = 0;
-        }
         if (up == -1 && speedUp > 0) {
             speedUp--;
             accelerateUp = 0;
-        }
-        if (down == 1 && speedDown < 5) {
-            speedDown++;
-            accelerateDown = 0;
         }
         if (down == -1 && speedDown > 0) {
             speedDown--;
@@ -185,20 +193,39 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * @return score
+     */
     public double getScore() {
         return score;
     }
 
-    public void eat(Opponent fish) {
-    	score += fish.getSize() * 0.2;
-        LevelState.score = String.valueOf(Math.round(getScore()));
-        int newDim = PLAYER_WIDTH + (int) Math.round((getScore() * 0.8));
-        setDimensions(newDim, newDim);
+    /**
+     * Set score.
+     * @param score new score value
+     */
+    public void setScore(double score) {
+        this.score = score;
     }
 
-    public void die() {
-        score = 0;
+    /**
+     * Consume a specific Opponent.
+     * @param opponent to eat
+     */
+    public void eat(Opponent opponent) {
+    	setScore(getScore() + opponent.getSize() * PLAYER_EAT_SCORE_FACTOR);
+        LevelState.score = String.valueOf(Math.round(getScore()));
+        int newDimension = PLAYER_WIDTH + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
+        setDimensions(newDimension, newDimension);
+    }
+
+    /**
+     * Reset player values upon dying.
+     */
+    public void resetPlayerVariables() {
+        setScore(0);
         LevelState.score = "0";
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        setPosition(PLAYER_START_X, PLAYER_START_Y);
     }
 }
