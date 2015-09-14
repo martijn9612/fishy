@@ -46,7 +46,9 @@ public class OpponentHandler {
   public void newOpponent(Player player) {
     if (opponents.size() < 30) {
       boolean isleft = random.nextBoolean();
-      double size = (random.nextDouble() * 3 + 0.2) * player.getWidth();
+      int maxSize = (int) (player.getWidth() * 2.5);
+      int minSize = (int) (player.getWidth() * 0.5);
+      int size = (random.nextInt((maxSize - minSize)) + minSize);
       int speed = random.nextInt(5) + 1;
       int max = 515 - (int) Math.round(size);
       int min = (int) Math.round(size);
@@ -78,7 +80,6 @@ public class OpponentHandler {
         if(player.getWidth() > opponent.getWidth()){
           player.eat(opponent);
           destroy(opponent);
-          //ADD SCORE
         } else {
           player.die();
           destroyAllOpponents();
