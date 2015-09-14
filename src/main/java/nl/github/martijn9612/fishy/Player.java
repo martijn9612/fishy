@@ -1,7 +1,6 @@
 package nl.github.martijn9612.fishy;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 public class Player extends Entity {
@@ -51,7 +50,7 @@ public class Player extends Entity {
 
     private void keyboardControl(GameContainer gc) {
         Input input = gc.getInput();
-
+        
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
             loadImage(left);
             left(1);
@@ -79,27 +78,13 @@ public class Player extends Entity {
         }
     }
 
-    @Override
-    public void renderObject(Graphics g) {
-        g.drawImage(getImage().getScaledCopy(getWidth(), getHeight()), getX(), getY());
-    }
-
     private void checkBounds() {
-        if (this.x > Main.WINDOW_WIDTH - getWidth()) {
-            this.x = Main.WINDOW_WIDTH - getWidth();
-        }
-
-        if (this.x < 0) {
-            this.x = 0;
-        }
-
-        if (this.y > Main.WINDOW_HEIGHT - getHeight()) {
-            this.y = Main.WINDOW_HEIGHT - getHeight();
-        }
-
-        if (this.y < 0) {
-            this.y = 0;
-        }
+        x = getBetweenBounds(x, 0, Main.WINDOW_WIDTH - getWidth());
+        y = getBetweenBounds(y, 0, Main.WINDOW_HEIGHT - getHeight());
+    }
+    
+    private int getBetweenBounds(int number, int min, int max) {
+    	return Math.max(Math.min(number, max), min);
     }
 
     /**
@@ -200,28 +185,20 @@ public class Player extends Entity {
         }
     }
 
-    public double getScore(){
-        return this.score;
-    }
-
-    public void setScore(double sc){
-        score = sc;
-    }
-
-    public void addScore(double sc){
-        score += sc;
+    public double getScore() {
+        return score;
     }
 
     public void eat(Opponent fish) {
-        addScore(fish.getSize() * 0.2);
+    	score += fish.getSize() * 0.2;
         LevelState.score = String.valueOf(Math.round(getScore()));
         int newDim = PLAYER_WIDTH + (int) Math.round((getScore() * 0.8));
-        setDimensions(newDim,newDim);
+        setDimensions(newDim, newDim);
         calculateRectangle();
     }
 
     public void die() {
-        setScore(0);
+        score = 0;
         LevelState.score = "0";
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
     }
