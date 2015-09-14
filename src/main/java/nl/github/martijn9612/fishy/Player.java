@@ -7,8 +7,8 @@ import org.newdawn.slick.Input;
 public class Player extends Entity {
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
-    private static final int PLAYER_WIDTH = 32;
-    private static final int PLAYER_HEIGHT = 32;
+    private static final int PLAYER_WIDTH = 16;
+    private static final int PLAYER_HEIGHT = 16;
     private static final int PLAYER_SPEED = 1;
     private String left = Main.PLAYER_CHARACTER + "left";
     private String right = Main.PLAYER_CHARACTER + "right";
@@ -215,7 +215,7 @@ public class Player extends Entity {
     public void eat(Opponent fish) {
         addScore(fish.getSize() * 0.2);
         LevelState.score = String.valueOf(Math.round(getScore()));
-        int newDim = 32 + (int) Math.round(getScore());
+        int newDim = PLAYER_WIDTH + (int) Math.round((getScore() * 0.8));
         setDimensions(newDim,newDim);
         calculateRectangle();
     }
@@ -223,6 +223,6 @@ public class Player extends Entity {
     public void die() {
         setScore(0);
         LevelState.score = "0";
-        setDimensions(32, 32);
+        setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
     }
 }
