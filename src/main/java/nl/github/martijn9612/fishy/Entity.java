@@ -70,7 +70,9 @@ public class Entity {
 	public void renderObject(Graphics g) {
         calculateBoundingbox();
 		g.drawImage(objectImage.getScaledCopy(width, height), x, y);
-        g.drawOval(getX(), getY(), ellipse.getWidth(), ellipse.getHeight());
+        if (Main.DRAWBOUNDINGBOXES) {
+          g.drawOval(getX(), getY(), ellipse.getWidth(), ellipse.getHeight());
+        }
 	}
 	
 	public void objectLogic(GameContainer gc, int deltaTime) {}

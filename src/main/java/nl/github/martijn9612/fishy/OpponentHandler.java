@@ -82,7 +82,7 @@ public class OpponentHandler {
 					player.eat(opponent);
 					destroy(opponent);
 				} else {
-					player.die();
+					player.resetPlayerVariables();
 					destroyAllOpponents();
 					sbg.enterState(Main.GAME_END_STATE);
 				}
