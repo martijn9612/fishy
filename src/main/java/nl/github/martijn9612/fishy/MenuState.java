@@ -3,6 +3,7 @@ package nl.github.martijn9612.fishy;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -67,6 +68,15 @@ public class MenuState extends BasicGameState {
         	if(mouse.isLeftButtonDown()) {
                 System.exit(0);
             }
+        }
+        
+        Input input = gc.getInput();
+        if(input.isKeyDown(Input.KEY_ENTER)) {
+        	sbg.enterState(Main.PLAY_STATE);
+        }
+        
+        if(input.isKeyDown(Input.KEY_ESCAPE)) {
+        	System.exit(0);
         }
     }
 
