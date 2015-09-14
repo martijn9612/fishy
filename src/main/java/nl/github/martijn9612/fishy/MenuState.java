@@ -1,54 +1,76 @@
 package nl.github.martijn9612.fishy;
 
-import org.lwjgl.input.Mouse;
-import org.newdawn.slick.*;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import nl.github.martijn9612.fishy.models.DrawRectangle;
+import nl.github.martijn9612.fishy.models.MousePosition;
+import nl.github.martijn9612.fishy.models.MouseRectangle;
 
 /**
  * Created by Skullyhoofd on 08/09/2015.
  */
-public class MenuState extends BasicGameState{
-    public String menu = "Menu";
-    Image play;
-    Image exit;
-    int xPlay = 150;
-    int yPlay = 200;
+public class MenuState extends BasicGameState {
+	
+	public String menu = "Menu";
+    
+	private Image play;
+	private Image exit;
+	private MousePosition mouse;
+	private DrawRectangle playButtonDR;
+	private DrawRectangle exitButtonDR;
+	private MouseRectangle playButtonMR;
+	private MouseRectangle exitButtonMR;
+	
+	private static int MENU_TEXT_DRAW_X = 280;
+	private static int MENU_TEXT_DRAW_Y = 10;
+	private static int PLAY_BUTTON_DRAW_X = 150;
+	private static int PLAY_BUTTON_DRAW_Y = 200;
+	private static int EXIT_BUTTON_DRAW_X = 150;
+	private static int EXIT_BUTTON_DRAW_Y = 375;
 
-    public MenuState(int state){
-
+    public MenuState(int state) {
+    	// Blank
     }
 
-    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException{
+    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         play = new Image("resources/play-button.gif");
         exit = new Image("resources/exit-button.gif");
+        playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
+        exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X, EXIT_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
+        playButtonMR = playButtonDR.getMouseRectangle();
+        exitButtonMR = exitButtonDR.getMouseRectangle();
+        mouse = new MousePosition();
     }
 
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException{
-        g.drawString(menu,300,10);
-        g.drawImage(play,xPlay,yPlay);
-        g.drawImage(exit,150,375);
-
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+        g.drawString(menu, MENU_TEXT_DRAW_X, MENU_TEXT_DRAW_Y);
+        g.drawImage(play, playButtonDR.getPositionX(), playButtonDR.getPositionY());
+        g.drawImage(exit, exitButtonDR.getPositionX(), exitButtonDR.getPositionY());
     }
 
-    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException{
-        Input input = gc.getInput();
-        int xPos = Mouse.getX();
-        int yPos = Mouse.getY();
-        menu = "("+xPos+","+yPos+")";
-        if((xPos>175 && xPos<425) && (yPos>225 && yPos<325)){
-            if(input.isMouseButtonDown(0)){
-                sbg.enterState(1);
+    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+        mouse.updatePosition();
+        menu = "("+mouse.getPositionX()+","+mouse.getPositionY()+")";
+        
+        if(mouse.isInRectangle(playButtonMR)) {
+            if(mouse.isLeftButtonDown()) {
+                sbg.enterState(Main.PLAY_STATE);
             }
         }
-        if((xPos>175 && xPos<425) && (yPos>50 && yPos<150)){
-            if(input.isMouseButtonDown(0)){
+        
+        if(mouse.isInRectangle(exitButtonMR)) {
+        	if(mouse.isLeftButtonDown()) {
                 System.exit(0);
             }
         }
     }
 
-    public int getID(){
+    public int getID() {
         return Main.MENU_STATE;
     }
 }
