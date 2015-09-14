@@ -19,8 +19,8 @@ public class MenuState extends BasicGameState {
 	public String menu = "Menu";
     
 	private Image play;
-    private Image exit;
-    private MousePosition mouse;
+	private Image exit;
+	private MousePosition mouse;
 	private DrawRectangle playButtonDR;
 	private DrawRectangle exitButtonDR;
 	private MouseRectangle playButtonMR;
