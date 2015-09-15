@@ -8,7 +8,6 @@ import org.newdawn.slick.Input;
  * Implements the playable character of the game.
  */
 public class Player extends Entity {
-	
     private static final int PLAYER_START_X = 350;
     private static final int PLAYER_START_Y = 450;
     private static final int PLAYER_WIDTH = 16;
@@ -137,7 +136,6 @@ public class Player extends Entity {
     }
 
     /**
-<<<<<<< HEAD
      * controls the acceleration and deceleration upward.
      * @param acceleration wether to increase or decrease speed.
      */
