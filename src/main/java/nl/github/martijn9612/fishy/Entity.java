@@ -6,7 +6,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Ellipse;
 
 public class Entity {
-
 	public Image objectImage;
 	public int x, y, width, height, speed;
 	public Ellipse ellipse;

@@ -78,7 +78,7 @@ public class OpponentHandler {
 	public void collide(Player player, StateBasedGame sbg) {
 		for (Opponent opponent : opponents) {
 			if (opponent.ellipse.intersects(player.ellipse)) {
-				if(player.getWidth() > opponent.getWidth()){
+				if (player.getWidth() > opponent.getWidth()) {
 					player.eat(opponent);
 					destroy(opponent);
 				} else {

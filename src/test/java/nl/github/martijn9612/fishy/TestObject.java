@@ -1,8 +1,5 @@
 package nl.github.martijn9612.fishy;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-
 import org.junit.Assert;
 import org.junit.Test;
 

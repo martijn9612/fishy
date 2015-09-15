@@ -13,9 +13,7 @@ import nl.github.martijn9612.fishy.models.DrawRectangle;
 import nl.github.martijn9612.fishy.models.MousePosition;
 import nl.github.martijn9612.fishy.models.MouseRectangle;
 
-
 public class GameEnd extends BasicGameState {
-	
 	private Image play;
 	private Image deadFish;
 	private MousePosition mouse;
@@ -34,7 +32,6 @@ public class GameEnd extends BasicGameState {
 		// Blank
 	}
 
-	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		play = new Image("resources/play-button.gif");
 		deadFish = new Image("resources/dead-fish.png");
@@ -43,7 +40,6 @@ public class GameEnd extends BasicGameState {
 		mouse = new MousePosition();
 	}
 
-	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
@@ -53,7 +49,6 @@ public class GameEnd extends BasicGameState {
 		g.drawImage(deadFish, DEAD_FISH_DRAW_X, DEAD_FISH_DRAW_Y);
 	}
 
-	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         mouse.updatePosition();
         

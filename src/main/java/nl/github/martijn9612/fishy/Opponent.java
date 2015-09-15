@@ -42,7 +42,7 @@ public class Opponent extends Entity {
 	}
 	
 	public boolean isOffScreen() {
-		if(spawnsLeft) {
+		if (spawnsLeft) {
 			return (this.x > (Display.getWidth() + this.size));
 		} else {
 			return (this.x < (0 - this.size));
