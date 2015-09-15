@@ -3,6 +3,10 @@ package nl.github.martijn9612.fishy;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
+
+/**
+ * Implements the playable character of the game.
+ */
 public class Player extends Entity {
 	
     private static final int PLAYER_START_X = 350;
@@ -10,14 +14,15 @@ public class Player extends Entity {
     private static final int PLAYER_WIDTH = 16;
     private static final int PLAYER_HEIGHT = 16;
     private static final int PLAYER_SPEED = 1;
-    
+    public static final int SPEED_TRESHOLD = 5;
+    public static final double PLAYER_EAT_SCORE_FACTOR = 0.2;
+    public static final double PLAYER_EAT_GROW_FACTOR = 0.8;
     private String left = Main.PLAYER_CHARACTER + "left";
     private String right = Main.PLAYER_CHARACTER + "right";
     private int decelerateLeft, accelerateLeft, speedLeft = 0;
     private int decelerateRight, accelerateRight, speedRight = 0;
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
-    
     private double score = 0;
 
     /**
@@ -32,13 +37,13 @@ public class Player extends Entity {
      * @param loadSprite loadSprite whether the player sprite should be loaded or not.
      */
     public Player(boolean loadSprite) {
-        if(loadSprite) {
-            this.loadImage(left);
+        if (loadSprite) {
+            loadImage(left);
         }
-        this.setPosition(PLAYER_START_X, PLAYER_START_Y);
-        this.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        this.setSpeed(PLAYER_SPEED);
-        this.calculateRectangle();
+        setPosition(PLAYER_START_X, PLAYER_START_Y);
+        setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        setSpeed(PLAYER_SPEED);
+        calculateInitialBoundingbox();
     }
 
     /**
@@ -50,10 +55,10 @@ public class Player extends Entity {
         checkBounds();
         momentum();
     }
-    
+
     /**
      * Handles the keyboard controls so the player is able to move around.
-     * @param Input object to access keyboard button states.
+     * @param input object to access keyboard button states.
      */
     private void keyboardControl(Input input) {
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
@@ -90,13 +95,13 @@ public class Player extends Entity {
         x = getBetweenBounds(x, 0, Main.WINDOW_WIDTH - getWidth());
         y = getBetweenBounds(y, 0, Main.WINDOW_HEIGHT - getHeight());
     }
-    
+
     /**
      * Validates whether the given number is within the given bounds. If the number
      * is not within the given bounds, the closest bound value is returned.
-     * @param int number integer to test
-     * @param int min lower bound value
-     * @param int max upper bound value
+     * @param number integer to test
+     * @param min lower bound value
+     * @param max upper bound value
      * @return integer
      */
     private int getBetweenBounds(int number, int min, int max) {
@@ -104,62 +109,68 @@ public class Player extends Entity {
     }
 
     /**
-     * Controls the acceleration and deceleration to the left.
-     * @param accel whether to increase or decrease speed.
+     * controls the acceleration and deceleration to the left.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void left(int accel) {
-        this.x -= speed + speedLeft;
+    public void left(int acceleration) {
+        x -= speed + speedLeft;
+        ellipse.setCenterX(ellipse.getCenterX() - (speed + speedLeft));
         decelerateLeft++;
-        if (decelerateLeft == 5) {
+        if (decelerateLeft == SPEED_TRESHOLD) {
             decelerateLeft = 0;
-            accelerateLeft = accel;
+            accelerateLeft = acceleration;
         }
     }
 
     /**
-     * Controls the acceleration and deceleration to the right.
-     * @param accel whether to increase or decrease speed.
+     * controls the acceleration and deceleration to the right.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void right(int accel) {
-        this.x += speed + speedRight;
+    public void right(int acceleration) {
+        x += speed + speedRight;
+        ellipse.setCenterX(ellipse.getCenterX() + speed + speedLeft);
         decelerateRight++;
-        if (decelerateRight == 5) {
+        if (decelerateRight == SPEED_TRESHOLD) {
             decelerateRight = 0;
-            accelerateRight = accel;
+            accelerateRight = acceleration;
         }
     }
 
     /**
-     * Controls the acceleration and deceleration upward.
-     * @param accel whether to increase or decrease speed.
+<<<<<<< HEAD
+     * controls the acceleration and deceleration upward.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void up(int accel) {
-        this.y -= speed + speedUp;
+    public void up(int acceleration) {
+        y -= speed + speedUp;
+        ellipse.setCenterY(ellipse.getCenterY() - (speed + speedLeft));
         decelerateUp++;
-        if (decelerateUp == 5) {
+        if (decelerateUp == SPEED_TRESHOLD) {
             decelerateUp = 0;
-            accelerateUp = accel;
+            accelerateUp = acceleration;
         }
     }
 
     /**
-     * Controls the acceleration and deceleration downward.
-     * @param accel whether to increase or decrease speed.
+     * controls the acceleration and deceleration downward.
+     * @param acceleration wether to increase or decrease speed.
      */
-    public void down(int accel) {
+    public void down(int acceleration) {
         y += speed + speedDown;
+        ellipse.setCenterY(ellipse.getCenterY() + speed + speedLeft);
         decelerateDown++;
-        if (decelerateDown == 5) {
+        if (decelerateDown == SPEED_TRESHOLD) {
             decelerateDown = 0;
-            accelerateDown = accel;
+            accelerateDown = acceleration;
         }
     }
 
+    @SuppressWarnings("checkstyle:methodlength")
     /**
      * This method increases or decreases the speed to the individual directions.
      */
     private void momentum() {
-        if (accelerateLeft == 1 && speedLeft < 5) {
+        if (accelerateLeft == 1 && speedLeft < SPEED_TRESHOLD) {
             speedLeft++;
             accelerateLeft = 0;
         }
@@ -167,7 +178,7 @@ public class Player extends Entity {
             speedLeft--;
             accelerateLeft = 0;
         }
-        if (accelerateRight == 1 && speedRight < 5) {
+        if (accelerateRight == 1 && speedRight < SPEED_TRESHOLD) {
             speedRight++;
             accelerateRight = 0;
         }
@@ -175,7 +186,7 @@ public class Player extends Entity {
             speedRight--;
             accelerateRight = 0;
         }
-        if (accelerateUp == 1 && speedUp < 5) {
+        if (accelerateUp == 1 && speedUp < SPEED_TRESHOLD) {
             speedUp++;
             accelerateUp = 0;
         }
@@ -183,7 +194,7 @@ public class Player extends Entity {
             speedUp--;
             accelerateUp = 0;
         }
-        if (accelerateDown == 1 && speedDown < 5) {
+        if (accelerateDown == 1 && speedDown < SPEED_TRESHOLD) {
             speedDown++;
             accelerateDown = 0;
         }
@@ -193,17 +204,39 @@ public class Player extends Entity {
         }
     }
 
-    public void eat(Opponent fish) {
-    	score += fish.getSize() * 0.2;
-        LevelState.score = String.valueOf(Math.round(score));
-        int newDim = PLAYER_WIDTH + (int) Math.round((score * 0.8));
-        setDimensions(newDim, newDim);
-        calculateRectangle();
+    /**
+     * @return score
+     */
+    public double getScore() {
+        return score;
     }
 
-    public void die() {
-        score = 0;
+    /**
+     * Set score.
+     * @param score new score value
+     */
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    /**
+     * Consume a specific Opponent.
+     * @param opponent to eat
+     */
+    public void eat(Opponent opponent) {
+    	setScore(getScore() + opponent.getSize() * PLAYER_EAT_SCORE_FACTOR);
+        LevelState.score = String.valueOf(Math.round(getScore()));
+        int newDimension = PLAYER_WIDTH + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
+        setDimensions(newDimension, newDimension);
+    }
+
+    /**
+     * Reset player values upon dying.
+     */
+    public void resetPlayerVariables() {
+        setScore(0);
         LevelState.score = "0";
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        setPosition(PLAYER_START_X, PLAYER_START_Y);
     }
 }

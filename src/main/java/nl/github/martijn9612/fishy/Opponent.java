@@ -25,7 +25,7 @@ public class Opponent extends Entity {
 		this.setPosition(xpos, ypos);
 		this.setDimensions((int) Math.round(this.size), (int) Math.round(this.size));
 		this.setSpeed(speed);
-		this.calculateRectangle();
+		this.calculateInitialBoundingbox();
 	}
   
 	/**
@@ -34,10 +34,10 @@ public class Opponent extends Entity {
 	public void objectLogic(GameContainer gc, int deltaTime) {
 	    if (this.spawnsLeft) {
 	    	this.x += speed;
-		    this.objectRect.x += speed;
+		    ellipse.setCenterX(ellipse.getCenterX() + speed);
 	    } else {
 	    	this.x -= speed;
-			this.objectRect.x -= speed;
+          ellipse.setCenterX(ellipse.getCenterX() - speed);
 	    }
 	}
 	
