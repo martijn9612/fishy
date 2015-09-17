@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -26,6 +27,7 @@ public class MenuState extends BasicGameState {
 	private DrawRectangle exitButtonDR;
 	private MouseRectangle playButtonMR;
 	private MouseRectangle exitButtonMR;
+	private Sound bgMenuMusic;
 	
 	private static int MENU_TEXT_DRAW_X = 280;
 	private static int MENU_TEXT_DRAW_Y = 10;
@@ -45,8 +47,15 @@ public class MenuState extends BasicGameState {
         exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X, EXIT_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
         playButtonMR = playButtonDR.getMouseRectangle();
         exitButtonMR = exitButtonDR.getMouseRectangle();
+        bgMenuMusic = new Sound("resources/sounds/bg-menu-music.wav");
         mouse = new MousePosition();
     }
+    
+    @Override
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		bgMenuMusic.loop();
+	}
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         g.drawString(menu, MENU_TEXT_DRAW_X, MENU_TEXT_DRAW_Y);
@@ -66,7 +75,7 @@ public class MenuState extends BasicGameState {
         
         if(mouse.isInRectangle(exitButtonMR)) {
         	if(mouse.isLeftButtonDown()) {
-                System.exit(0);
+        		System.exit(0);
             }
         }
         
@@ -79,6 +88,12 @@ public class MenuState extends BasicGameState {
         	System.exit(0);
         }
     }
+    
+    @Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		bgMenuMusic.stop();
+	}
 
     public int getID() {
         return Main.MENU_STATE;

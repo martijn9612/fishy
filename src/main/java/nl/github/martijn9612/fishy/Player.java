@@ -1,7 +1,11 @@
 package nl.github.martijn9612.fishy;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 
 /**
@@ -23,6 +27,8 @@ public class Player extends Entity {
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
     private double score = 0;
+    
+    ArrayList<Sound> biteSounds = new ArrayList<Sound>();
 
     /**
      * Creates a new Player instance in the game window and loads its sprite.
@@ -33,11 +39,12 @@ public class Player extends Entity {
 
     /**
      * Creates a new Player instance in the game window.
-     * @param loadSprite loadSprite whether the player sprite should be loaded or not.
+     * @param loadResources whether the player's resources should be loaded.
      */
-    public Player(boolean loadSprite) {
-        if (loadSprite) {
+    public Player(boolean loadResources) {
+        if (loadResources) {
             loadImage(left);
+            loadBiteSounds();
         }
         setPosition(PLAYER_START_X, PLAYER_START_Y);
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -226,6 +233,7 @@ public class Player extends Entity {
         LevelState.score = String.valueOf(Math.round(getScore()));
         int newDimension = PLAYER_WIDTH + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
         setDimensions(newDimension, newDimension);
+        playBiteSound();
     }
 
     /**
@@ -236,5 +244,20 @@ public class Player extends Entity {
         LevelState.score = "0";
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         setPosition(PLAYER_START_X, PLAYER_START_Y);
+    }
+    
+    private void loadBiteSounds() {
+        try {
+			biteSounds.add(new Sound("resources/sounds/bite1.wav"));
+			biteSounds.add(new Sound("resources/sounds/bite2.wav"));
+			biteSounds.add(new Sound("resources/sounds/bite3.wav"));
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private void playBiteSound() {
+    	int randomNumber = (int) Math.ceil(3 * Math.random()); /* Number between 1 and 3 */
+    	biteSounds.get(randomNumber - 1).play();
     }
 }
