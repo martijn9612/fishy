@@ -39,17 +39,17 @@ public class Player extends Entity {
 
     /**
      * Creates a new Player instance in the game window.
-     * @param loadSprite loadSprite whether the player sprite should be loaded or not.
+     * @param loadResources whether the player's resources should be loaded.
      */
-    public Player(boolean loadSprite) {
-        if (loadSprite) {
+    public Player(boolean loadResources) {
+        if (loadResources) {
             loadImage(left);
+            loadBiteSounds();
         }
         setPosition(PLAYER_START_X, PLAYER_START_Y);
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         setSpeed(PLAYER_SPEED);
         calculateInitialBoundingbox();
-        loadBiteSounds();
     }
 
     /**
