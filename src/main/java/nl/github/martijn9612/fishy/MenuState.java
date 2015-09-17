@@ -39,6 +39,7 @@ public class MenuState extends BasicGameState {
     }
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        Main.actionLogger.logLine("Entered main menu", getClass().getSimpleName());
         play = new Image("resources/play-button.gif");
         exit = new Image("resources/exit-button.gif");
         playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
@@ -66,6 +67,7 @@ public class MenuState extends BasicGameState {
         
         if(mouse.isInRectangle(exitButtonMR)) {
         	if(mouse.isLeftButtonDown()) {
+                Main.actionLogger.close();
                 System.exit(0);
             }
         }

@@ -27,7 +27,8 @@ public class LevelState extends BasicGameState {
    * initialisation of the play screen.
    */
   public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-    player = new Player();
+      Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
+      player = new Player();
     background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
     opponentHandler = new OpponentHandler();
   }
@@ -53,7 +54,6 @@ public class LevelState extends BasicGameState {
   public void update(GameContainer gc, StateBasedGame sbg, int delta)
       throws SlickException {
     player.objectLogic(gc, delta);
-//    player.ellipse.setLocation(player.x - player.ellipse.getWidth() / 2, player.y - player.ellipse.getHeight() / 2);
     opponentHandler.collide(player, sbg);
     opponentHandler.updateOpponents(gc, delta);
     opponentHandler.newOpponent(player);
