@@ -3,6 +3,8 @@ package nl.github.martijn9612.fishy;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
+import java.util.logging.Level;
+
 
 /**
  * Implements the playable character of the game.
@@ -43,6 +45,7 @@ public class Player extends Entity {
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         setSpeed(PLAYER_SPEED);
         calculateInitialBoundingbox();
+        Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
     }
 
     /**
@@ -222,16 +225,21 @@ public class Player extends Entity {
      * @param opponent to eat
      */
     public void eat(Opponent opponent) {
-    	setScore(getScore() + opponent.getSize() * PLAYER_EAT_SCORE_FACTOR);
+        double opponentSize = opponent.getSize();
+    	setScore(getScore() + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         LevelState.score = String.valueOf(Math.round(getScore()));
         int newDimension = PLAYER_WIDTH + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
         setDimensions(newDimension, newDimension);
+        Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
+        Main.actionLogger.logLine("Player score is " + Math.floor(getScore()), getClass().getSimpleName());
     }
 
     /**
      * Reset player values upon dying.
      */
     public void resetPlayerVariables() {
+        Main.actionLogger.logLine("Player died", getClass().getSimpleName());
+        Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
         setScore(0);
         LevelState.score = "0";
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
