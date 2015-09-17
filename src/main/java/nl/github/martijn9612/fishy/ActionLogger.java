@@ -6,12 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * This class logs to a file to observe the behaviour of a program
+ * This class logs to a file to observe the behaviour of a program.
  */
 public class ActionLogger {
     private static FileWriter fileWriter;
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
+    /**
+     * Instantiates a new FileWriter to log to a file, each time overwriting the old file.
+     */
     ActionLogger() {
         try {
             fileWriter = new FileWriter("log.txt", false);
@@ -43,7 +46,8 @@ public class ActionLogger {
     public void logLine(String text, String className, boolean isError) {
         try {
             if (isError) {
-                fileWriter.write("[ERROR!][ " + getTimeStamp() + "] - " + text + " - " + className + "\n");
+                fileWriter.write("[ERROR!][ " + getTimeStamp() + "] - " + text
+                        + " - " + className + "\n");
             } else {
                 logLine(text, className);
             }
