@@ -14,8 +14,8 @@ The following steps were taken to include Slick2D into Eclipse:
 - Navigate to the unpacked 'native' folder and select it
 - Click on 'Apply' to update the Project Path and you should be able to use Slick2D
 
-[Intellij steps]
-- Files>Project Structure>Modules
+[IntelliJ steps]
+Files>Project Structure>Modules
 - Click the green plus button>JARs or Directories
 - Add the JAR files from the libs folder of the project
 - Close the Project structure window
