@@ -26,15 +26,18 @@ public class LoseGame extends BasicGameState {
 	private static int DEAD_FISH_DRAW_Y = 150;
 	private static int DEAD_TEXT_DRAW_X = 230;
 	private static int DEAD_TEXT_DRAW_Y = 100;
+	
 	private static String DEAD_TEXT_STRING = "Urr a dead fish! :(";
+	private static String PLAY_BUTTON_RESOURCE = "resources/play-button.gif";
+	private static String DEAD_FISH_RESOURCE = "resources/dead-fish.png";
 	
 	public LoseGame(int state) {
 		// Blank
 	}
 
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		play = new Image("resources/play-button.gif");
-		deadFish = new Image("resources/dead-fish.png");
+		play = new Image(PLAY_BUTTON_RESOURCE);
+		deadFish = new Image(DEAD_FISH_RESOURCE);
 		playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
 		playButtonMR = playButtonDR.getMouseRectangle();
 		mouse = new MousePosition();

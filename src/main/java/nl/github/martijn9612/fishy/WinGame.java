@@ -26,15 +26,18 @@ public class WinGame extends BasicGameState {
 	private static int EATING_FISH_DRAW_Y = 110;
 	private static int WIN_TEXT_DRAW_X = 230;
 	private static int WIN_TEXT_DRAW_Y = 50;
+	
 	private static String WIN_TEXT_STRING = "You WON the game!! :D";
+	private static String PLAY_BUTTON_RESOURCE = "resources/play-button.gif";
+	private static String EATING_FISH_RESOURCE = "resources/eating-fish.png";
 	
 	public WinGame(int state) {
 		// Blank
 	}
 
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		play = new Image("resources/play-button.gif");
-		eatingFish = new Image("resources/eating-fish.png");
+		play = new Image(PLAY_BUTTON_RESOURCE);
+		eatingFish = new Image(EATING_FISH_RESOURCE);
 		playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
 		playButtonMR = playButtonDR.getMouseRectangle();
 		mouse = new MousePosition();
