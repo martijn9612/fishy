@@ -73,11 +73,13 @@ public class OpponentHandler {
 		for (Opponent opponent : opponents) {
 			destroy(opponent);
 		}
+		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
 	}
 
 	public void collide(Player player, StateBasedGame sbg) {
 		for (Opponent opponent : opponents) {
 			if (opponent.ellipse.intersects(player.ellipse)) {
+				Main.actionLogger.logLine("Player collides with opponent of size " + Math.floor(opponent.getSize()), getClass().getSimpleName());
 				if (player.getWidth() > opponent.getWidth()) {
 					player.eat(opponent);
 					destroy(opponent);

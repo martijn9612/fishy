@@ -13,27 +13,28 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by Skullyhoofd on 08/09/2015.
  */
 public class LevelState extends BasicGameState {
-    public String state = "Playing";
-    public Player player;
-    private Image background;
-    public static String score =  "0";
-    private OpponentHandler opponentHandler;
-    public String fishPosition = "(" + 0 + "," + 0 + ")";
+	public String state = "Playing";
+	public Player player;
+	private Image background;
+	public static String score = "0";
+	private OpponentHandler opponentHandler;
+	public String fishPosition = "(" + 0 + "," + 0 + ")";
 	public Sound bgPlayMusic;
 
-  public LevelState(int state) {
+	public LevelState(int state) {
 
-  }
+	}
 
-  /**
-   * initialisation of the play screen.
-   */
-  public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-    player = new Player();
-    background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
-    opponentHandler = new OpponentHandler();
-    bgPlayMusic = new Sound("resources/sounds/bg-play-music.wav");
-  }
+	/**
+	 * initialisation of the play screen.
+	 */
+	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
+		player = new Player();
+		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
+		opponentHandler = new OpponentHandler();
+		bgPlayMusic = new Sound("resources/sounds/bg-play-music.wav");
+	}
   
 	@Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
@@ -41,44 +42,40 @@ public class LevelState extends BasicGameState {
 		bgPlayMusic.loop();
 	}
 
-  /**
-   * render everything in the playscreen.
-   */
-  public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
-      throws SlickException {
-    g.setColor(Color.black);
-    g.drawString(state, 300, 10);
-    g.drawImage(background, 0, 0);
-    g.drawString(fishPosition, 300, 10);
-    g.drawString(score, 450, 10);
-    player.renderObject(g);
-    opponentHandler.renderOpponents(g);
-  }
+	/**
+	 * render everything in the playscreen.
+	 */
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		g.setColor(Color.black);
+		g.drawString(state, 300, 10);
+		g.drawImage(background, 0, 0);
+		g.drawString(fishPosition, 300, 10);
+		g.drawString(score, 450, 10);
+		player.renderObject(g);
+		opponentHandler.renderOpponents(g);
+	}
 
+	/**
+	 * update everything in the gamescreen.
+	 */
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		player.objectLogic(gc, delta);
+		opponentHandler.collide(player, sbg);
+		opponentHandler.updateOpponents(gc, delta);
+		opponentHandler.newOpponent(player);
+		fishPosition = "(" + player.x + "," + player.y + ")";
+	}
 
-  /**
-   * update everything in the gamescreen.
-   */
-  public void update(GameContainer gc, StateBasedGame sbg, int delta)
-      throws SlickException {
-    player.objectLogic(gc, delta);
-//    player.ellipse.setLocation(player.x - player.ellipse.getWidth() / 2, player.y - player.ellipse.getHeight() / 2);
-    opponentHandler.collide(player, sbg);
-    opponentHandler.updateOpponents(gc, delta);
-    opponentHandler.newOpponent(player);
-    fishPosition = "(" + player.x + "," + player.y + ")";
-  }
-  
 	@Override
 	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.leave(gameContainer, stateBasedGame);
 		bgPlayMusic.stop();
 	}
 
-  /**
-   * get id.
-   */
-  public int getID() {
-    return Main.PLAY_STATE;
-  }
+	/**
+	 * get id.
+	 */
+	public int getID() {
+		return Main.PLAY_STATE;
+	}
 }

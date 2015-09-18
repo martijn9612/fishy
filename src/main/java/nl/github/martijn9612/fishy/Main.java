@@ -18,6 +18,7 @@ public class Main extends StateBasedGame {
 	public static final String OPPONENT_CHARACTER = "fish";
 	public static final String LEVEL_BACKGROUND = "seabed";
 	public static final boolean DRAWBOUNDINGBOXES = false;
+	public static ActionLogger actionLogger = new ActionLogger();
 
 	public Main(String gameName) {
 		super(gameName);
@@ -44,5 +45,14 @@ public class Main extends StateBasedGame {
 		} catch (SlickException ex) {
 			Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
+	}
+
+	@Override
+	public boolean closeRequested()
+	{
+		Main.actionLogger.logLine("Game Closed!", getClass().getSimpleName());
+		Main.actionLogger.close();
+		System.exit(0);
+		return false;
 	}
 }
