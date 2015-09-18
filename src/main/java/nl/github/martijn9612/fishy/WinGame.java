@@ -13,28 +13,31 @@ import nl.github.martijn9612.fishy.models.DrawRectangle;
 import nl.github.martijn9612.fishy.models.MousePosition;
 import nl.github.martijn9612.fishy.models.MouseRectangle;
 
-public class GameEnd extends BasicGameState {
+public class WinGame extends BasicGameState {
 	private Image play;
-	private Image deadFish;
+	private Image eatingFish;
 	private MousePosition mouse;
 	private DrawRectangle playButtonDR;
 	private MouseRectangle playButtonMR;
 	
 	private static int PLAY_BUTTON_DRAW_X = 150;
-	private static int PLAY_BUTTON_DRAW_Y = 350;
-	private static int DEAD_FISH_DRAW_X = 220;
-	private static int DEAD_FISH_DRAW_Y = 150;
-	private static int DEAD_TEXT_DRAW_X = 230;
-	private static int DEAD_TEXT_DRAW_Y = 100;
-	private static String DEAD_TEXT_STRING = "Urr a dead fish! :(";
+	private static int PLAY_BUTTON_DRAW_Y = 380;
+	private static int EATING_FISH_DRAW_X = 210;
+	private static int EATING_FISH_DRAW_Y = 110;
+	private static int WIN_TEXT_DRAW_X = 230;
+	private static int WIN_TEXT_DRAW_Y = 50;
 	
-	public GameEnd(int state) {
+	private static String WIN_TEXT_STRING = "You WON the game!! :D";
+	private static String PLAY_BUTTON_RESOURCE = "resources/play-button.gif";
+	private static String EATING_FISH_RESOURCE = "resources/eating-fish.png";
+	
+	public WinGame(int state) {
 		// Blank
 	}
 
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		play = new Image("resources/play-button.gif");
-		deadFish = new Image("resources/dead-fish.png");
+		play = new Image(PLAY_BUTTON_RESOURCE);
+		eatingFish = new Image(EATING_FISH_RESOURCE);
 		playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
 		playButtonMR = playButtonDR.getMouseRectangle();
 		mouse = new MousePosition();
@@ -45,8 +48,8 @@ public class GameEnd extends BasicGameState {
 		g.fillRect(0, 0, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
 		g.drawImage(play, playButtonDR.getPositionX(), playButtonDR.getPositionY());
 		g.setColor(Color.black);
-		g.drawString(DEAD_TEXT_STRING, DEAD_TEXT_DRAW_X, DEAD_TEXT_DRAW_Y);
-		g.drawImage(deadFish, DEAD_FISH_DRAW_X, DEAD_FISH_DRAW_Y);
+		g.drawString(WIN_TEXT_STRING, WIN_TEXT_DRAW_X, WIN_TEXT_DRAW_Y);
+		g.drawImage(eatingFish, EATING_FISH_DRAW_X, EATING_FISH_DRAW_Y);
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
@@ -54,19 +57,19 @@ public class GameEnd extends BasicGameState {
         
         if(mouse.isInRectangle(playButtonMR)) {
         	if(mouse.isLeftButtonDown()) {
-        		game.enterState(Main.PLAY_STATE);
+        		game.enterState(Main.LEVEL_STATE);
         	}
         }
         
         Input input = container.getInput();
         if(input.isKeyDown(Input.KEY_ENTER)) {
-        	game.enterState(Main.PLAY_STATE);
+        	game.enterState(Main.LEVEL_STATE);
         }
 	}
 
 	@Override
 	public int getID() {
-		return Main.GAME_END_STATE;
+		return Main.GAME_WIN_STATE;
 	}
 
 }

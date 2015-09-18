@@ -86,7 +86,7 @@ public class OpponentHandler {
 				} else {
 					player.resetPlayerVariables();
 					destroyAllOpponents();
-					sbg.enterState(Main.GAME_END_STATE);
+					sbg.enterState(Main.GAME_LOSE_STATE);
 				}
 			}
 		}

@@ -13,20 +13,22 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by Skullyhoofd on 08/09/2015.
  */
 public class LevelState extends BasicGameState {
-	public String state = "Playing";
 	public Player player;
-	private Image background;
-	public static String score = "0";
-	private OpponentHandler opponentHandler;
-	public String fishPosition = "(" + 0 + "," + 0 + ")";
 	public Sound bgPlayMusic;
+	public String state = "Playing";
+	public String fishPosition = "(" + 0 + "," + 0 + ")";
+	public static String score = "0";
+	
+	private Image background;
+	private OpponentHandler opponentHandler;
+	private int PLAYER_WIN_AT_SCORE = 500;
 
 	public LevelState(int state) {
-
+		// Blank
 	}
 
 	/**
-	 * initialisation of the play screen.
+	 * Initialization of the play screen.
 	 */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
@@ -43,7 +45,7 @@ public class LevelState extends BasicGameState {
 	}
 
 	/**
-	 * render everything in the playscreen.
+	 * Render everything in the level.
 	 */
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(Color.black);
@@ -56,7 +58,7 @@ public class LevelState extends BasicGameState {
 	}
 
 	/**
-	 * update everything in the gamescreen.
+	 * Update the elements on the screen and check if the win condition should be triggered.
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		player.objectLogic(gc, delta);
@@ -64,6 +66,11 @@ public class LevelState extends BasicGameState {
 		opponentHandler.updateOpponents(gc, delta);
 		opponentHandler.newOpponent(player);
 		fishPosition = "(" + player.x + "," + player.y + ")";
+		
+		if(player.getScore() >= PLAYER_WIN_AT_SCORE ) {
+			player.resetPlayerVariables();
+			sbg.enterState(Main.GAME_WIN_STATE);
+		}
 	}
 
 	@Override
@@ -73,9 +80,9 @@ public class LevelState extends BasicGameState {
 	}
 
 	/**
-	 * get id.
+	 * Get id.
 	 */
 	public int getID() {
-		return Main.PLAY_STATE;
+		return Main.LEVEL_STATE;
 	}
 }

@@ -70,7 +70,7 @@ public class MenuState extends BasicGameState {
         
         if(mouse.isInRectangle(playButtonMR)) {
             if(mouse.isLeftButtonDown()) {
-                sbg.enterState(Main.PLAY_STATE);
+                sbg.enterState(Main.LEVEL_STATE);
             }
         }
         
@@ -84,7 +84,7 @@ public class MenuState extends BasicGameState {
         
         Input input = gc.getInput();
         if(input.isKeyDown(Input.KEY_ENTER)) {
-        	sbg.enterState(Main.PLAY_STATE);
+        	sbg.enterState(Main.LEVEL_STATE);
         }
         
         if(input.isKeyDown(Input.KEY_ESCAPE)) {
