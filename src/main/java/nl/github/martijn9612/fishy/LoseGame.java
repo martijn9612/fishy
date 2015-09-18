@@ -13,7 +13,7 @@ import nl.github.martijn9612.fishy.models.DrawRectangle;
 import nl.github.martijn9612.fishy.models.MousePosition;
 import nl.github.martijn9612.fishy.models.MouseRectangle;
 
-public class GameEnd extends BasicGameState {
+public class LoseGame extends BasicGameState {
 	private Image play;
 	private Image deadFish;
 	private MousePosition mouse;
@@ -28,7 +28,7 @@ public class GameEnd extends BasicGameState {
 	private static int DEAD_TEXT_DRAW_Y = 100;
 	private static String DEAD_TEXT_STRING = "Urr a dead fish! :(";
 	
-	public GameEnd(int state) {
+	public LoseGame(int state) {
 		// Blank
 	}
 
@@ -54,19 +54,19 @@ public class GameEnd extends BasicGameState {
         
         if(mouse.isInRectangle(playButtonMR)) {
         	if(mouse.isLeftButtonDown()) {
-        		game.enterState(Main.PLAY_STATE);
+        		game.enterState(Main.LEVEL_STATE);
         	}
         }
         
         Input input = container.getInput();
         if(input.isKeyDown(Input.KEY_ENTER)) {
-        	game.enterState(Main.PLAY_STATE);
+        	game.enterState(Main.LEVEL_STATE);
         }
 	}
 
 	@Override
 	public int getID() {
-		return Main.GAME_END_STATE;
+		return Main.GAME_LOSE_STATE;
 	}
 
 }

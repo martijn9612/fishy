@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 public class Main extends StateBasedGame {
 	public static final int MENU_STATE = 0;
-	public static final int PLAY_STATE = 1;
-	public static final int GAME_END_STATE = 2;
+	public static final int LEVEL_STATE = 1;
+	public static final int GAME_LOSE_STATE = 2;
+	public static final int GAME_WIN_STATE = 3;
+	
 	private static final String GAME_NAME = "Fishy";
 	public static final int WINDOW_WIDTH = 650;
 	public static final int WINDOW_HEIGHT = 550;
@@ -23,15 +25,17 @@ public class Main extends StateBasedGame {
 	public Main(String gameName) {
 		super(gameName);
 		this.addState(new MenuState(MENU_STATE));
-		this.addState(new LevelState(PLAY_STATE));
-		this.addState(new GameEnd(GAME_END_STATE));
+		this.addState(new LevelState(LEVEL_STATE));
+		this.addState(new WinGame(GAME_WIN_STATE));
+		this.addState(new LoseGame(GAME_LOSE_STATE));
 	}
 
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		this.getState(MENU_STATE).init(gc, this);
-		this.getState(PLAY_STATE).init(gc, this);
-		this.getState(GAME_END_STATE).init(gc, this);
+		this.getState(LEVEL_STATE).init(gc, this);
+		this.getState(GAME_LOSE_STATE).init(gc, this);
+		this.getState(GAME_WIN_STATE).init(gc, this);
 		this.enterState(MENU_STATE);
 	}
 
