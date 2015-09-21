@@ -68,6 +68,7 @@ public class LevelState extends BasicGameState {
 		fishPosition = "(" + player.x + "," + player.y + ")";
 		
 		if(player.getScore() >= PLAYER_WIN_AT_SCORE ) {
+			Main.actionLogger.logLine("Player won the game", getClass().getSimpleName());
 			player.resetPlayerVariables();
 			sbg.enterState(Main.GAME_WIN_STATE);
 		}
@@ -75,8 +76,8 @@ public class LevelState extends BasicGameState {
 
 	@Override
 	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-		super.leave(gameContainer, stateBasedGame);
 		bgPlayMusic.stop();
+		super.leave(gameContainer, stateBasedGame);
 	}
 
 	/**

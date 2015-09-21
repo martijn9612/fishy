@@ -26,8 +26,8 @@ public class Main extends StateBasedGame {
 		super(gameName);
 		this.addState(new MenuState(MENU_STATE));
 		this.addState(new LevelState(LEVEL_STATE));
-		this.addState(new WinGame(GAME_WIN_STATE));
-		this.addState(new LoseGame(GAME_LOSE_STATE));
+		this.addState(new WinState(GAME_WIN_STATE));
+		this.addState(new LoseState(GAME_LOSE_STATE));
 	}
 
 	@Override
