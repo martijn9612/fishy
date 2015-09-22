@@ -21,7 +21,9 @@ public class LevelState extends BasicGameState {
 	
 	private Image background;
 	private OpponentHandler opponentHandler;
-	private int PLAYER_WIN_AT_SCORE = 500;
+	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
+	
+	private static int PLAYER_WIN_AT_SCORE = 500;
 
 	public LevelState(int state) {
 		// Blank
@@ -35,13 +37,12 @@ public class LevelState extends BasicGameState {
 		player = new Player();
 		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
 		opponentHandler = new OpponentHandler();
-		bgPlayMusic = new Sound("resources/sounds/bg-play-music.wav");
 	}
   
 	@Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
-		bgPlayMusic.loop();
+		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
 	}
 
 	/**
@@ -76,8 +77,8 @@ public class LevelState extends BasicGameState {
 
 	@Override
 	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-		bgPlayMusic.stop();
 		super.leave(gameContainer, stateBasedGame);
+		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
 	}
 
 	/**
