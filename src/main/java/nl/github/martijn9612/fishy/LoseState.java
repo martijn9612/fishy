@@ -13,7 +13,7 @@ import nl.github.martijn9612.fishy.models.DrawRectangle;
 import nl.github.martijn9612.fishy.models.MousePosition;
 import nl.github.martijn9612.fishy.models.MouseRectangle;
 
-public class LoseGame extends BasicGameState {
+public class LoseState extends BasicGameState {
 	private Image play;
 	private Image deadFish;
 	private MousePosition mouse;
@@ -31,7 +31,7 @@ public class LoseGame extends BasicGameState {
 	private static String PLAY_BUTTON_RESOURCE = "resources/play-button.gif";
 	private static String DEAD_FISH_RESOURCE = "resources/dead-fish.png";
 	
-	public LoseGame(int state) {
+	public LoseState(int state) {
 		// Blank
 	}
 

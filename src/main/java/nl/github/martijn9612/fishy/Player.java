@@ -244,7 +244,7 @@ public class Player extends Entity {
      * Reset player values upon dying.
      */
     public void resetPlayerVariables() {
-        Main.actionLogger.logLine("Player died", getClass().getSimpleName());
+        Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
         Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
         setScore(0);
         LevelState.score = "0";
@@ -258,6 +258,7 @@ public class Player extends Entity {
 			biteSounds.add(new Sound("resources/sounds/bite2.wav"));
 			biteSounds.add(new Sound("resources/sounds/bite3.wav"));
 		} catch (SlickException e) {
+            Main.actionLogger.logLine("Unable to load bite sounds!", getClass().getSimpleName(), true);
 			e.printStackTrace();
 		}
     }

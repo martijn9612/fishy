@@ -13,7 +13,7 @@ import nl.github.martijn9612.fishy.models.DrawRectangle;
 import nl.github.martijn9612.fishy.models.MousePosition;
 import nl.github.martijn9612.fishy.models.MouseRectangle;
 
-public class WinGame extends BasicGameState {
+public class WinState extends BasicGameState {
 	private Image play;
 	private Image eatingFish;
 	private MousePosition mouse;
@@ -31,7 +31,7 @@ public class WinGame extends BasicGameState {
 	private static String PLAY_BUTTON_RESOURCE = "resources/play-button.gif";
 	private static String EATING_FISH_RESOURCE = "resources/eating-fish.png";
 	
-	public WinGame(int state) {
+	public WinState(int state) {
 		// Blank
 	}
 

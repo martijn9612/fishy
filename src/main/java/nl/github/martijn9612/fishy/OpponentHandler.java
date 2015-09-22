@@ -84,6 +84,7 @@ public class OpponentHandler {
 					player.eat(opponent);
 					destroy(opponent);
 				} else {
+					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					player.resetPlayerVariables();
 					destroyAllOpponents();
 					sbg.enterState(Main.GAME_LOSE_STATE);
