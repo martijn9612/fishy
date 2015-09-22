@@ -3,6 +3,9 @@ package nl.github.martijn9612.fishy;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.GameContainer;
 
+/**
+ * Implements an opponent.
+ */
 public class Opponent extends Entity {
 	
 	private String left = Main.OPPONENT_CHARACTER + "left";
@@ -12,16 +15,20 @@ public class Opponent extends Entity {
 
 	/**
 	 * Constructor for opponent fishes.
-	 * @param spawnsLeft whether the fish spawns left or right.
-	 * @param xpos the x position.
-	 * @param ypos the y position.
-	 * @param size the size of the fish.
-	 * @param speed the speed of the fish.
+	 * @param spawnsLeft - boolean which is true if the fish spawns left, false if fish spawns right
+	 * @param xpos - the x position.
+	 * @param ypos - the y position.
+	 * @param size - the size of the fish.
+	 * @param speed - the speed of the fish.
 	 */
 	public Opponent(boolean spawnsLeft, int xpos, int ypos, double size, int speed) {
 		this.spawnsLeft = spawnsLeft;
 		this.size = size;
-		this.loadImage(spawnsLeft ? right : left);
+		if (spawnsLeft) {
+		    this.loadImage(right);
+		} else {
+		    this.loadImage(left);
+		}
 		this.setPosition(xpos, ypos);
 		this.setDimensions((int) Math.round(this.size), (int) Math.round(this.size));
 		this.setSpeed(speed);
@@ -29,7 +36,10 @@ public class Opponent extends Entity {
 	}
   
 	/**
-	 * Moves the fish towards the left or right side of the screen.
+	 * Moves the fish towards the left or right side of the screen,
+	 * depending on it's position.
+	 * @param gc - the container holding the game
+	 * @param deltaTime - the amount of time that has passed since last update in milliseconds
 	 */
 	public void objectLogic(GameContainer gc, int deltaTime) {
 	    if (this.spawnsLeft) {
@@ -41,6 +51,10 @@ public class Opponent extends Entity {
 	    }
 	}
 	
+	/**
+	 * Check whether the enemy fish is off the screen.
+	 * @return true if the fish is off the screen, false if not
+	 */
 	public boolean isOffScreen() {
 		if (spawnsLeft) {
 			return (this.x > (Display.getWidth() + this.size));
@@ -49,6 +63,10 @@ public class Opponent extends Entity {
 		}
 	}
 
+	/**
+	 * Get method for size.
+	 * @return the size of the opponent
+	 */
 	public double getSize() {
 		return this.size;
 	}
