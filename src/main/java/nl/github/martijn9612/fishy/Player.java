@@ -20,8 +20,8 @@ public class Player extends Entity {
     public static final int SPEED_TRESHOLD = 5;
     public static final double PLAYER_EAT_SCORE_FACTOR = 0.2;
     public static final double PLAYER_EAT_GROW_FACTOR = 0.8;
-    private String left = Main.PLAYER_CHARACTER + "left";
-    private String right = Main.PLAYER_CHARACTER + "right";
+    private String left = "player-" + Main.PLAYER_CHARACTER + "left";
+    private String right = "player-" + Main.PLAYER_CHARACTER + "right";
     private int decelerateLeft, accelerateLeft, speedLeft = 0;
     private int decelerateRight, accelerateRight, speedRight = 0;
     private int decelerateUp, accelerateUp, speedUp = 0;
