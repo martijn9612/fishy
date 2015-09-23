@@ -21,42 +21,62 @@ public class OpponentHandler {
 	/**
 	 * create a new fish.
 	 */
-	public void newOpponent(Player player) {
-		if (opponents.size() < 30) {
-			boolean isleft = random.nextBoolean();
-			int maxSize = (int) (player.getWidth() * 2.5);
-			int minSize = (int) (player.getWidth() * 0.5);
-			int size = (random.nextInt((maxSize - minSize)) + minSize);
-			int speed = random.nextInt(5) + 1;
-			int max = 515 - (int) Math.round(size);
-			int min = (int) Math.round(size);
-			int ypos = random.nextInt(Math.abs(max - min)) + min;
-			int xpos = (isleft ? 0 - ((int) Math.round(size) * 50) : 615 + ((int) Math.round(size) * 50));
-			Opponent opponent = new Opponent(isleft, xpos, ypos, size, speed);
-			opponents.add(opponent);
+	public void spawnOpponents(Player player) {
+		if (opponents.size() < 20) {
+			if ((random.nextInt(5) + 1) > 1) {
+				newLinearOpponent(player);
+			} else {
+				newSinusOpponent(player);
+			}
 		}
 	}
-  
+
+	private void newLinearOpponent(Player player) {
+		boolean isleft = random.nextBoolean();
+		int maxSize = (int) (player.getWidth() * 2);
+		int minSize = (int) (player.getWidth() * 0.5);
+		int size = (random.nextInt((maxSize - minSize)) + minSize);
+		int speed = random.nextInt(4) + 1;
+		int max = 515 - size;
+		int min = size;
+		int ypos = random.nextInt(Math.abs(max - min)) + min;
+		int xpos = (isleft ? 0 - size * 5 : 615 + size * 5);
+		LinearOpponent linearOpponent = new LinearOpponent(isleft, xpos, ypos, size, speed);
+		opponents.add(linearOpponent);
+	}
+
+	private void newSinusOpponent(Player player) {
+		int maxSize = (int) (player.getWidth() * 2.5);
+		int minSize = (int) (player.getWidth() * 0.5);
+		int size = (random.nextInt((maxSize - minSize)) + minSize);
+		int speed = random.nextInt(5) + 1;
+		int max = 615 - (int) Math.round(size);
+		int min = (int) Math.round(size);
+		int xpos = random.nextInt(Math.abs(max - min)) + min;
+		SinusOpponent sinusOpponent = new SinusOpponent(xpos, size, speed);
+		opponents.add(sinusOpponent);
+	}
+
 	/**
-	 * render all opponents.
+	 * render all linearOpponents.
 	 * @param graph the graphics.
 	 */
 	public void renderOpponents(Graphics graph) {
-		for (Opponent fish : opponents) {
-			fish.renderObject(graph);
+		for (Opponent opponent : opponents) {
+			opponent.renderObject(graph);
 		}
 	}
 
 	/**
-	 * update the opponents.
+	 * update the linearOpponents.
 	 * @param gc the screen.
 	 * @param deltaTime no clue.
 	 */
 	public void updateOpponents(GameContainer gc, int deltaTime) {
-		for (Opponent fish : opponents) {
-			fish.objectLogic(gc, deltaTime);
-			if(fish.isOffScreen()) {
-				destroy(fish);
+		for (Opponent opponent : opponents) {
+			opponent.objectLogic(gc, deltaTime);
+			if(opponent.isOffScreen()) {
+				destroy(opponent);
 			}
 		}
 		for (Opponent fish : toRemove) {
@@ -65,21 +85,21 @@ public class OpponentHandler {
 		toRemove.clear();
 	}
 
-	public void destroy(Opponent fishy) {
-		toRemove.add(fishy);
+	public void destroy(Opponent opponent) {
+		toRemove.add(opponent);
 	}
 
 	public void destroyAllOpponents() {
 		for (Opponent opponent : opponents) {
 			destroy(opponent);
 		}
-		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
+		Main.actionLogger.logLine("All linearOpponents destroyed", getClass().getSimpleName());
 	}
 
 	public void collide(Player player, StateBasedGame sbg) {
 		for (Opponent opponent : opponents) {
 			if (opponent.ellipse.intersects(player.ellipse)) {
-				Main.actionLogger.logLine("Player collides with opponent of size " + Math.floor(opponent.getSize()), getClass().getSimpleName());
+				Main.actionLogger.logLine("Player collides with linearOpponent of size " + Math.floor(opponent.getSize()), getClass().getSimpleName());
 				if (player.getWidth() > opponent.getWidth()) {
 					player.eat(opponent);
 					destroy(opponent);

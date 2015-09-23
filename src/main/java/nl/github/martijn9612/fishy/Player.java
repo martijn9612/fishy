@@ -226,7 +226,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Consume a specific Opponent.
+     * Consume a specific LinearOpponent.
      * @param opponent to eat
      */
     public void eat(Opponent opponent) {
@@ -235,7 +235,7 @@ public class Player extends Entity {
         LevelState.score = String.valueOf(Math.round(getScore()));
         int newDimension = PLAYER_WIDTH + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
         setDimensions(newDimension, newDimension);
-        Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
+        Main.actionLogger.logLine("Player ate linearOpponent", getClass().getSimpleName());
         Main.actionLogger.logLine("Player score is " + Math.floor(getScore()), getClass().getSimpleName());
         playBiteSound();
     }
