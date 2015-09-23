@@ -1,11 +1,7 @@
 package nl.github.martijn9612.fishy;
 
-import java.util.ArrayList;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 
 
 /**
@@ -28,7 +24,12 @@ public class Player extends Entity {
     private int decelerateDown, accelerateDown, speedDown = 0;
     private double score = 0;
     
-    ArrayList<Sound> biteSounds = new ArrayList<Sound>();
+    private MusicPlayer musicPlayer = MusicPlayer.getInstance();
+    private static final String[] BITE_SOUNDS = {
+		MusicPlayer.BITE_SOUND_1,
+		MusicPlayer.BITE_SOUND_2,
+		MusicPlayer.BITE_SOUND_3
+	};
 
     /**
      * Creates a new Player instance in the game window and loads its sprite.
@@ -44,7 +45,6 @@ public class Player extends Entity {
     public Player(boolean loadResources) {
         if (loadResources) {
             loadImage(left);
-            loadBiteSounds();
         }
         setPosition(PLAYER_START_X, PLAYER_START_Y);
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -252,19 +252,8 @@ public class Player extends Entity {
         setPosition(PLAYER_START_X, PLAYER_START_Y);
     }
     
-    private void loadBiteSounds() {
-        try {
-			biteSounds.add(new Sound("resources/sounds/bite1.wav"));
-			biteSounds.add(new Sound("resources/sounds/bite2.wav"));
-			biteSounds.add(new Sound("resources/sounds/bite3.wav"));
-		} catch (SlickException e) {
-            Main.actionLogger.logLine("Unable to load bite sounds!", getClass().getSimpleName(), true);
-			e.printStackTrace();
-		}
-    }
-    
     private void playBiteSound() {
-    	int randomNumber = (int) Math.ceil(3 * Math.random()); /* Number between 1 and 3 */
-    	biteSounds.get(randomNumber - 1).play();
+    	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random()); /* Integer between 1 and array length */
+    	musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]); /* Subtract 1 to get array index */
     }
 }
