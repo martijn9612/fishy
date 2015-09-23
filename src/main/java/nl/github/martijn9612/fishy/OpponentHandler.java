@@ -62,8 +62,8 @@ public class OpponentHandler {
 	 * @param graph - the graphic content used to render
 	 */
 	public void renderOpponents(Graphics graph) {
-		for (Opponent fish : opponents) {
-			fish.renderObject(graph);
+		for (Opponent opponent : opponents) {
+			opponent.renderObject(graph);
 		}
 	}
 
@@ -73,14 +73,14 @@ public class OpponentHandler {
 	 * @param deltaTime - the amount of time that has passed since last update in milliseconds
 	 */
 	public void updateOpponents(GameContainer gc, int deltaTime) {
-		for (Opponent fish : opponents) {
-			fish.objectLogic(gc, deltaTime);
-			if (fish.isOffScreen()) {
-				destroy(fish);
+		for (Opponent opponent : opponents) {
+			opponent.objectLogic(gc, deltaTime);
+			if (opponent.isOffScreen()) {
+				destroy(opponent);
 			}
 		}
-		for (Opponent fish : toRemove) {
-			opponents.remove(fish);
+		for (Opponent opponent : toRemove) {
+			opponents.remove(opponent);
 		}
 		toRemove.clear();
 	}
@@ -109,13 +109,14 @@ public class OpponentHandler {
 	 * @param sbg - the game holding the state
 	 */
 	public void collide(Player player, StateBasedGame sbg) {
-		for (Opponent opp : opponents) {
-			if (opp.ellipse.intersects(player.ellipse)) {
-			    String log = "Player collides with opponent of size " + Math.floor(opp.getSize());
+		for (Opponent opponent : opponents) {
+			if (opponent.ellipse.intersects(player.ellipse)) {
+			    String log = "Player collides with opponent of size "
+			            + Math.floor(opponent.getSize());
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
-				if (player.getWidth() > opp.getWidth()) {
-					player.eat(opp);
-					destroy(opp);
+				if (player.getWidth() > opponent.getWidth()) {
+					player.eat(opponent);
+					destroy(opponent);
 				} else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					player.resetPlayerVariables();
