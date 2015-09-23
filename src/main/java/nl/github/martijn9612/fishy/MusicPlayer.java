@@ -12,7 +12,7 @@ import org.newdawn.slick.Sound;
 public class MusicPlayer {
 	
 	private static MusicPlayer musicPlayerInstance = null;
-	private HashMap<String,Sound> soundResources = new HashMap<>();
+	private HashMap<String,Sound> soundResources = new HashMap<String,Sound>();
 	
 	// The sound resources are defined here so they can be preloaded.
 	public static final String BITE_SOUND_1 = "resources/sounds/bite1.ogg";
