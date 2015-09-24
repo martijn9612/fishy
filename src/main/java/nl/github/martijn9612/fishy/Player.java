@@ -1,28 +1,31 @@
 package nl.github.martijn9612.fishy;
 
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
+import nl.github.martijn9612.fishy.models.Vector;
 
 /**
  * Implements the playable character of the game.
  */
 public class Player extends Entity {
-    private static final int PLAYER_START_X = 350;
-    private static final int PLAYER_START_Y = 450;
     private static final int PLAYER_WIDTH = 16;
     private static final int PLAYER_HEIGHT = 16;
-    private static final int PLAYER_SPEED = 1;
-    public static final int SPEED_TRESHOLD = 5;
     public static final double PLAYER_EAT_SCORE_FACTOR = 0.2;
     public static final double PLAYER_EAT_GROW_FACTOR = 0.8;
     private String left = "player-" + Main.PLAYER_CHARACTER + "left";
     private String right = "player-" + Main.PLAYER_CHARACTER + "right";
-    private int decelerateLeft, accelerateLeft, speedLeft = 0;
-    private int decelerateRight, accelerateRight, speedRight = 0;
-    private int decelerateUp, accelerateUp, speedUp = 0;
-    private int decelerateDown, accelerateDown, speedDown = 0;
+
     private double score = 0;
+    
+    private Vector location;
+    private Vector velocity;
+    private Vector acceleration;
+    
+    private static final double MAX_SPEED = 5;
+    private static final double PLAYER_ACCEL_RATE = 2;
+    private static final double PLAYER_DEACCEL_RATE = 0.75;
     
     private MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final String[] BITE_SOUNDS = {
@@ -46,10 +49,15 @@ public class Player extends Entity {
         if (loadResources) {
             loadImage(left);
         }
-        setPosition(PLAYER_START_X, PLAYER_START_Y);
+        
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        setSpeed(PLAYER_SPEED);
         calculateInitialBoundingbox();
+        
+        location = new Vector(Display.getWidth() / 2, Display.getHeight() / 2);
+        velocity = new Vector(0, 0);
+        acceleration = new Vector(0, 0);
+        
+        setPosition((int) Math.round(location.x), (int) Math.round(location.y));
         Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
     }
 
@@ -59,8 +67,15 @@ public class Player extends Entity {
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
         keyboardControl(gc.getInput());
+        
+        velocity.add(acceleration);
+        velocity.mult(PLAYER_DEACCEL_RATE);
+        velocity.limit(MAX_SPEED);
+        location.add(velocity);
+        
+        setPosition((int) Math.round(location.x), (int) Math.round(location.y));
+        acceleration.mult(0);
         checkBounds();
-        momentum();
     }
 
     /**
@@ -68,30 +83,27 @@ public class Player extends Entity {
      * @param input object to access keyboard button states.
      */
     private void keyboardControl(Input input) {
-        if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
-            loadImage(left);
-            left(1);
-        } else {
-            left(-1);
-        }
-
-        if (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT)) {
-            loadImage(right);
-            right(1);
-        } else {
-            right(-1);
+        boolean moveLeft = (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT));
+        boolean moveRight = (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT));
+        boolean moveUp = (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP));
+        boolean moveDown = (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN));
+        
+        if(moveRight && !moveLeft) {
+        	loadImage(right);
+        	acceleration.add(new Vector(PLAYER_ACCEL_RATE, 0));
         }
         
-        if (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) {
-            up(1);
-        } else {
-            up(-1);
+        if(moveLeft && !moveRight) {
+        	loadImage(left);
+        	acceleration.add(new Vector(-PLAYER_ACCEL_RATE, 0));
         }
-
-        if (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN)) {
-            down(1);
-        } else {
-            down(-1);
+        
+        if(moveUp && !moveDown) {
+        	acceleration.add(new Vector(0, -PLAYER_ACCEL_RATE));
+        }
+        
+        if(moveDown && !moveUp) {
+        	acceleration.add(new Vector(0, PLAYER_ACCEL_RATE));
         }
     }
     
@@ -113,101 +125,6 @@ public class Player extends Entity {
      */
     private int getBetweenBounds(int number, int min, int max) {
     	return Math.max(Math.min(number, max), min);
-    }
-
-    /**
-     * controls the acceleration and deceleration to the left.
-     * @param acceleration wether to increase or decrease speed.
-     */
-    public void left(int acceleration) {
-        x -= speed + speedLeft;
-        ellipse.setCenterX(ellipse.getCenterX() - (speed + speedLeft));
-        decelerateLeft++;
-        if (decelerateLeft == SPEED_TRESHOLD) {
-            decelerateLeft = 0;
-            accelerateLeft = acceleration;
-        }
-    }
-
-    /**
-     * controls the acceleration and deceleration to the right.
-     * @param acceleration wether to increase or decrease speed.
-     */
-    public void right(int acceleration) {
-        x += speed + speedRight;
-        ellipse.setCenterX(ellipse.getCenterX() + speed + speedLeft);
-        decelerateRight++;
-        if (decelerateRight == SPEED_TRESHOLD) {
-            decelerateRight = 0;
-            accelerateRight = acceleration;
-        }
-    }
-
-    /**
-     * controls the acceleration and deceleration upward.
-     * @param acceleration wether to increase or decrease speed.
-     */
-    public void up(int acceleration) {
-        y -= speed + speedUp;
-        ellipse.setCenterY(ellipse.getCenterY() - (speed + speedLeft));
-        decelerateUp++;
-        if (decelerateUp == SPEED_TRESHOLD) {
-            decelerateUp = 0;
-            accelerateUp = acceleration;
-        }
-    }
-
-    /**
-     * controls the acceleration and deceleration downward.
-     * @param acceleration wether to increase or decrease speed.
-     */
-    public void down(int acceleration) {
-        y += speed + speedDown;
-        ellipse.setCenterY(ellipse.getCenterY() + speed + speedLeft);
-        decelerateDown++;
-        if (decelerateDown == SPEED_TRESHOLD) {
-            decelerateDown = 0;
-            accelerateDown = acceleration;
-        }
-    }
-
-    @SuppressWarnings("checkstyle:methodlength")
-    /**
-     * This method increases or decreases the speed to the individual directions.
-     */
-    private void momentum() {
-        if (accelerateLeft == 1 && speedLeft < SPEED_TRESHOLD) {
-            speedLeft++;
-            accelerateLeft = 0;
-        }
-        if (accelerateLeft == -1 && speedLeft > 0) {
-            speedLeft--;
-            accelerateLeft = 0;
-        }
-        if (accelerateRight == 1 && speedRight < SPEED_TRESHOLD) {
-            speedRight++;
-            accelerateRight = 0;
-        }
-        if (accelerateRight == -1 && speedRight > 0) {
-            speedRight--;
-            accelerateRight = 0;
-        }
-        if (accelerateUp == 1 && speedUp < SPEED_TRESHOLD) {
-            speedUp++;
-            accelerateUp = 0;
-        }
-        if (accelerateUp == -1 && speedUp > 0) {
-            speedUp--;
-            accelerateUp = 0;
-        }
-        if (accelerateDown == 1 && speedDown < SPEED_TRESHOLD) {
-            speedDown++;
-            accelerateDown = 0;
-        }
-        if (accelerateDown == -1 && speedDown > 0) {
-            speedDown--;
-            accelerateDown = 0;
-        }
     }
 
     /**
@@ -249,7 +166,7 @@ public class Player extends Entity {
         setScore(0);
         LevelState.score = "0";
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        setPosition(PLAYER_START_X, PLAYER_START_Y);
+        setPosition(Display.getWidth() / 2, Display.getHeight() / 2);
     }
     
     private void playBiteSound() {
