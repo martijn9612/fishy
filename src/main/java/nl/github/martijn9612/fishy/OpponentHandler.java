@@ -119,8 +119,7 @@ public class OpponentHandler {
 
 	public void startWhaleEvent(Player player, int delta){
 		double rand = Math.random();
-		System.out.println(whaleEventInProgress);
-		if(rand < 0.00018){
+		if(rand < 0.0006){
 			whaleEventInProgress = true;
 			int playery = player.getY();
 			indicator = new WhaleIndicator(playery);

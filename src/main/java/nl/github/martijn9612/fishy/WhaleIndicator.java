@@ -9,7 +9,7 @@ import org.newdawn.slick.GameContainer;
 public class WhaleIndicator extends Entity {
 
     private int yPos;
-    private String IMAGE_NAME = "arrow";
+    private String IMAGE_NAME = "whale";
     private int xPos = 500;
 
     public WhaleIndicator( int playery) {

@@ -65,7 +65,6 @@ public class LevelState extends BasicGameState {
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		player.objectLogic(gc, delta);
-		System.out.println(time + " " + opponentHandler.getWhaleEventInProgress());
 		opponentHandler.updateOpponents(gc, delta, player);
 		opponentHandler.newOpponent(player);
 		if(!opponentHandler.getWhaleEventInProgress()) {
