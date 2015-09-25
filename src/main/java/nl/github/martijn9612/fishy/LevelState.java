@@ -85,7 +85,7 @@ public class LevelState extends BasicGameState {
         player.objectLogic(gc, delta);
         opponentHandler.collide(player, sbg);
         opponentHandler.updateOpponents(gc, delta);
-        opponentHandler.newOpponent(player);
+        opponentHandler.spawnOpponents(player);
         fishPosition = "(" + player.x + "," + player.y + ")";
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
