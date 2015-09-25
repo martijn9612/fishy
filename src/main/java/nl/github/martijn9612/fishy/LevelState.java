@@ -18,6 +18,7 @@ public class LevelState extends BasicGameState {
 	public String state = "Playing";
 	public String fishPosition = "(" + 0 + "," + 0 + ")";
 	public static String score = "0";
+	public static int time = 0;
 	
 	private Image background;
 	private OpponentHandler opponentHandler;
@@ -64,13 +65,24 @@ public class LevelState extends BasicGameState {
 	 */
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		player.objectLogic(gc, delta);
-		opponentHandler.collide(player, sbg);
+		System.out.println(time + " " + opponentHandler.getWhaleEventInProgress());
 		opponentHandler.updateOpponents(gc, delta, player);
 		opponentHandler.newOpponent(player);
-		if(!opponentHandler.getWhaleEventInProgress()) {opponentHandler.startWhaleEvent(player);}
+		if(!opponentHandler.getWhaleEventInProgress()) {
+			opponentHandler.startWhaleEvent(player, delta);
+			if(opponentHandler.getWhaleEventInProgress()) {
+				time = 25000;
+			}
+		}
 
+		if(time > 0){
+			time -= delta;
+		} else{
+			time = 0;
+			opponentHandler.setWhaleEventInProgress(false);
+		}
 		fishPosition = "(" + player.x + "," + player.y + ")";
-
+		opponentHandler.collide(player, sbg);
 
 		if(player.getScore() >= PLAYER_WIN_AT_SCORE ) {
 			Main.actionLogger.logLine("Player won the game", getClass().getSimpleName());

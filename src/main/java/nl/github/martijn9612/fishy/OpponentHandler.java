@@ -13,6 +13,7 @@ public class OpponentHandler {
 	private ArrayList<Opponent> toRemove;
 	private Random random = new Random();
 	private Whale whale;
+	private ArrayList<Whale> whales;
 	private WhaleIndicator indicator;
 	private boolean whaleEventInProgress = false;
 	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
@@ -20,6 +21,7 @@ public class OpponentHandler {
 	public OpponentHandler() {
 		opponents = new ArrayList<Opponent>();
 		toRemove = new ArrayList<Opponent>();
+		whales = new ArrayList<Whale>();
 	}
 	  
 	/**
@@ -69,8 +71,10 @@ public class OpponentHandler {
 		toRemove.clear();
 
 		if(whaleEventInProgress){
-			whale.objectLogic(gc, deltaTime);
-			indicator.setPosition(580, player.getY());
+			for(Whale w : whales){
+				w.objectLogic(gc, deltaTime);
+			}
+			indicator.objectLogic(gc, deltaTime, player);
 		}
 	}
 
@@ -82,6 +86,7 @@ public class OpponentHandler {
 		for (Opponent opponent : opponents) {
 			destroy(opponent);
 		}
+		whales.clear();
 		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
 	}
 
@@ -107,29 +112,38 @@ public class OpponentHandler {
 				player.resetPlayerVariables();
 				destroyAllOpponents();
 				sbg.enterState(Main.GAME_LOSE_STATE);
+				musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
 			}
 		}
 	}
 
-	public void startWhaleEvent(Player player){
+	public void startWhaleEvent(Player player, int delta){
 		double rand = Math.random();
-		if(rand < 0.0006){
+		System.out.println(whaleEventInProgress);
+		if(rand < 0.00018){
 			whaleEventInProgress = true;
 			int playery = player.getY();
 			indicator = new WhaleIndicator(playery);
 			whale = new Whale(playery);
+			whales.add(whale);
 			musicPlayer.playSound(MusicPlayer.WHALE_EVENT);
-
-
 		}
+
+
 	}
 
 	public void renderWhaleEvent(Graphics g){
 		indicator.renderObject(g);
-		whale.renderObject(g);
+		for (Whale w : whales) {
+			w.renderObject(g);
+		}
 	}
 
 	public boolean getWhaleEventInProgress(){
 		return this.whaleEventInProgress;
+	}
+
+	public void setWhaleEventInProgress( boolean status){
+		this.whaleEventInProgress = status;
 	}
 }
