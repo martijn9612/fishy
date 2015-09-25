@@ -17,127 +17,162 @@ import nl.github.martijn9612.fishy.models.MouseRectangle;
  * Implements the Menu State of the game.
  */
 public class MenuState extends BasicGameState {
-	
-	private String menu = "Menu";
-    
-	private Image play;
-	private Image exit;
-	private MousePosition mouse;
-	private DrawRectangle playButtonDR;
-	private DrawRectangle exitButtonDR;
-	private MouseRectangle playButtonMR;
-	private MouseRectangle exitButtonMR;
-	private Sound bgMenuMusic;
-	
-	private static final int MENU_TEXT_DRAW_X = 280;
-	private static final int MENU_TEXT_DRAW_Y = 10;
-	private static final int PLAY_BUTTON_DRAW_X = 150;
-	private static final int PLAY_BUTTON_DRAW_Y = 200;
-	private static final int EXIT_BUTTON_DRAW_X = 150;
-	private static final int EXIT_BUTTON_DRAW_Y = 375;
+
+    private String menu = "Menu";
+
+    private Image play;
+    private Image exit;
+    private MousePosition mouse;
+    private DrawRectangle playButtonDR;
+    private DrawRectangle exitButtonDR;
+    private MouseRectangle playButtonMR;
+    private MouseRectangle exitButtonMR;
+    private Sound bgMenuMusic;
+
+    private static final int MENU_TEXT_DRAW_X = 280;
+    private static final int MENU_TEXT_DRAW_Y = 10;
+    private static final int PLAY_BUTTON_DRAW_X = 150;
+    private static final int PLAY_BUTTON_DRAW_Y = 200;
+    private static final int EXIT_BUTTON_DRAW_X = 150;
+    private static final int EXIT_BUTTON_DRAW_Y = 375;
 
     /**
      * Constructor for the MenuState.
-     * @param state - the number of the state
+     * 
+     * @param state
+     *            - the number of the state
      */
-	public MenuState(int state) {
-    	// Blank
+    public MenuState(int state) {
+        // Blank
     }
 
-	/**
-	 * Initialize the game.
-	 * @param gc - the container holding the game
-	 * @param sbg - the game holding the state
-	 * @throws SlickException - indicates internal error
-	 */
-    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        Main.actionLogger.logLine("Entered main menu", getClass().getSimpleName());
+    /**
+     * Initialize the game.
+     * 
+     * @param gc
+     *            - the container holding the game
+     * @param sbg
+     *            - the game holding the state
+     * @throws SlickException
+     *             - indicates internal error
+     */
+    public void init(GameContainer gc, StateBasedGame sbg)
+            throws SlickException {
+        Main.actionLogger.logLine("Entered main menu", getClass()
+                .getSimpleName());
         play = new Image("resources/play-button.gif");
         exit = new Image("resources/exit-button.gif");
-        playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, 
-                play.getWidth(), play.getHeight());
-        exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X, EXIT_BUTTON_DRAW_Y, 
-                play.getWidth(), play.getHeight());
+        playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X,
+                PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
+        exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X,
+                EXIT_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
         playButtonMR = playButtonDR.getMouseRectangle();
         exitButtonMR = exitButtonDR.getMouseRectangle();
         bgMenuMusic = new Sound("resources/sounds/bg-menu-music.wav");
         mouse = new MousePosition();
     }
-    
+
     /**
      * Notification that the game state has been entered.
-     * @param gc - the container holding the game
-     * @param sbg - the game holding the state
-     * @throws SlickException - indicates internal error
+     * 
+     * @param gc
+     *            - the container holding the game
+     * @param sbg
+     *            - the game holding the state
+     * @throws SlickException
+     *             - indicates internal error
      */
     @Override
-    public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		super.enter(gc, sbg);
-		bgMenuMusic.loop();
-	}
+    public void enter(GameContainer gc, StateBasedGame sbg)
+            throws SlickException {
+        super.enter(gc, sbg);
+        bgMenuMusic.loop();
+    }
 
     /**
      * Renders the game's screen.
-     * @param gc - the container holding the game
-     * @param sbg - the game holding the state
-     * @param g - the graphics content used to render
-     * @throws SlickException - indicates internal error
+     * 
+     * @param gc
+     *            - the container holding the game
+     * @param sbg
+     *            - the game holding the state
+     * @param g
+     *            - the graphics content used to render
+     * @throws SlickException
+     *             - indicates internal error
      */
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
+            throws SlickException {
         g.drawString(menu, MENU_TEXT_DRAW_X, MENU_TEXT_DRAW_Y);
-        g.drawImage(play, playButtonDR.getPositionX(), playButtonDR.getPositionY());
-        g.drawImage(exit, exitButtonDR.getPositionX(), exitButtonDR.getPositionY());
+        g.drawImage(play, playButtonDR.getPositionX(),
+                playButtonDR.getPositionY());
+        g.drawImage(exit, exitButtonDR.getPositionX(),
+                exitButtonDR.getPositionY());
     }
 
     /**
      * Update the game logic.
-     * @param gc - the container holding the game
-     * @param sbg - the game holding the state
-     * @param delta - the amount of time that has passed since last update in milliseconds
-     * @throws SlickException - indicates internal error
+     * 
+     * @param gc
+     *            - the container holding the game
+     * @param sbg
+     *            - the game holding the state
+     * @param delta
+     *            - the amount of time that has passed since last update in
+     *            milliseconds
+     * @throws SlickException
+     *             - indicates internal error
      */
-    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+    public void update(GameContainer gc, StateBasedGame sbg, int delta)
+            throws SlickException {
         mouse.updatePosition();
         menu = "(" + mouse.getPositionX() + "," + mouse.getPositionY() + ")";
-        
+
         if (mouse.isInRectangle(playButtonMR)) {
             if (mouse.isLeftButtonDown()) {
                 sbg.enterState(Main.LEVEL_STATE);
             }
         }
-        
+
         if (mouse.isInRectangle(exitButtonMR)) {
-        	if (mouse.isLeftButtonDown()) {
-                Main.actionLogger.logLine("Game Closed!", getClass().getSimpleName());
+            if (mouse.isLeftButtonDown()) {
+                Main.actionLogger.logLine("Game Closed!", getClass()
+                        .getSimpleName());
                 Main.actionLogger.close();
                 System.exit(0);
             }
         }
-        
+
         Input input = gc.getInput();
         if (input.isKeyDown(Input.KEY_ENTER)) {
-        	sbg.enterState(Main.LEVEL_STATE);
+            sbg.enterState(Main.LEVEL_STATE);
         }
-        
+
         if (input.isKeyDown(Input.KEY_ESCAPE)) {
-        	System.exit(0);
+            System.exit(0);
         }
     }
-    
+
     /**
      * Notification that we're leaving this game state.
-     * @param gc - the container holding the game
-     * @param sbg - the game holding this state
-     * @throws SlickException - indicates internal error
+     * 
+     * @param gc
+     *            - the container holding the game
+     * @param sbg
+     *            - the game holding this state
+     * @throws SlickException
+     *             - indicates internal error
      */
     @Override
-	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		super.leave(gc, sbg);
-		bgMenuMusic.stop();
-	}
+    public void leave(GameContainer gc, StateBasedGame sbg)
+            throws SlickException {
+        super.leave(gc, sbg);
+        bgMenuMusic.stop();
+    }
 
     /**
      * Get the ID of this state.
+     * 
      * @return the unique ID of this state
      */
     public int getID() {
