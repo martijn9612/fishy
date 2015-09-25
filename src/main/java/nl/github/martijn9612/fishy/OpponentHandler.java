@@ -26,6 +26,30 @@ public class OpponentHandler {
 		toRemove = new ArrayList<Opponent>();
 		whales = new ArrayList<Whale>();
 	}
+	
+    /**
+     * Get method for the variable opponents.
+     * @return opponents - list with all the opponents in it
+     */
+    public ArrayList<Opponent> getOpponents() {
+        return opponents;
+    }
+
+    /**
+     * Get method for the variable toRemove.
+     * @return toRemove - list with all the removed opponents
+     */
+    public ArrayList<Opponent> getToRemove() {
+        return toRemove;
+    }
+
+    /**
+     * Adds an opponent to the list with opponents.
+     * @param opp - opponent to be added to the list
+     */
+    public void addOpponent(Opponent opp) {
+        opponents.add(opp);
+    }
 	  
 	/**
 	 * create a new fish.

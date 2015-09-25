@@ -22,7 +22,8 @@ public class Player extends Entity {
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
     private double score = 0;
-    private MusicPlayer musicPlayer = MusicPlayer.getInstance();
+    private MusicPlayer musicPlayer;
+    //= MusicPlayer.getInstance();
     private static final String[] BITE_SOUNDS = {
 		MusicPlayer.BITE_SOUND_1,
 		MusicPlayer.BITE_SOUND_2,
@@ -45,6 +46,7 @@ public class Player extends Entity {
     public Player(boolean loadResources) {
         if (loadResources) {
             loadImage(left);
+            musicPlayer = MusicPlayer.getInstance();
         }
         setPosition(PLAYER_START_X, PLAYER_START_Y);
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
