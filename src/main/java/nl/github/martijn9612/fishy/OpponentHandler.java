@@ -92,5 +92,18 @@ public class OpponentHandler {
 			}
 		}
 	}
+
+	public void startWhaleEvent(Player player, Graphics g){
+		double rand = Math.random();
+		if(rand < 0.0006){
+			int playery = player.getY();
+			WhaleIndicator indicator = new WhaleIndicator(playery);
+			Whale whale = new Whale(playery);
+			indicator.renderObject(g);
+			whale.renderObject(g);
+
+		}
+
+	}
 	
 }

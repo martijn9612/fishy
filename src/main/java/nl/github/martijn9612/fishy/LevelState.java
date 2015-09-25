@@ -67,7 +67,8 @@ public class LevelState extends BasicGameState {
 		opponentHandler.updateOpponents(gc, delta);
 		opponentHandler.newOpponent(player);
 		fishPosition = "(" + player.x + "," + player.y + ")";
-		
+
+
 		if(player.getScore() >= PLAYER_WIN_AT_SCORE ) {
 			Main.actionLogger.logLine("Player won the game", getClass().getSimpleName());
 			player.resetPlayerVariables();
