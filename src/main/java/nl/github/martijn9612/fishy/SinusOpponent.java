@@ -29,12 +29,7 @@ public class SinusOpponent extends Opponent {
      * Moves the fish towards the left or right side of the screen.
      */
     public void objectLogic(GameContainer gc, int deltaTime) {
-        double sin = Math.sin(Main.WINDOW_HEIGHT - this.y);
-        if (sin < 0) {
-            sin *= -1;
-        }
-        System.out.println(sin);
-        speed = (int) Math.floor(4 * sin) + 1;
+        speed = (this.y <= 0) ? 1 : (this.y % 80)/20 + 1;
         this.y -= getSpeed();
         ellipse.setCenterY(ellipse.getCenterY() - getSpeed());
     }
