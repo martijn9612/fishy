@@ -32,10 +32,10 @@ public class LinearOpponent extends Opponent {
 	public void objectLogic(GameContainer gc, int deltaTime) {
 	    if (this.spawnsLeft) {
 	    	this.x += speed;
-		    ellipse.setCenterX(ellipse.getCenterX() + speed);
+		    ellipse.setCenterX(ellipse.getCenterX() + getSpeed());
 	    } else {
 	    	this.x -= speed;
-          ellipse.setCenterX(ellipse.getCenterX() - speed);
+          ellipse.setCenterX(ellipse.getCenterX() - getSpeed());
 	    }
 	}
 	

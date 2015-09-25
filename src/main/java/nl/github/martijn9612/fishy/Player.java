@@ -121,7 +121,7 @@ public class Player extends Entity {
      */
     public void left(int acceleration) {
         x -= speed + speedLeft;
-        ellipse.setCenterX(ellipse.getCenterX() - (speed + speedLeft));
+        ellipse.setCenterX(ellipse.getCenterX() - (getSpeed() + speedLeft));
         decelerateLeft++;
         if (decelerateLeft == SPEED_TRESHOLD) {
             decelerateLeft = 0;
@@ -135,7 +135,7 @@ public class Player extends Entity {
      */
     public void right(int acceleration) {
         x += speed + speedRight;
-        ellipse.setCenterX(ellipse.getCenterX() + speed + speedLeft);
+        ellipse.setCenterX(ellipse.getCenterX() + getSpeed() + speedLeft);
         decelerateRight++;
         if (decelerateRight == SPEED_TRESHOLD) {
             decelerateRight = 0;
@@ -149,7 +149,7 @@ public class Player extends Entity {
      */
     public void up(int acceleration) {
         y -= speed + speedUp;
-        ellipse.setCenterY(ellipse.getCenterY() - (speed + speedLeft));
+        ellipse.setCenterY(ellipse.getCenterY() - (getSpeed() + speedLeft));
         decelerateUp++;
         if (decelerateUp == SPEED_TRESHOLD) {
             decelerateUp = 0;
@@ -163,7 +163,7 @@ public class Player extends Entity {
      */
     public void down(int acceleration) {
         y += speed + speedDown;
-        ellipse.setCenterY(ellipse.getCenterY() + speed + speedLeft);
+        ellipse.setCenterY(ellipse.getCenterY() + getSpeed() + speedLeft);
         decelerateDown++;
         if (decelerateDown == SPEED_TRESHOLD) {
             decelerateDown = 0;
