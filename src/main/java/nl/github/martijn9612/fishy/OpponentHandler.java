@@ -49,11 +49,10 @@ public class OpponentHandler {
 		int maxSize = (int) (player.getWidth() * 2.5);
 		int minSize = (int) (player.getWidth() * 0.5);
 		int size = (random.nextInt((maxSize - minSize)) + minSize);
-		int speed = random.nextInt(5) + 1;
 		int max = 615 - (int) Math.round(size);
 		int min = (int) Math.round(size);
 		int xpos = random.nextInt(Math.abs(max - min)) + min;
-		SinusOpponent sinusOpponent = new SinusOpponent(xpos, size, speed);
+		SinusOpponent sinusOpponent = new SinusOpponent(xpos, size);
 		opponents.add(sinusOpponent);
 	}
 
