@@ -1,6 +1,5 @@
 package nl.github.martijn9612.fishy;
 
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -12,20 +11,14 @@ import nl.github.martijn9612.fishy.models.Vector;
 public class Player extends Entity {
     private static final int PLAYER_WIDTH = 16;
     private static final int PLAYER_HEIGHT = 16;
-    public static final double PLAYER_EAT_SCORE_FACTOR = 0.2;
-    public static final double PLAYER_EAT_GROW_FACTOR = 0.8;
-    private String left = "player-" + Main.PLAYER_CHARACTER + "left";
-    private String right = "player-" + Main.PLAYER_CHARACTER + "right";
-
-    private double score = 0;
-    
-    private Vector location;
-    private Vector velocity;
-    private Vector acceleration;
-    
-    private static final double MAX_SPEED = 5;
-    private static final double PLAYER_ACCEL_RATE = 2;
-    private static final double PLAYER_DEACCEL_RATE = 0.75;
+    private static final double WATER_DRAG = 0.3;
+    private static final double PLAYER_MASS = 5;
+    private static final double PLAYER_MAX_SPEED = 8;
+    private static final double PLAYER_MOVE_FORCE = 4;
+    private static final double PLAYER_EAT_GROW_FACTOR = 0.5;
+    private static final double PLAYER_EAT_SCORE_FACTOR = 0.2;
+    private static final String PLAYER_SPRITE_LEFT = "player-" + Main.PLAYER_CHARACTER + "left";
+    private static final String PLAYER_SPRITE_RIGHT = "player-" + Main.PLAYER_CHARACTER + "right";
     
     private MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final String[] BITE_SOUNDS = {
@@ -33,9 +26,14 @@ public class Player extends Entity {
 		MusicPlayer.BITE_SOUND_2,
 		MusicPlayer.BITE_SOUND_3
 	};
+    
+    private Vector location;
+    private Vector velocity;
+    private Vector acceleration;
+    private double score = 0;
 
     /**
-     * Creates a new Player instance in the game window and loads its sprite.
+     * Creates a new Player instance and loads the player sprite.
      */
     public Player() {
         this(true);
@@ -47,100 +45,100 @@ public class Player extends Entity {
      */
     public Player(boolean loadResources) {
         if (loadResources) {
-            loadImage(left);
+            loadImage(PLAYER_SPRITE_LEFT);
         }
-        
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         calculateInitialBoundingbox();
-        
-        location = new Vector(Display.getWidth() / 2, Display.getHeight() / 2);
         velocity = new Vector(0, 0);
         acceleration = new Vector(0, 0);
-        
-        setPosition((int) Math.round(location.x), (int) Math.round(location.y));
+        location = Vector.centerOfScreen();
+        setPosition(location);
         Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
     }
 
     /**
      * Updates the object logic, also used for controls.
+     * 
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
-        keyboardControl(gc.getInput());
-        
-        velocity.add(acceleration);
-        velocity.mult(PLAYER_DEACCEL_RATE);
-        velocity.limit(MAX_SPEED);
-        location.add(velocity);
-        
-        setPosition((int) Math.round(location.x), (int) Math.round(location.y));
-        acceleration.mult(0);
-        checkBounds();
+        Input keyboardInput = gc.getInput();
+    	movePlayer(keyboardInput);
+        applyWaterDrag();
+        updatePosition();
+        checkEdges();
     }
 
     /**
      * Handles the keyboard controls so the player is able to move around.
-     * @param input object to access keyboard button states.
+     * @param Input object to access keyboard button states.
      */
-    private void keyboardControl(Input input) {
-        boolean moveLeft = (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT));
-        boolean moveRight = (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT));
-        boolean moveUp = (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP));
-        boolean moveDown = (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN));
+    private void movePlayer(Input input) {
+        boolean moveL = (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT));
+        boolean moveR = (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT));
+        boolean moveU = (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP));
+        boolean moveD = (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN));
         
-        if(moveRight && !moveLeft) {
-        	loadImage(right);
-        	acceleration.add(new Vector(PLAYER_ACCEL_RATE, 0));
+        if(moveR) {
+        	loadImage(PLAYER_SPRITE_RIGHT);
+        	applyForce(new Vector(PLAYER_MOVE_FORCE, 0));
         }
         
-        if(moveLeft && !moveRight) {
-        	loadImage(left);
-        	acceleration.add(new Vector(-PLAYER_ACCEL_RATE, 0));
+        if(moveL) {
+        	loadImage(PLAYER_SPRITE_LEFT);
+        	applyForce(new Vector(-PLAYER_MOVE_FORCE, 0));
         }
         
-        if(moveUp && !moveDown) {
-        	acceleration.add(new Vector(0, -PLAYER_ACCEL_RATE));
+        if(moveU) {
+        	applyForce(new Vector(0, -PLAYER_MOVE_FORCE));
         }
         
-        if(moveDown && !moveUp) {
-        	acceleration.add(new Vector(0, PLAYER_ACCEL_RATE));
+        if(moveD) {
+        	applyForce(new Vector(0, PLAYER_MOVE_FORCE));
         }
     }
     
     /**
+     * Updates the position of the player according to grandpa Newton.
+     */
+    private void updatePosition() {
+    	velocity.add(acceleration);
+        velocity.limit(PLAYER_MAX_SPEED);
+        location.add(velocity);
+        setPosition(location);
+        acceleration.mult(0);
+    }
+    
+    /**
+     * Calculates the drag force the water applies to the player.
+     */
+    private void applyWaterDrag() {
+		double speed = velocity.mag();
+		double dragMagnitude = WATER_DRAG * speed * speed;
+		Vector drag = velocity.get();
+		drag.mult(-1);
+		drag.normalize();
+		drag.mult(dragMagnitude);
+		applyForce(drag);
+	}
+    
+    /**
      * Checks whether the player is within the screen bounds and corrects them if necessary.
      */
-    private void checkBounds() {
-        x = getBetweenBounds(x, 0, Main.WINDOW_WIDTH - getWidth());
-        y = getBetweenBounds(y, 0, Main.WINDOW_HEIGHT - getHeight());
+    private void checkEdges() {
+        x = limit(x, 0, Main.WINDOW_WIDTH - getWidth());
+        y = limit(y, 0, Main.WINDOW_HEIGHT - getHeight());
     }
-
+    
     /**
-     * Validates whether the given number is within the given bounds. If the number
-     * is not within the given bounds, the closest bound value is returned.
-     * @param number integer to test
-     * @param min lower bound value
-     * @param max upper bound value
-     * @return integer
+     * Apply a force to the player, according to force = mass * acceleration;
+     * @param Vector force
      */
-    private int getBetweenBounds(int number, int min, int max) {
-    	return Math.max(Math.min(number, max), min);
-    }
-
-    /**
-     * @return score
-     */
-    public double getScore() {
-        return score;
-    }
-
-    /**
-     * Set score.
-     * @param score new score value
-     */
-    public void setScore(double score) {
-        this.score = score;
-    }
+    private void applyForce(Vector force) {
+		Vector newForce = force.get();
+		newForce.div(PLAYER_MASS);
+		acceleration.add(newForce);
+	}
 
     /**
      * Consume a specific Opponent.
@@ -148,12 +146,11 @@ public class Player extends Entity {
      */
     public void eat(Opponent opponent) {
         double opponentSize = opponent.getSize();
-    	setScore(getScore() + opponentSize * PLAYER_EAT_SCORE_FACTOR);
-        LevelState.score = String.valueOf(Math.round(getScore()));
-        int newDimension = PLAYER_WIDTH + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
+    	setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
+        int newDimension = PLAYER_WIDTH + (int) Math.round(score * PLAYER_EAT_GROW_FACTOR);
         setDimensions(newDimension, newDimension);
         Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
-        Main.actionLogger.logLine("Player score is " + Math.floor(getScore()), getClass().getSimpleName());
+        Main.actionLogger.logLine("Player score is " + Math.floor(score), getClass().getSimpleName());
         playBiteSound();
     }
 
@@ -163,14 +160,54 @@ public class Player extends Entity {
     public void resetPlayerVariables() {
         Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
         Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
-        setScore(0);
-        LevelState.score = "0";
+        setPosition(Vector.centerOfScreen());
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        setPosition(Display.getWidth() / 2, Display.getHeight() / 2);
+        setScore(0);
     }
     
+    /**
+     * Plays a random available bite sound from the list.
+     */
     private void playBiteSound() {
     	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random()); /* Integer between 1 and array length */
     	musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]); /* Subtract 1 to get array index */
+    }
+
+    /**
+     * Validates whether the given number is within the given limits. If the number
+     * is not within the given bounds, the closest limit value is returned.
+     * @param number integer to test
+     * @param min lower limit value
+     * @param max upper limit value
+     * @return int
+     */
+    private int limit(int number, int min, int max) {
+    	return Math.max(Math.min(number, max), min);
+    }
+
+    /**
+     * Get the players score.
+     * @return score
+     */
+    public double getScore() {
+        return score;
+    }
+
+    /**
+     * Set the players score.
+     * @param score new score value
+     */
+    public void setScore(double score) {
+        LevelState.score = String.valueOf(Math.round(score));
+        this.score = score;
+    }
+    
+    /**
+     * Set the position of the entity.
+     * TODO: Replace x and y of superclass with an instance of Vector.
+     * @param Vector position update the player his location
+     */
+    private void setPosition(Vector position) {
+    	 setPosition((int) Math.round(position.x), (int) Math.round(position.y));
     }
 }
