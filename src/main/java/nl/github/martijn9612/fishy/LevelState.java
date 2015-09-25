@@ -18,9 +18,9 @@ public class LevelState extends BasicGameState {
     private String state = "Playing";
     private String fishPosition = "(" + 0 + "," + 0 + ")";
     public static String score = "0";
-
-    private Image background;
-    private OpponentHandler opponentHandler;
+	private Image background;
+	private OpponentHandler opponentHandler;
+	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final int PLAYER_WIN_AT_SCORE = 500;
     private static final int XPOS_STATE_STRING = 300;
     private static final int YPOS_STATE_STRING = 10;
@@ -29,60 +29,37 @@ public class LevelState extends BasicGameState {
     /**
      * Constructor for the LevelState.
      * 
-     * @param state
-     *            - the number of the state
+     * @param state the number of the state
      */
     public LevelState(int state) {
         // Blank
     }
 
     /**
-     * Initialize the play screen.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @throws SlickException
-     *             - indicates internal error
+     * Initialization of the play screen.
+     ** @param gc the container holding the game
+     * @param sbg the game holding the state
+     * @throws SlickException indicates internal error
      */
-    public void init(GameContainer gc, StateBasedGame sbg)
-            throws SlickException {
-        Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
-        player = new Player();
-        background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
-        opponentHandler = new OpponentHandler();
-        bgPlayMusic = new Sound("resources/sounds/bg-play-music.wav");
-    }
+	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
+		player = new Player();
+		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
+		opponentHandler = new OpponentHandler();
+	}
 
-    /**
-     * Notification that the game state has been entered.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @throws SlickException
-     *             - indicates internal error
-     */
     @Override
-    public void enter(GameContainer gc, StateBasedGame sbg)
-            throws SlickException {
-        super.enter(gc, sbg);
-        bgPlayMusic.loop();
-    }
+	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
+	}
 
     /**
      * Renders the game's screen.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @param g
-     *            - the graphics content used to render
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc the container holding the game
+     * @param sbg the game holding the state
+     * @param g the graphics content used to render
+     * @throws SlickException indicates internal error
      */
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
             throws SlickException {
@@ -97,16 +74,11 @@ public class LevelState extends BasicGameState {
 
     /**
      * Update the game logic and check if the win condition should be triggered.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @param delta
-     *            - the amount of time that has passed since last update in
-     *            milliseconds
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc the container holding the game
+     * @param sbg the game holding the state
+     * @param delta the amount of time that has passed since last update in
+     *              milliseconds
+     * @throws SlickException indicates internal error
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
@@ -126,19 +98,15 @@ public class LevelState extends BasicGameState {
 
     /**
      * Notification that we're leaving this game state.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding this state
-     * @throws SlickException
-     *             - indicates internal error
+     *
+     * @param gc the container holding the game
+     * @param sbg the game holding this state
+     * @throws SlickException indicates internal error
      */
     @Override
-    public void leave(GameContainer gc, StateBasedGame sbg)
-            throws SlickException {
-        bgPlayMusic.stop();
+    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
         super.leave(gc, sbg);
+        musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
     }
 
     /**

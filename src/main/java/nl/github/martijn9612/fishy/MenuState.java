@@ -5,7 +5,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -17,9 +16,7 @@ import nl.github.martijn9612.fishy.models.MouseRectangle;
  * Implements the Menu State of the game.
  */
 public class MenuState extends BasicGameState {
-
     private String menu = "Menu";
-
     private Image play;
     private Image exit;
     private MousePosition mouse;
@@ -27,7 +24,7 @@ public class MenuState extends BasicGameState {
     private DrawRectangle exitButtonDR;
     private MouseRectangle playButtonMR;
     private MouseRectangle exitButtonMR;
-    private Sound bgMenuMusic;
+    private MusicPlayer musicPlayer = MusicPlayer.getInstance();
 
     private static final int MENU_TEXT_DRAW_X = 280;
     private static final int MENU_TEXT_DRAW_Y = 10;
@@ -39,8 +36,7 @@ public class MenuState extends BasicGameState {
     /**
      * Constructor for the MenuState.
      * 
-     * @param state
-     *            - the number of the state
+     * @param state the number of the state
      */
     public MenuState(int state) {
         // Blank
@@ -49,12 +45,9 @@ public class MenuState extends BasicGameState {
     /**
      * Initialize the game.
      * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc the container holding the game
+     * @param sbg the game holding the state
+     * @throws SlickException indicates internal error
      */
     public void init(GameContainer gc, StateBasedGame sbg)
             throws SlickException {
@@ -68,38 +61,30 @@ public class MenuState extends BasicGameState {
                 EXIT_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
         playButtonMR = playButtonDR.getMouseRectangle();
         exitButtonMR = exitButtonDR.getMouseRectangle();
-        bgMenuMusic = new Sound("resources/sounds/bg-menu-music.wav");
         mouse = new MousePosition();
     }
 
     /**
      * Notification that the game state has been entered.
      * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gameContainer the container holding the game
+     * @param stateBasedGame the game holding the state
+     * @throws SlickException indicates internal error
      */
     @Override
-    public void enter(GameContainer gc, StateBasedGame sbg)
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame)
             throws SlickException {
-        super.enter(gc, sbg);
-        bgMenuMusic.loop();
-    }
+		super.enter(gameContainer, stateBasedGame);
+		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_MENU);
+	}
 
     /**
      * Renders the game's screen.
      * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @param g
-     *            - the graphics content used to render
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc the container holding the game
+     * @param sbg the game holding the state
+     * @param g the graphics content used to render
+     * @throws SlickException indicates internal error
      */
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
             throws SlickException {
@@ -113,15 +98,11 @@ public class MenuState extends BasicGameState {
     /**
      * Update the game logic.
      * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding the state
-     * @param delta
-     *            - the amount of time that has passed since last update in
-     *            milliseconds
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc the container holding the game
+     * @param sbg the game holding the state
+     * @param delta the amount of time that has
+     * passed since last update in milliseconds
+     * @throws SlickException indicates internal error
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
@@ -156,19 +137,16 @@ public class MenuState extends BasicGameState {
     /**
      * Notification that we're leaving this game state.
      * 
-     * @param gc
-     *            - the container holding the game
-     * @param sbg
-     *            - the game holding this state
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gameContainer the container holding the game
+     * @param stateBasedGame the game holding this state
+     * @throws SlickException indicates internal error
      */
     @Override
-    public void leave(GameContainer gc, StateBasedGame sbg)
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame)
             throws SlickException {
-        super.leave(gc, sbg);
-        bgMenuMusic.stop();
-    }
+		super.leave(gameContainer, stateBasedGame);
+		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_MENU);
+	}
 
     /**
      * Get the ID of this state.
