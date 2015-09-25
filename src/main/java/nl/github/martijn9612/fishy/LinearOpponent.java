@@ -2,6 +2,9 @@ package nl.github.martijn9612.fishy;
 
 import org.newdawn.slick.GameContainer;
 
+/**
+ * An opponent that moves horizontally with a constant speed.
+ */
 public class LinearOpponent extends Opponent {
 	private String left = Main.OPPONENT_CHARACTER + "left";
 	private String right = Main.OPPONENT_CHARACTER + "right";
@@ -19,15 +22,21 @@ public class LinearOpponent extends Opponent {
 		System.out.println(xpos + " " + ypos + " " + size);
 		this.size = size;
 		this.spawnsLeft = spawnsLeft;
-		this.loadImage(spawnsLeft ? right : left);
+		if (spawnsLeft) {
+			this.loadImage(right);
+		} else {
+			this.loadImage(left);
+		}
 		this.setPosition(xpos, ypos);
 		this.setDimensions((int) Math.round(this.size), (int) Math.round(this.size));
 		this.setSpeed(speed);
 		this.calculateInitialBoundingbox();
 	}
-  
+
 	/**
-	 * Moves the fish towards the left or right side of the screen.
+	 * * Moves the fish towards the left or right side of the screen.
+	 * @param gc the container holding the game
+	 * @param deltaTime the time difference the function was called last time in milliseconds.
 	 */
 	public void objectLogic(GameContainer gc, int deltaTime) {
 	    if (this.spawnsLeft) {
@@ -38,12 +47,4 @@ public class LinearOpponent extends Opponent {
           ellipse.setCenterX(ellipse.getCenterX() - getSpeed());
 	    }
 	}
-	
-//	public boolean isOffScreen() {
-//		if (spawnsLeft) {
-//			return (this.x > (Display.getWidth() + this.size));
-//		} else {
-//			return (this.x < (0 - this.size));
-//		}
-//	}
 }

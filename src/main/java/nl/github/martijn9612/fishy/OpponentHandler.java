@@ -7,11 +7,13 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * Implements the Opponent Handler of the game.
+ */
 public class OpponentHandler {
-
-	private ArrayList<Opponent> opponents;
-	private ArrayList<Opponent> toRemove;
-	private Random random = new Random();
+    private ArrayList<Opponent> opponents;
+    private ArrayList<Opponent> toRemove;
+    private Random random = new Random();
 
 	public OpponentHandler() {
 		opponents = new ArrayList<Opponent>();
@@ -67,43 +69,62 @@ public class OpponentHandler {
 	}
 
 	/**
-	 * update the linearOpponents.
-	 * @param gc the screen.
-	 * @param deltaTime no clue.
+	 * Update the opponents.
+	 *
+	 * @param gc the container holding the game
+	 * @param deltaTime the amount of time that has passed since last update in milliseconds
 	 */
 	public void updateOpponents(GameContainer gc, int deltaTime) {
 		for (Opponent opponent : opponents) {
 			opponent.objectLogic(gc, deltaTime);
-			if(opponent.isOffScreen()) {
+			if (opponent.isOffScreen()) {
 				destroy(opponent);
 			}
 		}
-		for (Opponent fish : toRemove) {
-			opponents.remove(fish);
+		for (Opponent opponent : toRemove) {
+			opponents.remove(opponent);
 		}
 		toRemove.clear();
 	}
 
-	public void destroy(Opponent opponent) {
-		toRemove.add(opponent);
+	/**
+	 * Destroy an opponent.
+	 *
+	 * @param fishy opponent to destroy
+	 */
+	public void destroy(Opponent fishy) {
+		toRemove.add(fishy);
 	}
 
+	/**
+	 * Destroy all the opponents.
+	 */
 	public void destroyAllOpponents() {
 		for (Opponent opponent : opponents) {
 			destroy(opponent);
 		}
-		Main.actionLogger.logLine("All linearOpponents destroyed", getClass().getSimpleName());
+		Main.actionLogger.logLine("All opponents destroyed", getClass()
+				.getSimpleName());
 	}
 
+	/**
+	 * Checking for collisions.
+	 *
+	 * @param player Player in the game.
+	 * @param sbg the game holding the state
+	 */
 	public void collide(Player player, StateBasedGame sbg) {
 		for (Opponent opponent : opponents) {
 			if (opponent.ellipse.intersects(player.ellipse)) {
-				Main.actionLogger.logLine("Player collides with linearOpponent of size " + Math.floor(opponent.getSize()), getClass().getSimpleName());
+				String log = "Player collides with opponent of size "
+						+ Math.floor(opponent.getSize());
+				Main.actionLogger.logLine(log, getClass().getSimpleName());
 				if (player.getWidth() > opponent.getWidth()) {
 					player.eat(opponent);
 					destroy(opponent);
 				} else {
-					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
+					Main.actionLogger.logLine("Player lost the game",
+							getClass().getSimpleName());
 					player.resetPlayerVariables();
 					destroyAllOpponents();
 					sbg.enterState(Main.GAME_LOSE_STATE);
@@ -111,5 +132,4 @@ public class OpponentHandler {
 			}
 		}
 	}
-	
 }

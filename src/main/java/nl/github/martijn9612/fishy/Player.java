@@ -3,7 +3,6 @@ package nl.github.martijn9612.fishy;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-
 /**
  * Implements the playable character of the game.
  */
@@ -23,7 +22,6 @@ public class Player extends Entity {
     private int decelerateUp, accelerateUp, speedUp = 0;
     private int decelerateDown, accelerateDown, speedDown = 0;
     private double score = 0;
-    
     private MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final String[] BITE_SOUNDS = {
 		MusicPlayer.BITE_SOUND_1,
@@ -40,7 +38,9 @@ public class Player extends Entity {
 
     /**
      * Creates a new Player instance in the game window.
-     * @param loadResources whether the player's resources should be loaded.
+     * 
+     * @param loadResources
+     *            whether the player's resources should be loaded.
      */
     public Player(boolean loadResources) {
         if (loadResources) {
@@ -50,7 +50,8 @@ public class Player extends Entity {
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         setSpeed(PLAYER_SPEED);
         calculateInitialBoundingbox();
-        Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
+        Main.actionLogger.logLine("Player succesfully created", getClass()
+                .getSimpleName());
     }
 
     /**
@@ -65,7 +66,9 @@ public class Player extends Entity {
 
     /**
      * Handles the keyboard controls so the player is able to move around.
-     * @param input object to access keyboard button states.
+     * 
+     * @param input
+     *            object to access keyboard button states.
      */
     private void keyboardControl(Input input) {
         if (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT)) {
@@ -81,7 +84,7 @@ public class Player extends Entity {
         } else {
             right(-1);
         }
-        
+
         if (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP)) {
             up(1);
         } else {
@@ -94,9 +97,10 @@ public class Player extends Entity {
             down(-1);
         }
     }
-    
+
     /**
-     * Checks whether the player is within the screen bounds and corrects them if necessary.
+     * Checks whether the player is within the screen bounds and corrects them
+     * if necessary.
      */
     private void checkBounds() {
         x = getBetweenBounds(x, 0, Main.WINDOW_WIDTH - getWidth());
@@ -104,20 +108,27 @@ public class Player extends Entity {
     }
 
     /**
-     * Validates whether the given number is within the given bounds. If the number
-     * is not within the given bounds, the closest bound value is returned.
-     * @param number integer to test
-     * @param min lower bound value
-     * @param max upper bound value
+     * Validates whether the given number is within the given bounds. If the
+     * number is not within the given bounds, the closest bound value is
+     * returned.
+     * 
+     * @param number
+     *            integer to test
+     * @param min
+     *            lower bound value
+     * @param max
+     *            upper bound value
      * @return integer
      */
     private int getBetweenBounds(int number, int min, int max) {
-    	return Math.max(Math.min(number, max), min);
+        return Math.max(Math.min(number, max), min);
     }
 
     /**
      * controls the acceleration and deceleration to the left.
-     * @param acceleration wether to increase or decrease speed.
+     * 
+     * @param acceleration
+     *            wether to increase or decrease speed.
      */
     public void left(int acceleration) {
         x -= speed + speedLeft;
@@ -131,7 +142,9 @@ public class Player extends Entity {
 
     /**
      * controls the acceleration and deceleration to the right.
-     * @param acceleration wether to increase or decrease speed.
+     * 
+     * @param acceleration
+     *            wether to increase or decrease speed.
      */
     public void right(int acceleration) {
         x += speed + speedRight;
@@ -145,7 +158,9 @@ public class Player extends Entity {
 
     /**
      * controls the acceleration and deceleration upward.
-     * @param acceleration wether to increase or decrease speed.
+     * 
+     * @param acceleration
+     *            wether to increase or decrease speed.
      */
     public void up(int acceleration) {
         y -= speed + speedUp;
@@ -159,7 +174,9 @@ public class Player extends Entity {
 
     /**
      * controls the acceleration and deceleration downward.
-     * @param acceleration wether to increase or decrease speed.
+     * 
+     * @param acceleration
+     *            wether to increase or decrease speed.
      */
     public void down(int acceleration) {
         y += speed + speedDown;
@@ -219,24 +236,29 @@ public class Player extends Entity {
 
     /**
      * Set score.
-     * @param score new score value
+     * 
+     * @param score
+     *            new score value
      */
     public void setScore(double score) {
         this.score = score;
     }
 
     /**
-     * Consume a specific LinearOpponent.
+     * Consume a specific Opponent.
      * @param opponent to eat
      */
     public void eat(Opponent opponent) {
         double opponentSize = opponent.getSize();
-    	setScore(getScore() + opponentSize * PLAYER_EAT_SCORE_FACTOR);
+        setScore(getScore() + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         LevelState.score = String.valueOf(Math.round(getScore()));
-        int newDimension = PLAYER_WIDTH + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
+        int newDimension = PLAYER_WIDTH
+                + (int) Math.round((getScore() * PLAYER_EAT_GROW_FACTOR));
         setDimensions(newDimension, newDimension);
-        Main.actionLogger.logLine("Player ate linearOpponent", getClass().getSimpleName());
-        Main.actionLogger.logLine("Player score is " + Math.floor(getScore()), getClass().getSimpleName());
+        Main.actionLogger.logLine("Player ate opponent", getClass()
+                .getSimpleName());
+        Main.actionLogger.logLine("Player score is " + Math.floor(getScore()),
+                getClass().getSimpleName());
         playBiteSound();
     }
 
@@ -244,16 +266,20 @@ public class Player extends Entity {
      * Reset player values upon dying.
      */
     public void resetPlayerVariables() {
-        Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
-        Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
+        Main.actionLogger
+                .logLine("Player resetted", getClass().getSimpleName());
+        Main.actionLogger.logLine("Score was " + LevelState.score, getClass()
+                .getSimpleName());
         setScore(0);
         LevelState.score = "0";
         setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
         setPosition(PLAYER_START_X, PLAYER_START_Y);
     }
-    
+
     private void playBiteSound() {
-    	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random()); /* Integer between 1 and array length */
-    	musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]); /* Subtract 1 to get array index */
+        //Integer between 1 and array length
+    	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random());
+        //Subtract 1 to get array index
+    	musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]);
     }
 }
