@@ -19,9 +19,19 @@ public class OpponentHandler {
 	private ArrayList<Whale> whales;
 	private WhaleIndicator indicator;
 	private boolean whaleEventInProgress = false;
-	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
+	private MusicPlayer musicPlayer;
 
 	public OpponentHandler() {
+		musicPlayer = MusicPlayer.getInstance();
+		opponents = new ArrayList<Opponent>();
+		toRemove = new ArrayList<Opponent>();
+		whales = new ArrayList<Whale>();
+	}
+
+	public OpponentHandler(boolean loadResources) {
+		if (loadResources) {
+			musicPlayer = MusicPlayer.getInstance();
+		}
 		opponents = new ArrayList<Opponent>();
 		toRemove = new ArrayList<Opponent>();
 		whales = new ArrayList<Whale>();
