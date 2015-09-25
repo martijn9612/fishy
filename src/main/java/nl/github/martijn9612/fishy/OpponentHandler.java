@@ -11,13 +11,20 @@ import org.newdawn.slick.state.StateBasedGame;
  * Implements the Opponent Handler of the game.
  */
 public class OpponentHandler {
-    private ArrayList<Opponent> opponents;
-    private ArrayList<Opponent> toRemove;
-    private Random random = new Random();
+
+	private ArrayList<Opponent> opponents;
+	private ArrayList<Opponent> toRemove;
+	private Random random = new Random();
+	private Whale whale;
+	private ArrayList<Whale> whales;
+	private WhaleIndicator indicator;
+	private boolean whaleEventInProgress = false;
+	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
 
 	public OpponentHandler() {
 		opponents = new ArrayList<Opponent>();
 		toRemove = new ArrayList<Opponent>();
+		whales = new ArrayList<Whale>();
 	}
 	  
 	/**
@@ -74,7 +81,7 @@ public class OpponentHandler {
 	 * @param gc the container holding the game
 	 * @param deltaTime the amount of time that has passed since last update in milliseconds
 	 */
-	public void updateOpponents(GameContainer gc, int deltaTime) {
+	public void updateOpponents(GameContainer gc, int deltaTime, Player player) {
 		for (Opponent opponent : opponents) {
 			opponent.objectLogic(gc, deltaTime);
 			if (opponent.isOffScreen()) {
@@ -85,6 +92,13 @@ public class OpponentHandler {
 			opponents.remove(opponent);
 		}
 		toRemove.clear();
+
+		if(whaleEventInProgress){
+			for(Whale w : whales){
+				w.objectLogic(gc, deltaTime);
+			}
+			indicator.objectLogic(gc, deltaTime, player);
+		}
 	}
 
 	/**
@@ -103,8 +117,8 @@ public class OpponentHandler {
 		for (Opponent opponent : opponents) {
 			destroy(opponent);
 		}
-		Main.actionLogger.logLine("All opponents destroyed", getClass()
-				.getSimpleName());
+		whales.clear();
+		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
 	}
 
 	/**
@@ -131,5 +145,44 @@ public class OpponentHandler {
 				}
 			}
 		}
+
+		if(whaleEventInProgress) {
+			if (player.ellipse.intersects(whale.ellipse)) {
+				Main.actionLogger.logLine("Player lost the game because of the whale", getClass().getSimpleName());
+				player.resetPlayerVariables();
+				destroyAllOpponents();
+				sbg.enterState(Main.GAME_LOSE_STATE);
+				musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
+			}
+		}
+	}
+
+	public void startWhaleEvent(Player player){
+		double rand = Math.random();
+		if(rand < 0.0006){
+			whaleEventInProgress = true;
+			int playery = player.getY();
+			indicator = new WhaleIndicator(playery);
+			whale = new Whale(playery);
+			whales.add(whale);
+			musicPlayer.playSound(MusicPlayer.WHALE_EVENT);
+		}
+
+
+	}
+
+	public void renderWhaleEvent(Graphics g){
+		indicator.renderObject(g);
+		for (Whale w : whales) {
+			w.renderObject(g);
+		}
+	}
+
+	public boolean getWhaleEventInProgress(){
+		return this.whaleEventInProgress;
+	}
+
+	public void setWhaleEventInProgress( boolean status){
+		this.whaleEventInProgress = status;
 	}
 }

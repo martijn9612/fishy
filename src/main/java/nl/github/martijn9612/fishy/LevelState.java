@@ -13,11 +13,13 @@ import org.newdawn.slick.state.StateBasedGame;
  * Implements the Level State of the game.
  */
 public class LevelState extends BasicGameState {
-    private Player player;
-    private Sound bgPlayMusic;
-    private String state = "Playing";
-    private String fishPosition = "(" + 0 + "," + 0 + ")";
-    public static String score = "0";
+
+	public Player player;
+	public Sound bgPlayMusic;
+	public String state = "Playing";
+	public String fishPosition = "(" + 0 + "," + 0 + ")";
+	public static String score = "0";
+	public static int time = 0;
 	private Image background;
 	private OpponentHandler opponentHandler;
 	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
@@ -70,7 +72,8 @@ public class LevelState extends BasicGameState {
         g.drawString(score, XPOS_SCORE_STRING, YPOS_STATE_STRING);
         player.renderObject(g);
         opponentHandler.renderOpponents(g);
-    }
+		if(opponentHandler.getWhaleEventInProgress()) {opponentHandler.renderWhaleEvent(g);}
+	}
 
     /**
      * Update the game logic and check if the win condition should be triggered.
@@ -80,13 +83,26 @@ public class LevelState extends BasicGameState {
      *              milliseconds
      * @throws SlickException indicates internal error
      */
-    public void update(GameContainer gc, StateBasedGame sbg, int delta)
-            throws SlickException {
+    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         player.objectLogic(gc, delta);
-        opponentHandler.collide(player, sbg);
-        opponentHandler.updateOpponents(gc, delta);
+        opponentHandler.updateOpponents(gc, delta, player);
         opponentHandler.spawnOpponents(player);
         fishPosition = "(" + player.x + "," + player.y + ")";
+
+		if(!opponentHandler.getWhaleEventInProgress()) {
+			opponentHandler.startWhaleEvent(player);
+			if(opponentHandler.getWhaleEventInProgress()) {
+				time = 25000;
+			}
+		}
+
+		if(time > 0){
+			time -= delta;
+		} else{
+			time = 0;
+			opponentHandler.setWhaleEventInProgress(false);
+		}
+		opponentHandler.collide(player, sbg);
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
             Main.actionLogger.logLine("Player won the game", getClass()
