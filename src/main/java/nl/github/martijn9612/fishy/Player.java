@@ -23,7 +23,6 @@ public class Player extends Entity {
     private int decelerateDown, accelerateDown, speedDown = 0;
     private double score = 0;
     private MusicPlayer musicPlayer;
-    //= MusicPlayer.getInstance();
     private static final String[] BITE_SOUNDS = {
 		MusicPlayer.BITE_SOUND_1,
 		MusicPlayer.BITE_SOUND_2,

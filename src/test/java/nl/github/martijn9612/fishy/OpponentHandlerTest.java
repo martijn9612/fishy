@@ -2,22 +2,12 @@ package nl.github.martijn9612.fishy;
 
 import static org.junit.Assert.*;
 
-import java.util.Random;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.state.StateBasedGame;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
 
 public class OpponentHandlerTest {
 
@@ -26,7 +16,7 @@ public class OpponentHandlerTest {
     private final GameContainer gc = mock(GameContainer.class);
 
     private final Player player = new Player(false);
-    OpponentHandler testhandler = new OpponentHandler();
+    OpponentHandler testhandler = new OpponentHandler(false);
 
     // Opponent testopp = new Opponent(true, 0, 0, 1.0, 0);
 
