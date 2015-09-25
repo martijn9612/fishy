@@ -11,8 +11,8 @@ public class Whale extends Entity {
     private int yPos;
     private String IMAGE_NAME = "whale";
     private int xPos = 1000;
-    private double size = 200;
-    private int speed = 3;
+    private double size = 400;
+    private int speed = 1;
 
 
     public Whale( int playery) {

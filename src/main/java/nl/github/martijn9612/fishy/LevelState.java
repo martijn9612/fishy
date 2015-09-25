@@ -56,6 +56,7 @@ public class LevelState extends BasicGameState {
 		g.drawString(score, 450, 10);
 		player.renderObject(g);
 		opponentHandler.renderOpponents(g);
+		if(opponentHandler.getWhaleEventInProgress()) {opponentHandler.renderWhaleEvent(g);}
 	}
 
 	/**
@@ -64,8 +65,10 @@ public class LevelState extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		player.objectLogic(gc, delta);
 		opponentHandler.collide(player, sbg);
-		opponentHandler.updateOpponents(gc, delta);
+		opponentHandler.updateOpponents(gc, delta, player);
 		opponentHandler.newOpponent(player);
+		if(!opponentHandler.getWhaleEventInProgress()) {opponentHandler.startWhaleEvent(player);}
+
 		fishPosition = "(" + player.x + "," + player.y + ")";
 
 

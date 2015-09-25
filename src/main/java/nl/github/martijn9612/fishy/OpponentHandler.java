@@ -12,6 +12,10 @@ public class OpponentHandler {
 	private ArrayList<Opponent> opponents;
 	private ArrayList<Opponent> toRemove;
 	private Random random = new Random();
+	private Whale whale;
+	private WhaleIndicator indicator;
+	private boolean whaleEventInProgress = false;
+	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
 
 	public OpponentHandler() {
 		opponents = new ArrayList<Opponent>();
@@ -52,7 +56,7 @@ public class OpponentHandler {
 	 * @param gc the screen.
 	 * @param deltaTime no clue.
 	 */
-	public void updateOpponents(GameContainer gc, int deltaTime) {
+	public void updateOpponents(GameContainer gc, int deltaTime, Player player) {
 		for (Opponent fish : opponents) {
 			fish.objectLogic(gc, deltaTime);
 			if(fish.isOffScreen()) {
@@ -63,6 +67,11 @@ public class OpponentHandler {
 			opponents.remove(fish);
 		}
 		toRemove.clear();
+
+		if(whaleEventInProgress){
+			whale.objectLogic(gc, deltaTime);
+			indicator.setPosition(580, player.getY());
+		}
 	}
 
 	public void destroy(Opponent fishy) {
@@ -91,19 +100,36 @@ public class OpponentHandler {
 				}
 			}
 		}
+
+		if(whaleEventInProgress) {
+			if (player.ellipse.intersects(whale.ellipse)) {
+				Main.actionLogger.logLine("Player lost the game because of the whale", getClass().getSimpleName());
+				player.resetPlayerVariables();
+				destroyAllOpponents();
+				sbg.enterState(Main.GAME_LOSE_STATE);
+			}
+		}
 	}
 
-	public void startWhaleEvent(Player player, Graphics g){
+	public void startWhaleEvent(Player player){
 		double rand = Math.random();
 		if(rand < 0.0006){
+			whaleEventInProgress = true;
 			int playery = player.getY();
-			WhaleIndicator indicator = new WhaleIndicator(playery);
-			Whale whale = new Whale(playery);
-			indicator.renderObject(g);
-			whale.renderObject(g);
+			indicator = new WhaleIndicator(playery);
+			whale = new Whale(playery);
+			musicPlayer.playSound(MusicPlayer.WHALE_EVENT);
+
 
 		}
-
 	}
-	
+
+	public void renderWhaleEvent(Graphics g){
+		indicator.renderObject(g);
+		whale.renderObject(g);
+	}
+
+	public boolean getWhaleEventInProgress(){
+		return this.whaleEventInProgress;
+	}
 }

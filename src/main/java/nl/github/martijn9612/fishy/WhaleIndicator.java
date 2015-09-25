@@ -8,12 +8,14 @@ public class WhaleIndicator extends Entity {
 
     private int yPos;
     private String IMAGE_NAME = "arrow";
-    private int xPos = 580;
+    private int xPos = 550;
 
     public WhaleIndicator( int playery) {
         this.yPos = playery;
         this.loadImage(IMAGE_NAME);
         this.setPosition(xPos, yPos);
+        this.calculateInitialBoundingbox();
+
     }
 
 
