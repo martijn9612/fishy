@@ -47,7 +47,7 @@ public class OpponentHandlerTest {
         Opponent testopp = new LinearOpponent(true, 1, 1, -1, 0);
         testhandler.addOpponent(testopp);
         assertEquals(testhandler.getOpponents().size(), 1);
-        testhandler.updateOpponents(gc, 0);
+        testhandler.updateOpponents(gc, 0, player);
         assertEquals(testhandler.getOpponents().size(), 0);
     }
 
@@ -56,7 +56,7 @@ public class OpponentHandlerTest {
         Opponent testopp = new LinearOpponent(true, 1, 1, 1, 0);
         testhandler.addOpponent(testopp);
         assertEquals(testhandler.getOpponents().size(), 1);
-        testhandler.updateOpponents(gc, 0);
+        testhandler.updateOpponents(gc, 0, player);
         assertEquals(testhandler.getOpponents().size(), 1);
     }
 
