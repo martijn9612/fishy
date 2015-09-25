@@ -68,7 +68,7 @@ public class LevelState extends BasicGameState {
 		opponentHandler.updateOpponents(gc, delta, player);
 		opponentHandler.newOpponent(player);
 		if(!opponentHandler.getWhaleEventInProgress()) {
-			opponentHandler.startWhaleEvent(player, delta);
+			opponentHandler.startWhaleEvent(player);
 			if(opponentHandler.getWhaleEventInProgress()) {
 				time = 25000;
 			}

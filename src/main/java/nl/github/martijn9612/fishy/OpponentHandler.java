@@ -117,7 +117,7 @@ public class OpponentHandler {
 		}
 	}
 
-	public void startWhaleEvent(Player player, int delta){
+	public void startWhaleEvent(Player player){
 		double rand = Math.random();
 		if(rand < 0.0006){
 			whaleEventInProgress = true;
