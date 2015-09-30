@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
 
@@ -14,34 +15,46 @@ public class OpponentTest extends TestCase {
 	 */
 	@Test
 	public void testGetSize() {
-		Opponent testopp = new LinearOpponent(true, 0, 0, 1, 0, false);
-		assertEquals(testopp.getSize(), 1.0, 0.1);
+		float size = 5.0f;
+		Vector position = new Vector(0,0);
+        Vector dimensions = new Vector(size,size);
+        Vector speed = new Vector(1,0);
+    	Opponent testopp = new LinearOpponent(position, dimensions, speed, false);
+		assertEquals(testopp.getSize(), size, 0.1);
 	}
 
 	/**
-	 * Test case for isOffScreen method. First if statement is true
+	 * Test case for testing whether the position of an opponent is on the screen.
 	 */
 	@Test
-	public void testIsOffScreen() {
-		Opponent testopp = new LinearOpponent(true, 1, 1, -1, 0, false);
-		assertTrue(testopp.isOffScreen());
-	}
-
-	/**
-	 * Test case for isOffScreen method. Second if statement is true
-	 */
-	@Test
-	public void testIsOffScreen2() {
-		Opponent testopp = new SinusOpponent(10, -1, false);
-		assertTrue(testopp.isOffScreen());
-	}
-
-	/**
-	 * Test case for isOffScreen method. None of the if statements are true
-	 */
-	@Test
-	public void testIsOffScreen1() {
-		Opponent testopp = new LinearOpponent(true, 1, 1, 1, 0, false);
+	public void testIsOpponentOnScreen() {
+		Vector speed = new Vector(0,0);
+		Vector position = new Vector(10,10);
+        Vector dimensions = new Vector(1,1);
+        Opponent testopp = new LinearOpponent(position, dimensions, speed, false);
 		assertFalse(testopp.isOffScreen());
+		testopp.position = new Vector(10, Main.WINDOW_HEIGHT - 10);
+		assertFalse(testopp.isOffScreen());
+		testopp.position = new Vector(Main.WINDOW_WIDTH - 10, Main.WINDOW_HEIGHT - 10);
+		assertFalse(testopp.isOffScreen());
+		testopp.position = new Vector(Main.WINDOW_WIDTH - 10, 10);
+		assertFalse(testopp.isOffScreen());
+	}
+
+	/**
+	 * Test case for testing whether the position of an opponent is off the screen.
+	 */
+	@Test
+	public void testIsOpponentOffScreen() {
+		Vector dimensions = new Vector(1,1);
+		Vector position = new Vector(-10,-10);
+		Opponent testopp = new SinusOpponent(position, dimensions, false);
+		assertTrue(testopp.isOffScreen());
+		testopp.position = new Vector(-10, Main.WINDOW_HEIGHT + 10);
+		assertTrue(testopp.isOffScreen());
+		testopp.position = new Vector(Main.WINDOW_WIDTH + 10, Main.WINDOW_HEIGHT + 10);
+		assertTrue(testopp.isOffScreen());
+		testopp.position = new Vector(Main.WINDOW_WIDTH + 10, -10);
+		assertTrue(testopp.isOffScreen());
 	}
 }

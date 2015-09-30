@@ -1,14 +1,8 @@
 package nl.github.martijn9612.fishy;
 
-import static org.mockito.Mockito.mock;
-
 import org.junit.Test;
-import org.newdawn.slick.GameContainer;
 
 import junit.framework.TestCase;
-import nl.github.martijn9612.fishy.models.Opponent;
-import nl.github.martijn9612.fishy.models.Player;
-import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 
 public class OpponentControllerTest extends TestCase {
 

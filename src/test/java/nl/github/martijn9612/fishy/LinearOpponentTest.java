@@ -7,6 +7,7 @@ import org.newdawn.slick.GameContainer;
 
 import junit.framework.TestCase;
 import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 
 public class LinearOpponentTest extends TestCase {
@@ -17,10 +18,13 @@ public class LinearOpponentTest extends TestCase {
      * Spawns the opponent at the left side of the screen.
      */
     @Test
-    public void testObjectLogic1() {
-        Opponent opp = new LinearOpponent(true, 0, 0, 10, 1, false);
+    public void testLinearOpponentMoveRight() {
+        Vector position = new Vector(0,0);
+        Vector dimensions = new Vector(10,10);
+        Vector speed = new Vector(1,0);
+    	Opponent opp = new LinearOpponent(position, dimensions, speed, false);
         opp.objectLogic(gc, 0);
-        assertEquals(1, opp.position.x, 0.1);
+        assertEquals(1.0, opp.position.x, 0.1);
     }
     
     /**
@@ -28,10 +32,12 @@ public class LinearOpponentTest extends TestCase {
      * Spawns the opponent at the right side of the screen.
      */
     @Test
-    public void testObjectLogic2() {
-        Opponent opp = new LinearOpponent(false, 10, 10, 10, 1, false);
+    public void testLinearOpponentMoveLeft() {
+        Vector position = new Vector(10,10);
+        Vector dimensions = new Vector(10,10);
+        Vector speed = new Vector(-1,0);
+    	Opponent opp = new LinearOpponent(position, dimensions, speed, false);
         opp.objectLogic(gc, 0);
         assertEquals(9.0, opp.position.x, 0.1);
     }
-   
 }

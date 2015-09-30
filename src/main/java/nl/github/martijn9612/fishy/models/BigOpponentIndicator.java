@@ -1,5 +1,8 @@
 package nl.github.martijn9612.fishy.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.GameContainer;
 
 /**
@@ -9,10 +12,12 @@ import org.newdawn.slick.GameContainer;
 public class BigOpponentIndicator extends Entity {
 
     private Player player;
+    private static final int LAG_BY_FRAMES = 15;
     private static final float WHALE_START_X = 580;
     private static final float WHALE_SIZE_X = 115;
     private static final float WHALE_SIZE_Y = 100;
     private static final String SPRITE_PATH = "resources/whale.png";
+    private List<Float> positionHistory = new ArrayList<Float>();
 
     public BigOpponentIndicator(Player player, boolean loadResource) {
     	super(loadResource);
@@ -25,7 +30,11 @@ public class BigOpponentIndicator extends Entity {
 
 	@Override
 	public void objectLogic(GameContainer gc, int deltaTime) {
-		position.y = player.position.y - (WHALE_SIZE_Y / 2);
+		positionHistory.add(player.position.y - (WHALE_SIZE_Y / 2));
+		if(positionHistory.size() > LAG_BY_FRAMES) {
+			position.y = positionHistory.get(0);
+			positionHistory.remove(0);
+		}
 	}
 
 }

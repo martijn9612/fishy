@@ -49,16 +49,16 @@ public class LevelState extends BasicGameState {
      * @throws SlickException indicates internal error
      */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
 		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
-		opponentController = new OpponentController(true);
-		player = new Player(true);
 	}
 
     @Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
+		opponentController = new OpponentController(true);
+		player = new Player(true);
 	}
 
     /**
@@ -76,9 +76,6 @@ public class LevelState extends BasicGameState {
 		g.drawString(score, XPOS_SCORE_STRING, YPOS_STATE_STRING);
 		player.renderObject(g);
 		opponentController.renderOpponents(g);
-		if (opponentController.isWhaleEventInProgress()) {
-			opponentController.renderWhaleEvent(g);
-		}
 	}
 
     /**
@@ -128,7 +125,10 @@ public class LevelState extends BasicGameState {
     @Override
     public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
         super.leave(gc, sbg);
+        player.resetPlayerVariables();
+        musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
         musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
+        opponentController.destroyAllOpponents();
     }
 
     /**

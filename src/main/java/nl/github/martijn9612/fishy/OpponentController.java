@@ -20,94 +20,48 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
  */
 public class OpponentController {
 
-	private ArrayList<Opponent> opponents;
-	private ArrayList<Opponent> toRemove;
-	private Random random = new Random();
-	private ArrayList<BigOpponent> bigOpponents;
+	private MusicPlayer musicPlayer;
 	private BigOpponentIndicator indicator;
 	private boolean whaleEventInProgress = false;
-	private MusicPlayer musicPlayer;
+	private ArrayList<Opponent> opponents = new ArrayList<Opponent>();
+	private ArrayList<Opponent> toRemove = new ArrayList<Opponent>();
+	private final Random random = new Random();
 	private boolean loadResources;
+	
+	private static final int MAX_OPPONENTS = 20;
 
 	public OpponentController(boolean loadResources) {
 		this.loadResources = loadResources;
 		if (loadResources) {
 			musicPlayer = MusicPlayer.getInstance();
 		}
-		opponents = new ArrayList<Opponent>();
-		toRemove = new ArrayList<Opponent>();
-		bigOpponents = new ArrayList<BigOpponent>();
 	}
-	
-    /**
-     * Get method for the variable opponents.
-     * @return opponents - list with all the opponents in it
-     */
-    public ArrayList<Opponent> getOpponents() {
-        return opponents;
-    }
-
-    /**
-     * Get method for the variable toRemove.
-     * @return toRemove - list with all the removed opponents
-     */
-    public ArrayList<Opponent> getToRemove() {
-        return toRemove;
-    }
-
-    /**
-     * Adds an opponent to the list with opponents.
-     * @param opp - opponent to be added to the list
-     */
-    public void addOpponent(Opponent opp) {
-        opponents.add(opp);
-    }
 	  
 	/**
 	 * create a new fish.
 	 */
 	public void spawnOpponents(Player player) {
-		if (opponents.size() < 20) {
-			if ((random.nextInt(5) + 1) > 1) {
-				newLinearOpponent(player);
+		if (opponents.size() < MAX_OPPONENTS) {
+			Opponent newOpponent;
+			if (random.nextInt(5) > 0) {
+				newOpponent = LinearOpponent.createRandom(player, random, loadResources);
 			} else {
-				newSinusOpponent(player);
+				newOpponent = SinusOpponent.createRandom(player, random, loadResources);
 			}
+			opponents.add(newOpponent);
 		}
 	}
 
-	private void newLinearOpponent(Player player) {
-		boolean isleft = random.nextBoolean();
-		int maxSize = (int) (player.getSize() * 2);
-		int minSize = (int) (player.getSize() * 0.5);
-		int size = (random.nextInt((maxSize - minSize)) + minSize);
-		int speed = random.nextInt(4) + 1;
-		int max = 515 - size;
-		int min = size;
-		int ypos = random.nextInt(Math.abs(max - min)) + min;
-		int xpos = (isleft ? 0 - size * 5 : 615 + size * 5);
-		LinearOpponent linearOpponent = new LinearOpponent(isleft, xpos, ypos, size, speed, loadResources);
-		opponents.add(linearOpponent);
-	}
-
-	private void newSinusOpponent(Player player) {
-		int maxSize = (int) (player.getSize() * 2.5);
-		int minSize = (int) (player.getSize() * 0.5);
-		int size = (random.nextInt((maxSize - minSize)) + minSize);
-		int max = 615 - (int) Math.round(size);
-		int min = (int) Math.round(size);
-		int xpos = random.nextInt(Math.abs(max - min)) + min;
-		SinusOpponent sinusOpponent = new SinusOpponent(xpos, size, loadResources);
-		opponents.add(sinusOpponent);
-	}
-
 	/**
-	 * render all linearOpponents.
+	 * render all Opponents.
 	 * @param graph the graphics.
 	 */
 	public void renderOpponents(Graphics graph) {
 		for (Opponent opponent : opponents) {
 			opponent.renderObject(graph);
+		}
+		if (whaleEventInProgress) {
+			indicator.renderObject(graph);
 		}
 	}
 
@@ -127,23 +81,19 @@ public class OpponentController {
 		for (Opponent opponent : toRemove) {
 			opponents.remove(opponent);
 		}
-		toRemove.clear();
-
-		if(whaleEventInProgress) {
-			for(BigOpponent bigOpponent : bigOpponents) {
-				bigOpponent.objectLogic(gc, deltaTime);
-			}
+		if (whaleEventInProgress) {
 			indicator.objectLogic(gc, deltaTime);
 		}
+		toRemove.clear();
 	}
 
 	/**
 	 * Destroy an opponent.
 	 *
-	 * @param fishy opponent to destroy
+	 * @param opponent to destroy
 	 */
-	public void destroy(Opponent fishy) {
-		toRemove.add(fishy);
+	public void destroy(Opponent opponent) {
+		toRemove.add(opponent);
 	}
 
 	/**
@@ -153,7 +103,7 @@ public class OpponentController {
 		for (Opponent opponent : opponents) {
 			destroy(opponent);
 		}
-		bigOpponents.clear();
+		whaleEventInProgress = false;
 		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
 	}
 
@@ -173,25 +123,7 @@ public class OpponentController {
 					destroy(opponent);
 				} else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
-					player.resetPlayerVariables();
-					whaleEventInProgress = false;
-					destroyAllOpponents();
-					musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
 					sbg.enterState(Main.GAME_LOSE_STATE);
-				}
-			}
-		}
-
-		if (whaleEventInProgress) {
-			for (BigOpponent bigOpponent : bigOpponents) {
-				if (bigOpponent.intersects(player)) {
-					Main.actionLogger.logLine("Player lost the game because of the bigOpponent", getClass().getSimpleName());
-					player.resetPlayerVariables();
-					whaleEventInProgress = false;
-					destroyAllOpponents();
-					musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
-					sbg.enterState(Main.GAME_LOSE_STATE);
-					break;
 				}
 			}
 		}
@@ -203,23 +135,16 @@ public class OpponentController {
 			whaleEventInProgress = true;
 			indicator = new BigOpponentIndicator(player, true);
 			BigOpponent bigOpponent = new BigOpponent(player, true);
-			bigOpponents.add(bigOpponent);
+			opponents.add(bigOpponent);
 			musicPlayer.playSound(MusicPlayer.WHALE_EVENT);
 		}
 	}
 
-	public void renderWhaleEvent(Graphics g){
-		indicator.renderObject(g);
-		for (BigOpponent w : bigOpponents) {
-			w.renderObject(g);
-		}
-	}
-
-	public boolean isWhaleEventInProgress(){
+	public boolean isWhaleEventInProgress() {
 		return this.whaleEventInProgress;
 	}
 
-	public void setWhaleEventInProgress( boolean status){
+	public void setWhaleEventInProgress(boolean status) {
 		this.whaleEventInProgress = status;
 	}
 }
