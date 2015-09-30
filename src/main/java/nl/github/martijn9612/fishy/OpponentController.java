@@ -117,7 +117,7 @@ public class OpponentController {
 	 * @param gc the container holding the game
 	 * @param deltaTime the amount of time that has passed since last update in milliseconds
 	 */
-	public void updateOpponents(GameContainer gc, int deltaTime, Player player) {
+	public void updateOpponents(GameContainer gc, int deltaTime) {
 		for (Opponent opponent : opponents) {
 			opponent.objectLogic(gc, deltaTime);
 			if (opponent.isOffScreen()) {

@@ -91,7 +91,7 @@ public class LevelState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         player.objectLogic(gc, delta);
-        opponentController.updateOpponents(gc, delta, player);
+        opponentController.updateOpponents(gc, delta);
         opponentController.spawnOpponents(player);
         fishPosition = player.position.toString();
 

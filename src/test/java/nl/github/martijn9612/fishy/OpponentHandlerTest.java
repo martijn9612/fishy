@@ -12,11 +12,16 @@ import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 
 public class OpponentHandlerTest extends TestCase {
 
+	private Player player;
+	private OpponentController testhandler;
 	private final GameContainer gc = mock(GameContainer.class);
-
-	private final Player player = new Player(false);
-	OpponentController testhandler = new OpponentController(false);
-
+	
+	@Override
+	protected void setUp() {
+		player = new Player(false);
+		testhandler = new OpponentController(false);
+	};
+	
 	@Test
 	public void testNewLinearOpponent() {
 		int size = testhandler.getOpponents().size();
@@ -34,7 +39,7 @@ public class OpponentHandlerTest extends TestCase {
 		Opponent testopp = new LinearOpponent(true, 1, 1, -1, 0, false);
 		testhandler.addOpponent(testopp);
 		assertEquals(testhandler.getOpponents().size(), 1);
-		testhandler.updateOpponents(gc, 0, player);
+		testhandler.updateOpponents(gc, 0);
 		assertEquals(testhandler.getOpponents().size(), 0);
 	}
 
@@ -43,7 +48,7 @@ public class OpponentHandlerTest extends TestCase {
 		Opponent testopp = new LinearOpponent(true, 1, 1, 1, 0, false);
 		testhandler.addOpponent(testopp);
 		assertEquals(testhandler.getOpponents().size(), 1);
-		testhandler.updateOpponents(gc, 0, player);
+		testhandler.updateOpponents(gc, 0);
 		assertEquals(testhandler.getOpponents().size(), 1);
 	}
 
