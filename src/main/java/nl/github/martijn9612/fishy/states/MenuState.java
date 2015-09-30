@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.states;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -8,9 +8,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import nl.github.martijn9612.fishy.models.DrawRectangle;
-import nl.github.martijn9612.fishy.models.MousePosition;
-import nl.github.martijn9612.fishy.models.MouseRectangle;
+import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.position.DrawRectangle;
+import nl.github.martijn9612.fishy.position.MousePosition;
+import nl.github.martijn9612.fishy.position.MouseRectangle;
+import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the Menu State of the game.

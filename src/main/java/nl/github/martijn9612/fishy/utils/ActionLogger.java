@@ -1,9 +1,11 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import nl.github.martijn9612.fishy.Main;
 
 /**
  * This class logs to a file to observe the behaviour of a program.
@@ -15,7 +17,7 @@ public class ActionLogger {
     /**
      * Instantiates a new FileWriter to log to a file, each time overwriting the old file.
      */
-    ActionLogger() {
+    public ActionLogger() {
         try {
             fileWriter = new FileWriter("log.txt", false);
         } catch (Exception e) {
@@ -28,14 +30,9 @@ public class ActionLogger {
      * @param text Text to log
      * @param className Class the log is called in
      */
-    public void logLine(String text, String className) {
-        try {
-            fileWriter.write("[ " + getTimeStamp() + "] - " + text + " - " + className + "\n");
-        } catch (IOException e) {
-            System.out.println("Unable to log to file!");
-            e.printStackTrace();
-        }
-    }
+	public void logLine(String text, String className) {
+		logLine(text, className, false);
+	}
 
     /**
      * Logs one line to file to log in.
@@ -43,19 +40,21 @@ public class ActionLogger {
      * @param className Class the log is called in
      * @param isError Adds additional error text if set to true
      */
-    public void logLine(String text, String className, boolean isError) {
-        try {
-            if (isError) {
-                fileWriter.write("[ERROR!][ " + getTimeStamp() + "] - " + text
-                        + " - " + className + "\n");
-            } else {
-                logLine(text, className);
-            }
-        } catch (IOException e) {
-            System.out.println("Unable to log to file!");
-            e.printStackTrace();
-        }
-    }
+	public void logLine(String text, String className, boolean isError) {
+		try {
+			String logMessage = "[ " + getTimeStamp() + "] - " + text + " - " + className + "\n";
+			if (isError) {
+				logMessage = "[ERROR!]" + logMessage;
+			}
+			if (Main.DEBUG_MODE) {
+				System.out.print(logMessage);
+			}
+			fileWriter.write(logMessage);
+		} catch (IOException e) {
+			System.out.println("Unable to log to file!");
+			e.printStackTrace();
+		}
+	}
 
     /**
      * Closes the filewriter so that the lines are written, otherwise all the logs are lost.

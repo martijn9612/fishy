@@ -7,28 +7,30 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.Player;
+import nl.github.martijn9612.fishy.models.WhaleIndicator;
+import nl.github.martijn9612.fishy.opponents.LinearOpponent;
+import nl.github.martijn9612.fishy.opponents.SinusOpponent;
+import nl.github.martijn9612.fishy.opponents.Whale;
+import nl.github.martijn9612.fishy.utils.MusicPlayer;
+
 /**
  * Implements the Opponent Handler of the game.
  */
-public class OpponentHandler {
+public class OpponentController {
 
 	private ArrayList<Opponent> opponents;
 	private ArrayList<Opponent> toRemove;
 	private Random random = new Random();
-	private Whale whale;
 	private ArrayList<Whale> whales;
 	private WhaleIndicator indicator;
 	private boolean whaleEventInProgress = false;
 	private MusicPlayer musicPlayer;
+	private boolean loadResources;
 
-	public OpponentHandler() {
-		musicPlayer = MusicPlayer.getInstance();
-		opponents = new ArrayList<Opponent>();
-		toRemove = new ArrayList<Opponent>();
-		whales = new ArrayList<Whale>();
-	}
-
-	public OpponentHandler(boolean loadResources) {
+	public OpponentController(boolean loadResources) {
+		this.loadResources = loadResources;
 		if (loadResources) {
 			musicPlayer = MusicPlayer.getInstance();
 		}
@@ -76,26 +78,26 @@ public class OpponentHandler {
 
 	private void newLinearOpponent(Player player) {
 		boolean isleft = random.nextBoolean();
-		int maxSize = (int) (player.getWidth() * 2);
-		int minSize = (int) (player.getWidth() * 0.5);
+		int maxSize = (int) (player.getSize() * 2);
+		int minSize = (int) (player.getSize() * 0.5);
 		int size = (random.nextInt((maxSize - minSize)) + minSize);
 		int speed = random.nextInt(4) + 1;
 		int max = 515 - size;
 		int min = size;
 		int ypos = random.nextInt(Math.abs(max - min)) + min;
 		int xpos = (isleft ? 0 - size * 5 : 615 + size * 5);
-		LinearOpponent linearOpponent = new LinearOpponent(isleft, xpos, ypos, size, speed);
+		LinearOpponent linearOpponent = new LinearOpponent(isleft, xpos, ypos, size, speed, loadResources);
 		opponents.add(linearOpponent);
 	}
 
 	private void newSinusOpponent(Player player) {
-		int maxSize = (int) (player.getWidth() * 2.5);
-		int minSize = (int) (player.getWidth() * 0.5);
+		int maxSize = (int) (player.getSize() * 2.5);
+		int minSize = (int) (player.getSize() * 0.5);
 		int size = (random.nextInt((maxSize - minSize)) + minSize);
 		int max = 615 - (int) Math.round(size);
 		int min = (int) Math.round(size);
 		int xpos = random.nextInt(Math.abs(max - min)) + min;
-		SinusOpponent sinusOpponent = new SinusOpponent(xpos, size);
+		SinusOpponent sinusOpponent = new SinusOpponent(xpos, size, loadResources);
 		opponents.add(sinusOpponent);
 	}
 
@@ -127,11 +129,11 @@ public class OpponentHandler {
 		}
 		toRemove.clear();
 
-		if(whaleEventInProgress){
-			for(Whale w : whales){
-				w.objectLogic(gc, deltaTime);
+		if(whaleEventInProgress) {
+			for(Whale whale : whales) {
+				whale.objectLogic(gc, deltaTime);
 			}
-			indicator.objectLogic(gc, deltaTime, player);
+			indicator.objectLogic(gc, deltaTime);
 		}
 	}
 
@@ -163,46 +165,47 @@ public class OpponentHandler {
 	 */
 	public void collide(Player player, StateBasedGame sbg) {
 		for (Opponent opponent : opponents) {
-			if (opponent.ellipse.intersects(player.ellipse)) {
-				String log = "Player collides with opponent of size "
-						+ Math.floor(opponent.getSize());
+			if (opponent.intersects(player)) {
+				String log = "Player collides with opponent of size " + Math.floor(opponent.getSize());
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
-				if (player.getWidth() > opponent.getWidth()) {
+				if (player.getSize() > opponent.getSize()) {
 					player.eat(opponent);
 					destroy(opponent);
 				} else {
-					Main.actionLogger.logLine("Player lost the game",
-							getClass().getSimpleName());
+					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					player.resetPlayerVariables();
+					whaleEventInProgress = false;
 					destroyAllOpponents();
+					musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
 					sbg.enterState(Main.GAME_LOSE_STATE);
 				}
 			}
 		}
 
-		if(whaleEventInProgress) {
-			if (player.ellipse.intersects(whale.ellipse)) {
-				Main.actionLogger.logLine("Player lost the game because of the whale", getClass().getSimpleName());
-				player.resetPlayerVariables();
-				destroyAllOpponents();
-				sbg.enterState(Main.GAME_LOSE_STATE);
-				musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
+		if (whaleEventInProgress) {
+			for (Whale whale : whales) {
+				if (whale.intersects(player)) {
+					Main.actionLogger.logLine("Player lost the game because of the whale", getClass().getSimpleName());
+					player.resetPlayerVariables();
+					whaleEventInProgress = false;
+					destroyAllOpponents();
+					musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
+					sbg.enterState(Main.GAME_LOSE_STATE);
+					break;
+				}
 			}
 		}
 	}
 
-	public void startWhaleEvent(Player player){
+	public void startWhaleEvent(Player player) {
 		double rand = Math.random();
-		if(rand < 0.0006){
+		if(rand < 0.0006) {
 			whaleEventInProgress = true;
-			int playery = player.getY();
-			indicator = new WhaleIndicator(playery);
-			whale = new Whale(playery);
+			indicator = new WhaleIndicator(player, true);
+			Whale whale = new Whale(player, true);
 			whales.add(whale);
 			musicPlayer.playSound(MusicPlayer.WHALE_EVENT);
 		}
-
-
 	}
 
 	public void renderWhaleEvent(Graphics g){
@@ -212,7 +215,7 @@ public class OpponentHandler {
 		}
 	}
 
-	public boolean getWhaleEventInProgress(){
+	public boolean isWhaleEventInProgress(){
 		return this.whaleEventInProgress;
 	}
 

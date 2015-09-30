@@ -1,43 +1,33 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.models;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import nl.github.martijn9612.fishy.models.Vector;
+import nl.github.martijn9612.fishy.states.LevelState;
+import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the playable character of the game.
  */
 public class Player extends Entity {
-    private static final int PLAYER_WIDTH = 16;
-    private static final int PLAYER_HEIGHT = 16;
-    private static final double WATER_DRAG = 0.3;
-    private static final double PLAYER_MASS = 5;
-    private static final double PLAYER_MAX_SPEED = 8;
-    private static final double PLAYER_MOVE_FORCE = 4;
-    private static final double PLAYER_EAT_GROW_FACTOR = 0.5;
-    private static final double PLAYER_EAT_SCORE_FACTOR = 0.2;
-    private static final String PLAYER_SPRITE_LEFT = "player-" + Main.PLAYER_CHARACTER + "left";
-    private static final String PLAYER_SPRITE_RIGHT = "player-" + Main.PLAYER_CHARACTER + "right";
+    private static final float PLAYER_WIDTH = 16;
+    private static final float PLAYER_HEIGHT = 16;
+    private static final float WATER_DRAG = 0.3f;
+    private static final float PLAYER_MASS = 5;
+    private static final float PLAYER_MAX_SPEED = 8;
+    private static final float PLAYER_MOVE_FORCE = 4;
+    private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
+    private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
+    private static final String PLAYER_SPRITE_LEFT = "resources/player-" + Main.PLAYER_CHARACTER + "left.png";
+    private static final String PLAYER_SPRITE_RIGHT = "resources/player-" + Main.PLAYER_CHARACTER + "right.png";
     
-    private MusicPlayer musicPlayer;
+    private double score = 0;
     private static final String[] BITE_SOUNDS = {
 		MusicPlayer.BITE_SOUND_1,
 		MusicPlayer.BITE_SOUND_2,
 		MusicPlayer.BITE_SOUND_3
 	};
-    
-    private Vector location;
-    private Vector velocity;
-    private Vector acceleration;
-    private double score = 0;
-
-    /**
-     * Creates a new Player instance and loads the player sprite.
-     */
-    public Player() {
-        this(true);
-    }
 
     /**
      * Creates a new Player instance in the game window.
@@ -46,17 +36,18 @@ public class Player extends Entity {
      *            whether the player's resources should be loaded.
      */
     public Player(boolean loadResources) {
-        if (loadResources) {
-            loadImage(PLAYER_SPRITE_LEFT);
-            musicPlayer = MusicPlayer.getInstance();
-        }
-        setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-        calculateInitialBoundingbox();
+    	super(loadResources);
+    	initPlayerVariables();
+        Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
+    }
+    
+    private void initPlayerVariables() {
+    	loadResources(PLAYER_SPRITE_LEFT);
+        dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
         velocity = new Vector(0, 0);
         acceleration = new Vector(0, 0);
-        location = Vector.centerOfScreen();
-        setPosition(location);
-        Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
+        position = Vector.centerOfScreen();
+        calculateBoundingbox();
     }
 
     /**
@@ -70,6 +61,7 @@ public class Player extends Entity {
         applyWaterDrag();
         updatePosition();
         checkEdges();
+        calculateBoundingbox();
     }
 
     /**
@@ -85,12 +77,12 @@ public class Player extends Entity {
         boolean moveD = (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN));
         
         if(moveR) {
-        	loadImage(PLAYER_SPRITE_RIGHT);
+        	loadResources(PLAYER_SPRITE_RIGHT);
         	applyForce(new Vector(PLAYER_MOVE_FORCE, 0));
         }
         
         if(moveL) {
-        	loadImage(PLAYER_SPRITE_LEFT);
+        	loadResources(PLAYER_SPRITE_LEFT);
         	applyForce(new Vector(-PLAYER_MOVE_FORCE, 0));
         }
         
@@ -109,21 +101,20 @@ public class Player extends Entity {
     private void updatePosition() {
     	velocity.add(acceleration);
         velocity.limit(PLAYER_MAX_SPEED);
-        location.add(velocity);
-        setPosition(location);
-        acceleration.mult(0);
+        position.add(velocity);
+        acceleration.scale(0);
     }
     
     /**
      * Calculates the drag force the water applies to the player.
      */
     private void applyWaterDrag() {
-		double speed = velocity.mag();
-		double dragMagnitude = WATER_DRAG * speed * speed;
-		Vector drag = velocity.get();
-		drag.mult(-1);
-		drag.normalize();
-		drag.mult(dragMagnitude);
+		float speed = velocity.length();
+		float dragMagnitude = WATER_DRAG * speed * speed;
+		Vector drag = velocity.copy();
+		drag.negateLocal();
+		drag.normalise();
+		drag.scale(dragMagnitude);
 		applyForce(drag);
 	}
     
@@ -131,8 +122,8 @@ public class Player extends Entity {
      * Checks whether the player is within the screen bounds and corrects them if necessary.
      */
     private void checkEdges() {
-        x = limit(x, 0, Main.WINDOW_WIDTH - getWidth());
-        y = limit(y, 0, Main.WINDOW_HEIGHT - getHeight());
+        position.x = limit(position.x, 0, Main.WINDOW_WIDTH - dimensions.x);
+        position.y = limit(position.y, 0, Main.WINDOW_HEIGHT - dimensions.y);
     }
     
     /**
@@ -140,8 +131,8 @@ public class Player extends Entity {
      * @param Vector force
      */
     private void applyForce(Vector force) {
-		Vector newForce = force.get();
-		newForce.div(PLAYER_MASS);
+		Vector newForce = force.copy();
+		newForce.scale(1 / PLAYER_MASS);
 		acceleration.add(newForce);
 	}
 
@@ -152,8 +143,8 @@ public class Player extends Entity {
     public void eat(Opponent opponent) {
         double opponentSize = opponent.getSize();
     	setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
-        int newDimension = PLAYER_WIDTH + (int) Math.round(score * PLAYER_EAT_GROW_FACTOR);
-        setDimensions(newDimension, newDimension);
+        float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
+        dimensions = new Vector(newDimension, newDimension);
         Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
         Main.actionLogger.logLine("Player score is " + Math.floor(score), getClass().getSimpleName());
         playBiteSound();
@@ -165,8 +156,8 @@ public class Player extends Entity {
     public void resetPlayerVariables() {
         Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
         Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
-        setPosition(Vector.centerOfScreen());
-        setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+        position = Vector.centerOfScreen();
+        dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
         setScore(0);
     }
     
@@ -181,13 +172,13 @@ public class Player extends Entity {
     /**
      * Validates whether the given number is within the given limits. If the number
      * is not within the given bounds, the closest limit value is returned.
-     * @param number integer to test
+     * @param x integer to test
      * @param min lower limit value
-     * @param max upper limit value
-     * @return int
+     * @param f upper limit value
+     * @return float
      */
-    private int limit(int number, int min, int max) {
-    	return Math.max(Math.min(number, max), min);
+    private float limit(float x, float min, float f) {
+    	return Math.max(Math.min(x, f), min);
     }
 
     /**
@@ -205,14 +196,5 @@ public class Player extends Entity {
     public void setScore(double score) {
         LevelState.score = String.valueOf(Math.round(score));
         this.score = score;
-    }
-
-    /**
-     * Set the position of the entity.
-     * TODO: Replace x and y of superclass with an instance of Vector.
-     * @param Vector position update the player his location
-     */
-    private void setPosition(Vector position) {
-    	 setPosition((int) Math.round(position.x), (int) Math.round(position.y));
     }
 }

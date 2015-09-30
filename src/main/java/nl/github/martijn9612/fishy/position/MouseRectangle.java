@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy.models;
+package nl.github.martijn9612.fishy.position;
 
 public class MouseRectangle extends MousePosition {
 	

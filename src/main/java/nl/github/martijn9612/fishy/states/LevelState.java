@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.states;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -8,6 +8,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+
+import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.OpponentController;
+import nl.github.martijn9612.fishy.models.Player;
+import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the Level State of the game.
@@ -21,7 +26,7 @@ public class LevelState extends BasicGameState {
 	public static String score = "0";
 	public static int time = 0;
 	private Image background;
-	private OpponentHandler opponentHandler;
+	private OpponentController opponentController;
 	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final int PLAYER_WIN_AT_SCORE = 500;
     private static final int XPOS_STATE_STRING = 300;
@@ -45,9 +50,9 @@ public class LevelState extends BasicGameState {
      */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
-		player = new Player();
 		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
-		opponentHandler = new OpponentHandler();
+		opponentController = new OpponentController(true);
+		player = new Player(true);
 	}
 
     @Override
@@ -63,16 +68,17 @@ public class LevelState extends BasicGameState {
      * @param g the graphics content used to render
      * @throws SlickException indicates internal error
      */
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
-            throws SlickException {
-        g.setColor(Color.black);
-        g.drawString(state, XPOS_STATE_STRING, YPOS_STATE_STRING);
-        g.drawImage(background, 0, 0);
-        g.drawString(fishPosition, XPOS_STATE_STRING, YPOS_STATE_STRING);
-        g.drawString(score, XPOS_SCORE_STRING, YPOS_STATE_STRING);
-        player.renderObject(g);
-        opponentHandler.renderOpponents(g);
-		if(opponentHandler.getWhaleEventInProgress()) {opponentHandler.renderWhaleEvent(g);}
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+		g.setColor(Color.black);
+		g.drawString(state, XPOS_STATE_STRING, YPOS_STATE_STRING);
+		g.drawImage(background, 0, 0);
+		g.drawString(fishPosition, XPOS_STATE_STRING, YPOS_STATE_STRING);
+		g.drawString(score, XPOS_SCORE_STRING, YPOS_STATE_STRING);
+		player.renderObject(g);
+		opponentController.renderOpponents(g);
+		if (opponentController.isWhaleEventInProgress()) {
+			opponentController.renderWhaleEvent(g);
+		}
 	}
 
     /**
@@ -85,13 +91,13 @@ public class LevelState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         player.objectLogic(gc, delta);
-        opponentHandler.updateOpponents(gc, delta, player);
-        opponentHandler.spawnOpponents(player);
-        fishPosition = "(" + player.x + "," + player.y + ")";
+        opponentController.updateOpponents(gc, delta, player);
+        opponentController.spawnOpponents(player);
+        fishPosition = player.position.toString();
 
-		if(!opponentHandler.getWhaleEventInProgress()) {
-			opponentHandler.startWhaleEvent(player);
-			if(opponentHandler.getWhaleEventInProgress()) {
+		if(!opponentController.isWhaleEventInProgress()) {
+			opponentController.startWhaleEvent(player);
+			if(opponentController.isWhaleEventInProgress()) {
 				time = 25000;
 			}
 		}
@@ -100,9 +106,9 @@ public class LevelState extends BasicGameState {
 			time -= delta;
 		} else{
 			time = 0;
-			opponentHandler.setWhaleEventInProgress(false);
+			opponentController.setWhaleEventInProgress(false);
 		}
-		opponentHandler.collide(player, sbg);
+		opponentController.collide(player, sbg);
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
             Main.actionLogger.logLine("Player won the game", getClass()

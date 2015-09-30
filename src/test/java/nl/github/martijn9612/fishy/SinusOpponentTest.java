@@ -1,27 +1,31 @@
 package nl.github.martijn9612.fishy;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 import org.newdawn.slick.GameContainer;
 
-public class SinusOpponentTest {
+import junit.framework.TestCase;
+import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.Vector;
+import nl.github.martijn9612.fishy.opponents.SinusOpponent;
+
+public class SinusOpponentTest extends TestCase {
     private final GameContainer gc = mock(GameContainer.class);
     
     @Test
     public void testObjectLogic() {
-        Opponent opp = new SinusOpponent(1, 1);
-        opp.setPosition(0, 0);
+        Opponent opp = new SinusOpponent(10, 1, false);
+        opp.position = new Vector(0, 0);
         opp.objectLogic(gc, 0);
-        assertEquals(opp.speed, 1);
+        assertEquals(-1.0, opp.velocity.y, 0.1);
     }
-    
-    @Test
+
+	@Test
     public void testObjectLogic2() {
-        Opponent opp = new SinusOpponent(1, 1);
-        opp.setPosition(1, 1);
+        Opponent opp = new SinusOpponent(10, 1, false);
+        opp.position = new Vector(1, 1);
         opp.objectLogic(gc, 0);
-        assertEquals(opp.speed, ((1 % 80) / 20 + 1));
+        assertEquals(-((1 % 80) / 20 + 1), opp.velocity.y, 0.1);
     }
 }
