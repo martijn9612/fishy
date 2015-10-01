@@ -20,7 +20,7 @@ public class MusicPlayer {
 	public static final String BITE_SOUND_3 = "resources/sounds/bite3.ogg";
 	public static final String BG_MUSIC_MENU = "resources/sounds/bg-menu-music.ogg";
 	public static final String BG_MUSIC_LEVEL = "resources/sounds/bg-play-music.ogg";
-	public static final String WHALE_EVENT = "resources/sounds/whale.ogg";
+	public static final String BIG_OPPONENT_EVENT = "resources/sounds/whale.ogg";
 
 
 	/**
@@ -43,7 +43,7 @@ public class MusicPlayer {
 		loadSound(BITE_SOUND_3);
 		loadSound(BG_MUSIC_MENU);
 		loadSound(BG_MUSIC_LEVEL);
-		loadSound(WHALE_EVENT);
+		loadSound(BIG_OPPONENT_EVENT);
 	}
 	
 	/**
