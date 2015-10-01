@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy.models;
+package nl.github.martijn9612.fishy.position;
 
 import org.lwjgl.input.Mouse;
 

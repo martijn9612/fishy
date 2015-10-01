@@ -5,6 +5,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.github.martijn9612.fishy.states.LevelState;
+import nl.github.martijn9612.fishy.states.LoseState;
+import nl.github.martijn9612.fishy.states.MenuState;
+import nl.github.martijn9612.fishy.states.WinState;
+import nl.github.martijn9612.fishy.utils.ActionLogger;
+
 import java.util.logging.Logger;
 
 /**
@@ -22,9 +28,9 @@ public class Main extends StateBasedGame {
     public static final String PLAYER_CHARACTER = "fish";
     public static final String OPPONENT_CHARACTER = "fish";
     public static final String LEVEL_BACKGROUND = "seabed";
-    public static final boolean DRAWBOUNDINGBOXES = false;
     public static final int FRAMERATE = 60;
     public static ActionLogger actionLogger = new ActionLogger();
+    public static final boolean DEBUG_MODE = false;
 
     /**
      * Constructor method.
@@ -85,8 +91,7 @@ public class Main extends StateBasedGame {
     public boolean closeRequested() {
         Main.actionLogger.logLine("Game Closed!", getClass().getSimpleName());
         Main.actionLogger.close();
-        System.exit(0);
-        return false;
+        return true;
     }
 
     /**
