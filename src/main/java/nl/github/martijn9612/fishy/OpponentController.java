@@ -3,16 +3,16 @@ package nl.github.martijn9612.fishy;
 import java.util.ArrayList;
 import java.util.Random;
 
+import nl.github.martijn9612.fishy.opponents.BigOpponent;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.github.martijn9612.fishy.models.Opponent;
 import nl.github.martijn9612.fishy.models.Player;
-import nl.github.martijn9612.fishy.models.WhaleIndicator;
+import nl.github.martijn9612.fishy.models.BigOpponentIndicator;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
-import nl.github.martijn9612.fishy.opponents.Whale;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
@@ -23,8 +23,8 @@ public class OpponentController {
 	private ArrayList<Opponent> opponents;
 	private ArrayList<Opponent> toRemove;
 	private Random random = new Random();
-	private ArrayList<Whale> whales;
-	private WhaleIndicator indicator;
+	private ArrayList<BigOpponent> bigOpponents;
+	private BigOpponentIndicator indicator;
 	private boolean whaleEventInProgress = false;
 	private MusicPlayer musicPlayer;
 	private boolean loadResources;
@@ -36,7 +36,7 @@ public class OpponentController {
 		}
 		opponents = new ArrayList<Opponent>();
 		toRemove = new ArrayList<Opponent>();
-		whales = new ArrayList<Whale>();
+		bigOpponents = new ArrayList<BigOpponent>();
 	}
 	
     /**
@@ -130,8 +130,8 @@ public class OpponentController {
 		toRemove.clear();
 
 		if(whaleEventInProgress) {
-			for(Whale whale : whales) {
-				whale.objectLogic(gc, deltaTime);
+			for(BigOpponent bigOpponent : bigOpponents) {
+				bigOpponent.objectLogic(gc, deltaTime);
 			}
 			indicator.objectLogic(gc, deltaTime);
 		}
@@ -153,7 +153,7 @@ public class OpponentController {
 		for (Opponent opponent : opponents) {
 			destroy(opponent);
 		}
-		whales.clear();
+		bigOpponents.clear();
 		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
 	}
 
@@ -183,9 +183,9 @@ public class OpponentController {
 		}
 
 		if (whaleEventInProgress) {
-			for (Whale whale : whales) {
-				if (whale.intersects(player)) {
-					Main.actionLogger.logLine("Player lost the game because of the whale", getClass().getSimpleName());
+			for (BigOpponent bigOpponent : bigOpponents) {
+				if (bigOpponent.intersects(player)) {
+					Main.actionLogger.logLine("Player lost the game because of the bigOpponent", getClass().getSimpleName());
 					player.resetPlayerVariables();
 					whaleEventInProgress = false;
 					destroyAllOpponents();
@@ -201,16 +201,16 @@ public class OpponentController {
 		double rand = Math.random();
 		if(rand < 0.0006) {
 			whaleEventInProgress = true;
-			indicator = new WhaleIndicator(player, true);
-			Whale whale = new Whale(player, true);
-			whales.add(whale);
+			indicator = new BigOpponentIndicator(player, true);
+			BigOpponent bigOpponent = new BigOpponent(player, true);
+			bigOpponents.add(bigOpponent);
 			musicPlayer.playSound(MusicPlayer.WHALE_EVENT);
 		}
 	}
 
 	public void renderWhaleEvent(Graphics g){
 		indicator.renderObject(g);
-		for (Whale w : whales) {
+		for (BigOpponent w : bigOpponents) {
 			w.renderObject(g);
 		}
 	}
