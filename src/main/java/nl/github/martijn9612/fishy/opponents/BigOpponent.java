@@ -10,14 +10,14 @@ import nl.github.martijn9612.fishy.models.Vector;
  * The whale class. The whale is a special opponent which has a small chance to spawn and takes up a large portion of the screen.
  * Created by Skullyhoofd on 25/09/2015.
  */
-public class Whale extends Opponent {
+public class BigOpponent extends Opponent {
 
     private static final String SPRITE_PATH = "resources/whale.png";
     private static final float WHALE_START_POS_X = 930;
     private static final float WHALE_SIZE = 350;
     private static final float WHALE_SPEED = 1;
 
-    public Whale(Player player, boolean loadResources) {
+    public BigOpponent(Player player, boolean loadResources) {
     	super(loadResources);
     	this.loadResources(SPRITE_PATH);
         position = new Vector(WHALE_START_POS_X, player.position.y - WHALE_SIZE / 2);
