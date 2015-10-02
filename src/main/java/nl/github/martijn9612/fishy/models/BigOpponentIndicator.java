@@ -25,6 +25,7 @@ public class BigOpponentIndicator extends Entity {
         loadResources(SPRITE_PATH);
         position = new Vector(WHALE_START_X, player.position.y - (WHALE_SIZE_Y / 2));
         dimensions = new Vector(WHALE_SIZE_X, WHALE_SIZE_Y);
+        acceleration = new Vector(0,0);
         velocity = new Vector(0,0);
     }
 
@@ -35,6 +36,8 @@ public class BigOpponentIndicator extends Entity {
 			position.y = positionHistory.get(0);
 			positionHistory.remove(0);
 		}
+		velocity.add(acceleration);
+		position.add(velocity);
 	}
 
 }

@@ -15,28 +15,32 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
  * Created by Skullyhoofd on 25/09/2015.
  */
 public class BigOpponent extends Opponent {
-    private static int timeToLive;
-    private static final int TIME_TO_LIVE = 25000;
     private static final float BIG_OPPONENT_SIZE = 350;
     private static final float BIG_OPPONENT_SPEED = 1;
     private static final float BIG_OPPONENT_START_X = 930;
+    private static final int INIDACTOR_REMOVED_AT = 20500;
+    private static final int INIDACTOR_MOVES_AT = 21000;
     private static final String SPRITE_PATH = "resources/whale.png";
-    private static BigOpponentIndicator indicator;
-    public static boolean whaleEventInProgress = false;
+    private BigOpponentIndicator indicator;
+    private int timeToLive = 25000;
+	private Player player;
     
     /**
 	 * Creates an instance of BigOpponent at the given location.
      * @param position vector with the start position of the opponent.
 	 * @param dimensions size of the new opponent.
 	 * @param velocity initial speed of the opponent.
+	 * @param player instance of the Player class.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
-    public BigOpponent(Vector position, Vector dimensions, Vector velocity, boolean loadResources) {
+    public BigOpponent(Vector position, Vector dimensions, Vector velocity, Player player, boolean loadResources) {
     	super(loadResources);
     	loadBigOpponentResources(loadResources);
+    	indicator = new BigOpponentIndicator(player, loadResources);
         this.position = position;
         this.dimensions = dimensions;
         this.velocity = velocity;
+        this.player = player;
         calculateBoundingbox();
     }
     
@@ -46,23 +50,12 @@ public class BigOpponent extends Opponent {
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
 	public static BigOpponent createBigOpponent(Player player, boolean loadResources) {
-    	if (whaleEventInProgress) {
-    		return null;
-    	} else {
-    		timeToLive = TIME_TO_LIVE;
-    		whaleEventInProgress = true;
-    		Vector position = new Vector(BIG_OPPONENT_START_X, player.position.y - BIG_OPPONENT_SIZE / 2);
-    		Vector dimensions = new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE);
-    		Vector velocity = new Vector(-BIG_OPPONENT_SPEED, 0);
-    		createBigOpponentIndicator(player, loadResources);
-    		return new BigOpponent(position, dimensions, velocity, loadResources);
-    	}
+		Vector velocity = new Vector(-BIG_OPPONENT_SPEED, 0);
+		Vector dimensions = new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE);
+		Vector position = new Vector(BIG_OPPONENT_START_X, player.position.y - BIG_OPPONENT_SIZE / 2);
+		return new BigOpponent(position, dimensions, velocity, player, loadResources);
     }
     
-    private static void createBigOpponentIndicator(Player player, boolean loadResources) {
-    	indicator = new BigOpponentIndicator(player, loadResources);
-	}
-
     public void objectLogic(GameContainer gc, int deltaTime) {
     	indicator.objectLogic(gc, deltaTime);
         position.add(velocity);
@@ -70,29 +63,38 @@ public class BigOpponent extends Opponent {
         
 		if (timeToLive > 0) {
 			timeToLive -= deltaTime;
-		} else {
-			timeToLive = 0;
-			whaleEventInProgress = false;
+		}
+		if (timeToLive > INIDACTOR_REMOVED_AT) {
+			position.y = player.position.y - BIG_OPPONENT_SIZE / 2;
+		}
+		if (timeToLive < INIDACTOR_MOVES_AT) {
+			indicator.acceleration.x = 2;
 		}
     }
     
     @Override
     public void renderObject(Graphics g) {
-    	if (whaleEventInProgress) {
-    		super.renderObject(g);
-    		indicator.renderObject(g);
-    	}
+    	super.renderObject(g);
+		if (timeToLive > INIDACTOR_REMOVED_AT) {
+			indicator.renderObject(g);
+		}
     }
 
+	@Override
+	public void destroy() {
+		MusicPlayer.getInstance().stopSound(MusicPlayer.BIG_OPPONENT_EVENT);
+		timeToLive = 0;
+	}
+	
+    @Override
+    public boolean isOffScreen() {
+    	return (timeToLive <= 0);
+    }
+	
 	private void loadBigOpponentResources(boolean loadResources) {
     	if (loadResources) {
     		this.loadResources(SPRITE_PATH);
     		MusicPlayer.getInstance().playSound(MusicPlayer.BIG_OPPONENT_EVENT);
     	}
-    }
-	
-    @Override
-    public boolean isOffScreen() {
-    	return !whaleEventInProgress;
     }
 }

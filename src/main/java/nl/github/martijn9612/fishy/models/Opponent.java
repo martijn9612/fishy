@@ -36,4 +36,10 @@ public abstract class Opponent extends Entity {
 	}
     
     abstract public void objectLogic(GameContainer gc, int deltaTime);
+    
+    /**
+     * Notify the Opponent instance that it won't be updated anymore.
+     */
+	abstract public void destroy();
+		
 }

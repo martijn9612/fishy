@@ -75,4 +75,9 @@ public class LinearOpponent extends Opponent {
 	    position.add(velocity);
 	    calculateBoundingbox();
 	}
+
+	@Override
+	public void destroy() {
+		// Blank
+	}
 }

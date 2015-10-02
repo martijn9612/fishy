@@ -66,4 +66,11 @@ public class SinusOpponent extends Opponent {
         position.add(velocity);
         calculateBoundingbox();
     }
+
+	@Override
+	public void destroy() {
+		// Blank
+	}
+    
+    
 }

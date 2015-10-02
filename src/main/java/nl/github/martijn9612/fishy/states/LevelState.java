@@ -90,9 +90,8 @@ public class LevelState extends BasicGameState {
         player.objectLogic(gc, delta);
         opponentController.updateOpponents(gc, delta);
         opponentController.spawnOpponents(player);
-        fishPosition = player.position.toString();
 		opponentController.collide(player, sbg);
-		opponentController.startWhaleEvent(player);
+		fishPosition = player.position.toString();
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
             Main.actionLogger.logLine("Player won the game", getClass()
@@ -113,9 +112,8 @@ public class LevelState extends BasicGameState {
     public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
         super.leave(gc, sbg);
         player.resetPlayerVariables();
-        musicPlayer.stopSound(MusicPlayer.BIG_OPPONENT_EVENT);
         musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
-        opponentController.destroyAllOpponents();
+        opponentController.removeAllOpponents();
     }
 
     /**

@@ -20,15 +20,16 @@ public class OpponentController {
 
 	private boolean loadResources;
 	private final Random random = new Random();
-	private ArrayList<Opponent> opponents;
-	private ArrayList<Opponent> toRemove;
-	
+	private ArrayList<Opponent> opponents = new ArrayList<Opponent>();
+	private ArrayList<Opponent> toRemove = new ArrayList<Opponent>();
 	private static final int MAX_OPPONENTS = 20;
-
+	
+	/**
+	 * Constructor to create a new OpponentController.
+	 * @param loadResources whether resources using OpenGL should be loaded.
+	 */
 	public OpponentController(boolean loadResources) {
 		this.loadResources = loadResources;
-		opponents = new ArrayList<Opponent>();
-		toRemove = new ArrayList<Opponent>();
 	}
 	  
 	/**
@@ -44,6 +45,7 @@ public class OpponentController {
 			}
 			opponents.add(newOpponent);
 		}
+		startBigOpponentEvent(player);
 	}
 
 	/**
@@ -63,12 +65,16 @@ public class OpponentController {
 	 * @param deltaTime the amount of time that has passed since last update in milliseconds
 	 */
 	public void updateOpponents(GameContainer gc, int deltaTime) {
+		updateRemoveOpponents();
 		for (Opponent opponent : opponents) {
 			opponent.objectLogic(gc, deltaTime);
 			if (opponent.isOffScreen()) {
-				destroy(opponent);
+				remove(opponent);
 			}
 		}
+	}
+	
+	private void updateRemoveOpponents() {
 		for (Opponent opponent : toRemove) {
 			opponents.remove(opponent);
 		}
@@ -80,18 +86,18 @@ public class OpponentController {
 	 *
 	 * @param opponent to destroy
 	 */
-	public void destroy(Opponent opponent) {
+	public void remove(Opponent opponent) {
+		opponent.destroy();
 		toRemove.add(opponent);
 	}
 
 	/**
 	 * Destroy all the opponents.
 	 */
-	public void destroyAllOpponents() {
+	public void removeAllOpponents() {
 		for (Opponent opponent : opponents) {
-			destroy(opponent);
+			remove(opponent);
 		}
-		BigOpponent.whaleEventInProgress = false;
 		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
 	}
 
@@ -108,7 +114,7 @@ public class OpponentController {
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
 				if (player.getSize() > opponent.getSize()) {
 					player.eat(opponent);
-					destroy(opponent);
+					remove(opponent);
 				} else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					sbg.enterState(Main.GAME_LOSE_STATE);
@@ -117,13 +123,20 @@ public class OpponentController {
 		}
 	}
 
-	public void startWhaleEvent(Player player) {
+	private void startBigOpponentEvent(Player player) {
 		double rand = Math.random();
-		if(rand < 0.0006) {
+		if(rand < 0.0106 && !bigOpponentInstanceExists()) {
 			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player, loadResources);
-			if(bigOpponent != null) {
-				opponents.add(bigOpponent);
+			opponents.add(bigOpponent);
+		}
+	}
+
+	private boolean bigOpponentInstanceExists() {
+		for (Opponent opponent : opponents) {
+			if(opponent instanceof BigOpponent) {
+				return true;
 			}
 		}
+		return false;
 	}
 }
