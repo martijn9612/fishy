@@ -1,7 +1,8 @@
 package nl.github.martijn9612.fishy.models;
 
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.geom.Vector2f;
+
+import nl.github.martijn9612.fishy.Main;
 
 public strictfp class Vector extends Vector2f {
 
@@ -21,7 +22,7 @@ public strictfp class Vector extends Vector2f {
 	}
 
 	public static Vector centerOfScreen() {
-		return new Vector(Display.getWidth() / 2, Display.getHeight() / 2);
+		return new Vector(Main.WINDOW_WIDTH / 2, Main.WINDOW_HEIGHT / 2);
 	}
 	
 	public String toString() {

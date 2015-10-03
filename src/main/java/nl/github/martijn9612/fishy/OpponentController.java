@@ -22,6 +22,7 @@ public class OpponentController {
 	private final Random random = new Random();
 	private ArrayList<Opponent> opponents = new ArrayList<Opponent>();
 	private ArrayList<Opponent> toRemove = new ArrayList<Opponent>();
+	private static final double BIG_OPPONENT_SPAWN_CHANCE = 0.001;
 	private static final int MAX_OPPONENTS = 20;
 	
 	/**
@@ -125,7 +126,7 @@ public class OpponentController {
 
 	private void startBigOpponentEvent(Player player) {
 		double rand = Math.random();
-		if(rand < 0.0106 && !bigOpponentInstanceExists()) {
+		if(rand < BIG_OPPONENT_SPAWN_CHANCE && !bigOpponentInstanceExists()) {
 			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player, loadResources);
 			addOpponent(bigOpponent);
 		}
