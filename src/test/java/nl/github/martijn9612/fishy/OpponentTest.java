@@ -18,8 +18,9 @@ public class OpponentTest extends TestCase {
 		float size = 5.0f;
 		Vector position = new Vector(0,0);
         Vector dimensions = new Vector(size,size);
-        Vector speed = new Vector(1,0);
-    	Opponent testopp = new LinearOpponent(position, dimensions, speed, false);
+        Vector velocity = new Vector(1,0);
+        Vector acceleration = new Vector(0,0);
+    	Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		assertEquals(testopp.getSize(), size, 0.1);
 	}
 
@@ -28,10 +29,11 @@ public class OpponentTest extends TestCase {
 	 */
 	@Test
 	public void testIsOpponentOnScreen() {
-		Vector speed = new Vector(0,0);
+		Vector velocity = new Vector(0,0);
 		Vector position = new Vector(10,10);
         Vector dimensions = new Vector(1,1);
-        Opponent testopp = new LinearOpponent(position, dimensions, speed, false);
+        Vector acceleration = new Vector(0,0);
+        Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		assertFalse(testopp.isOffScreen());
 		testopp.position = new Vector(10, Main.WINDOW_HEIGHT - 10);
 		assertFalse(testopp.isOffScreen());
@@ -48,7 +50,9 @@ public class OpponentTest extends TestCase {
 	public void testIsOpponentOffScreen() {
 		Vector dimensions = new Vector(1,1);
 		Vector position = new Vector(-10,-10);
-		Opponent testopp = new SinusOpponent(position, dimensions, false);
+		Vector velocity = new Vector(0,0);
+        Vector acceleration = new Vector(0,0);
+		Opponent testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
 		assertTrue(testopp.isOffScreen());
 		testopp.position = new Vector(-10, Main.WINDOW_HEIGHT + 10);
 		assertTrue(testopp.isOffScreen());

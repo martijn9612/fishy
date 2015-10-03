@@ -19,14 +19,16 @@ public class OpponentControllerTest extends TestCase {
 	private Vector dimensions;
 	private Vector velocity;
 	private Vector position;
+	private Vector acceleration;
 	
 	@Override
 	protected void setUp() {
-		player = new Player(false);
+		player = Player.createPlayer(false);
 		testhandler = new OpponentController(false);
 		position = new Vector(1, 1);
 		velocity = new Vector(5, 0);
 		dimensions = new Vector(0, 0);
+		acceleration = new Vector(0, 0);
 	};
 	
 	@Test
@@ -44,7 +46,7 @@ public class OpponentControllerTest extends TestCase {
 	@Test
 	public void testUpdateOpponents1() {
 		velocity.x = -5;
-		Opponent testopp = new LinearOpponent(position, dimensions, velocity, false);
+		Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		testhandler.addOpponent(testopp);
 		assertEquals(testhandler.getOpponents().size(), 1);
 		testhandler.updateOpponents(gc, 0);
@@ -53,7 +55,7 @@ public class OpponentControllerTest extends TestCase {
 
 	@Test
 	public void testUpdateOpponents2() {
-		Opponent testopp = new LinearOpponent(position, dimensions, velocity, false);
+		Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		testhandler.addOpponent(testopp);
 		assertEquals(testhandler.getOpponents().size(), 1);
 		testhandler.updateOpponents(gc, 0);
@@ -62,7 +64,7 @@ public class OpponentControllerTest extends TestCase {
 
 	@Test
 	public void testDestroy() {
-		Opponent testopp = new LinearOpponent(position, dimensions, velocity, false);
+		Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		int size = testhandler.getToRemove().size();
 		testhandler.remove(testopp);
 		assertEquals(testhandler.getToRemove().size(), size + 1);

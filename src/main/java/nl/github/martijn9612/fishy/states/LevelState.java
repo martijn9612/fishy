@@ -44,7 +44,8 @@ public class LevelState extends BasicGameState {
 
     /**
      * Initialization of the play screen.
-     ** @param gc the container holding the game
+     * 
+     * @param gc the container holding the game
      * @param sbg the game holding the state
      * @throws SlickException indicates internal error
      */
@@ -58,11 +59,12 @@ public class LevelState extends BasicGameState {
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
 		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
 		opponentController = new OpponentController(true);
-		player = new Player(true);
+		player = Player.createPlayer(true);
 	}
 
     /**
      * Renders the game's screen.
+     * 
      * @param gc the container holding the game
      * @param sbg the game holding the state
      * @param g the graphics content used to render
@@ -80,10 +82,10 @@ public class LevelState extends BasicGameState {
 
     /**
      * Update the game logic and check if the win condition should be triggered.
+     * 
      * @param gc the container holding the game
      * @param sbg the game holding the state
-     * @param delta the amount of time that has passed since last update in
-     *              milliseconds
+     * @param delta time that has passed since last update in milliseconds
      * @throws SlickException indicates internal error
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {

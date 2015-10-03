@@ -19,8 +19,7 @@ public class Player extends Entity {
     private static final float PLAYER_MOVE_FORCE = 4;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
-    private static final String PLAYER_SPRITE_LEFT = "resources/player-" + Main.PLAYER_CHARACTER + "left.png";
-    private static final String PLAYER_SPRITE_RIGHT = "resources/player-" + Main.PLAYER_CHARACTER + "right.png";
+    private static final String PLAYER_SPRITE = "resources/player-" + Main.PLAYER_CHARACTER + ".png";
     
     private double score = 0;
     private static final String[] BITE_SOUNDS = {
@@ -32,43 +31,54 @@ public class Player extends Entity {
     /**
      * Creates a new Player instance in the game window.
      * 
-     * @param loadResources
-     *            whether the player's resources should be loaded.
+     * @param dimensions size of the new player.
+	 * @param position vector with the start position of the player.
+	 * @param velocity initial speed of the player.
+	 * @param acceleration initial acceleration of the player.
+	 * @param loadResources whether the sprite resources should be loaded.
      */
-    public Player(boolean loadResources) {
-    	super(loadResources);
-    	initPlayerVariables();
-        Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
+    public Player(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources) {
+    	super(dimensions, position, velocity, acceleration, loadResources);
+    	Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
+    	loadResources(PLAYER_SPRITE);
     }
     
-    private void initPlayerVariables() {
-    	loadResources(PLAYER_SPRITE_LEFT);
-        dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
-        velocity = new Vector(0, 0);
-        acceleration = new Vector(0, 0);
-        position = Vector.centerOfScreen();
-        updateBoundingbox();
-    }
-
-    /**
-     * Updates the object logic, also used for controls.
-     * 
-     */
-    @Override
+	/**
+	 * Creates a new default Player instance.
+	 * 
+	 * @param loadResources whether the player's resources should be loaded.
+	 * @return Player instance.
+	 */
+	public static Player createPlayer(boolean loadResources) {
+		Vector dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+		Vector velocity = new Vector(0, 0);
+		Vector acceleration = new Vector(0, 0);
+		Vector position = Vector.centerOfScreen();
+		return new Player(dimensions, position, velocity, acceleration, loadResources);
+	}
+    
+	/**
+	 * Updates the player movement logic and polls the keyboard.
+	 * 
+	 * The player will be moved realistically in an environment of
+	 * water. Also the user input on the keyboard is handled here.
+	 * 
+	 * @param gc the container holding the game.
+     * @param deltaTime time elapsed since method was called in milliseconds.
+	 */
     public void objectLogic(GameContainer gc, int deltaTime) {
         Input keyboardInput = gc.getInput();
     	movePlayer(keyboardInput);
         applyWaterDrag();
         updatePosition();
-        checkEdges();
+        checkGameEdges();
         updateBoundingbox();
     }
 
     /**
      * Handles the keyboard controls so the player is able to move around.
-     * @param input
-     *            object to access keyboard button states.
-     * @param Input object to access keyboard button states.
+     * 
+     * @param input object to access keyboard button states.
      */
     private void movePlayer(Input input) {
         boolean moveL = (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT));
@@ -77,12 +87,12 @@ public class Player extends Entity {
         boolean moveD = (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN));
         
         if(moveR) {
-        	loadResources(PLAYER_SPRITE_RIGHT);
+        	setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         	applyForce(new Vector(PLAYER_MOVE_FORCE, 0));
         }
         
         if(moveL) {
-        	loadResources(PLAYER_SPRITE_LEFT);
+        	setImageOrientation(Entity.IMAGE_ORIENTATE_LEFT);
         	applyForce(new Vector(-PLAYER_MOVE_FORCE, 0));
         }
         
@@ -121,13 +131,14 @@ public class Player extends Entity {
     /**
      * Checks whether the player is within the screen bounds and corrects them if necessary.
      */
-    private void checkEdges() {
+    private void checkGameEdges() {
         position.x = limit(position.x, 0, Main.WINDOW_WIDTH - dimensions.x);
         position.y = limit(position.y, 0, Main.WINDOW_HEIGHT - dimensions.y);
     }
     
     /**
      * Apply a force to the player, according to force = mass * acceleration;
+     * 
      * @param Vector force
      */
     private void applyForce(Vector force) {
@@ -138,6 +149,7 @@ public class Player extends Entity {
 
     /**
      * Consume a specific Opponent.
+     * 
      * @param opponent to eat
      */
     public void eat(Opponent opponent) {
@@ -151,7 +163,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Reset player values upon dying.
+     * Reset player values, can be used when the player dies.
      */
     public void resetPlayerVariables() {
         Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
@@ -172,6 +184,7 @@ public class Player extends Entity {
     /**
      * Validates whether the given number is within the given limits. If the number
      * is not within the given bounds, the closest limit value is returned.
+     * 
      * @param x integer to test
      * @param min lower limit value
      * @param f upper limit value
@@ -183,6 +196,7 @@ public class Player extends Entity {
 
     /**
      * Get the players score.
+     * 
      * @return score
      */
     public double getScore() {
@@ -191,6 +205,7 @@ public class Player extends Entity {
 
     /**
      * Set the players score.
+     * 
      * @param score new score value
      */
     public void setScore(double score) {

@@ -10,110 +10,159 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the basic object in the game on which players and opponents are
- * based.
+ * based. The entity object has a defined position, velocity, acceleration and
+ * dimension. It provides methods for updating the bounding box and rendering (a
+ * scaled copy of) itself.
  */
 public abstract class Entity {
 	public Vector position;
 	public Vector velocity;
 	public Vector acceleration;
 	public Vector dimensions;
-	private boolean hasOpenGL;
-	private Ellipse ellipse = null;
-	private Image entityImage = null;
+	public static final int IMAGE_ORIENTATE_LEFT = 0;
+	public static final int IMAGE_ORIENTATE_RIGHT = 1;
 	protected MusicPlayer musicPlayer;
+	protected boolean hasOpenGL;
+	private int orientation = IMAGE_ORIENTATE_LEFT;
+	private Vector oldDimensions;
+	private Image originalImage;
+	private Image scaledImage;
+	private Ellipse boundingBox;
 
 	/**
 	 * Setup a new Entity object.
 	 * 
-	 * @param hasOpenGL
-	 *            - whether openGL context can be invoked.
+	 * @param dimensions size of the entity. 
+	 * @param position start position of the entity.
+	 * @param velocity initial velocity of the entity.
+	 * @param acceleration initial acceleration of the entity.
+	 * @param hasOpenGL whether openGL context should be invoked.
 	 */
-	public Entity(boolean hasOpenGL) {
+	public Entity(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean hasOpenGL) {
+		this.position = position;
+		this.velocity = velocity;
+		this.acceleration = acceleration;
+		this.dimensions = dimensions;
+		this.oldDimensions = new Vector(-1,-1);
 		this.hasOpenGL = hasOpenGL;
+		updateBoundingbox();
 	}
 
 	/**
-	 * Loads the sprite of the entity.
+	 * Loads the resources associated with this entity. These are
+	 * the given sprite location and the musicPlayer instance. Also,
+	 * a scaled copy of the sprite is made related to the dimensions.
 	 * 
-	 * @param imagePath
-	 *            - the resource path to the file in which the sprite is stored
+	 * @param imagePath resource path to filesystem location of the sprite.
 	 */
 	public void loadResources(String imagePath) {
 		if (hasOpenGL) {
 			try {
-				entityImage = new Image(imagePath);
+				originalImage = new Image(imagePath);
 				musicPlayer = MusicPlayer.getInstance();
+				getScaledImage();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	/**
+	 * Set the orientation of the sprite. When the orientation changes,
+	 * a new copy is made by flipping the y axis and will be stored.
+	 * 
+	 * @param newOrientation integer defining the orientation.
+	 */
+	public void setImageOrientation(int newOrientation) {
+		if(orientation != newOrientation) {
+			scaledImage = scaledImage.getFlippedCopy(true, false);
+			originalImage = originalImage.getFlippedCopy(true, false);
+			orientation = newOrientation;
+		}
+	}
 
 	/**
-	 * Renders the object and the boundary box around it.
+	 * Renders the object and the boundary box when enabled.
 	 * 
-	 * @param g
-	 *            - the graphics content used to render
+	 * @param g the graphics content used to render.
 	 */
 	public void renderObject(Graphics g) {
 		if (hasOpenGL) {
-			g.drawImage(getScaledImageCopy(), position.x, position.y);
+			Image image = getScaledImage();
+			g.drawImage(image, position.x, position.y);
 			if (Main.DEBUG_MODE) {
-				g.drawOval(ellipse.getX(), ellipse.getY(), ellipse.getWidth(), ellipse.getHeight());
+				g.drawOval(boundingBox.getX(), boundingBox.getY(), boundingBox.getWidth(), boundingBox.getHeight());
 			}
 		}
 	}
-	
-    /**
-     * Returns the size of the opponent.
-     * @return size value
-     */
-    public float getSize() {
-        return ((dimensions.x + dimensions.y) / 2);
-    }
-	
-	public boolean intersects(Entity entity) {
-		return ellipse.intersects(entity.getEllipse());
-	}
-	
-	public Ellipse getEllipse() {
-		return ellipse;
+
+	/**
+	 * Returns the size of the opponent.
+	 * 
+	 * @return size value
+	 */
+	public float getSize() {
+		return ((dimensions.x + dimensions.y) / 2);
 	}
 
 	/**
-	 * Calculates the boundary box around the entity with the right size and
-	 * center.
+	 * Checks whether the bounding boxes of two entities collide.
+	 * 
+	 * @param entity the instance to check for.
+	 * @return boolean wether they collide.
+	 */
+	public boolean intersects(Entity entity) {
+		return boundingBox.intersects(entity.getEllipse());
+	}
+
+	/**
+	 * Get the bounding box ellipse instance and returns it.
+	 * 
+	 * @return Ellipse the bounding box.
+	 */
+	public Ellipse getEllipse() {
+		return boundingBox;
+	}
+
+	/**
+	 * Updates the boundary box around the entity according to the dimensions.
+	 * When the bounding box wasn't calculated before, a new Ellipse instance is
+	 * created to act as bounding box.
 	 */
 	public void updateBoundingbox() {
 		float radiiX = (dimensions.x / 2);
 		float radiiY = (dimensions.y / 2);
 
-		if (ellipse == null) {
-			ellipse = new Ellipse(position.x, position.y, radiiX, radiiY);
+		if (boundingBox == null) {
+			boundingBox = new Ellipse(position.x, position.y, radiiX, radiiY);
 		} else {
-			ellipse.setLocation(position);
-			ellipse.setRadii(radiiX, radiiY);
+			boundingBox.setLocation(position);
+			boundingBox.setRadii(radiiX, radiiY);
 		}
 	}
 
 	/**
-	 * Creates a copy of the entity sprite and returns it.
+	 * Get a scaled version of the image sprite. When the dimensions of an
+	 * entity changes, a new copy from the original sprite is created and
+	 * returned.
 	 * 
-	 * @return Image - the scaled version of the entity image
+	 * @return Image a scaled version of the entity image.
 	 */
-	private Image getScaledImageCopy() {
-		int width = Math.round(dimensions.x);
-		int height = Math.round(dimensions.y);
-		return entityImage.getScaledCopy(width, height);
+	private Image getScaledImage() {
+		if (!oldDimensions.equals(dimensions)) {
+			int width = Math.round(dimensions.x);
+			int height = Math.round(dimensions.y);
+			scaledImage = originalImage.getScaledCopy(width, height);
+			oldDimensions = dimensions;
+		}
+		return scaledImage;
 	}
 
 	/**
-	 * Initial setup for the objectLogic of every object.
+	 * Execute the logic calculations associated with this entity.
 	 * 
-	 * @param gc
-	 *            - the container holding the game
-	 * @param deltaTime
-	 *            - amount of milliseconds passed since last logic call
+	 * @param gc the container holding the game.
+	 * @param deltaTime milliseconds passed since last call.
 	 */
 	public abstract void objectLogic(GameContainer gc, int deltaTime);
 }

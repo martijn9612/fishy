@@ -21,8 +21,9 @@ public class LinearOpponentTest extends TestCase {
     public void testLinearOpponentMoveRight() {
         Vector position = new Vector(0,0);
         Vector dimensions = new Vector(10,10);
-        Vector speed = new Vector(1,0);
-    	Opponent opp = new LinearOpponent(position, dimensions, speed, false);
+        Vector velocity = new Vector(1,0);
+        Vector acceleration = new Vector(0,0);
+    	Opponent opp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
         opp.objectLogic(gc, 0);
         assertEquals(1.0, opp.position.x, 0.1);
     }
@@ -35,8 +36,9 @@ public class LinearOpponentTest extends TestCase {
     public void testLinearOpponentMoveLeft() {
         Vector position = new Vector(10,10);
         Vector dimensions = new Vector(10,10);
-        Vector speed = new Vector(-1,0);
-    	Opponent opp = new LinearOpponent(position, dimensions, speed, false);
+        Vector velocity = new Vector(-1,0);
+        Vector acceleration = new Vector(0,0);
+    	Opponent opp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
         opp.objectLogic(gc, 0);
         assertEquals(9.0, opp.position.x, 0.1);
     }

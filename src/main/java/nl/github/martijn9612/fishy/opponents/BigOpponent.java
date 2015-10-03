@@ -23,41 +23,43 @@ public class BigOpponent extends Opponent {
     private static final String SPRITE_PATH = "resources/whale.png";
     private BigOpponentIndicator indicator;
     private int timeToLive = 25000;
-	private boolean loadResources;
 	private Player player;
     
     /**
 	 * Creates an instance of BigOpponent at the given location.
-     * @param position vector with the start position of the opponent.
+	 * 
 	 * @param dimensions size of the new opponent.
+     * @param position vector with the start position of the opponent.
 	 * @param velocity initial speed of the opponent.
-	 * @param player instance of the Player class.
+	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
+	 * @param player instance of the Player class.
 	 */
-    public BigOpponent(Vector position, Vector dimensions, Vector velocity, Player player, boolean loadResources) {
-    	super(loadResources);
-    	this.loadResources = loadResources;
-    	indicator = new BigOpponentIndicator(player, loadResources);
-        this.position = position;
-        this.dimensions = dimensions;
-        this.velocity = velocity;
+    public BigOpponent(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources, Player player) {
+    	super(dimensions, position, velocity, acceleration, loadResources);
+    	this.indicator = BigOpponentIndicator.createIndicator(player, loadResources);
         this.player = player;
         loadBigOpponentResources();
-        updateBoundingbox();
     }
     
     /**
-	 * Creates an instance of BigOpponent at the payer's y location.
+	 * Creates an instance of BigOpponent at the payer's y-axis location.
+	 * 
 	 * @param player an instance of the Player class.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
 	public static BigOpponent createBigOpponent(Player player, boolean loadResources) {
+		Vector acceleration = new Vector(0,0);
 		Vector velocity = new Vector(-BIG_OPPONENT_SPEED, 0);
 		Vector dimensions = new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE);
 		Vector position = new Vector(BIG_OPPONENT_START_X, player.position.y - BIG_OPPONENT_SIZE / 2);
-		return new BigOpponent(position, dimensions, velocity, player, loadResources);
+		return new BigOpponent(dimensions, position, velocity, acceleration, loadResources, player);
     }
-    
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
     public void objectLogic(GameContainer gc, int deltaTime) {
     	indicator.objectLogic(gc, deltaTime);
         position.add(velocity);
@@ -74,6 +76,9 @@ public class BigOpponent extends Opponent {
 		}
     }
     
+    /**
+	 * {@inheritDoc}
+	 */
     @Override
     public void renderObject(Graphics g) {
     	super.renderObject(g);
@@ -81,22 +86,28 @@ public class BigOpponent extends Opponent {
 			indicator.renderObject(g);
 		}
     }
-
-	@Override
+    
+    /**
+	 * Stops playing the background music.
+	 */
+    @Override
 	public void destroy() {
-		if (loadResources) {
+		if (hasOpenGL) {
 			musicPlayer.stopSound(MusicPlayer.BIG_OPPONENT_EVENT);
 		}
 		timeToLive = 0;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
     @Override
     public boolean isOffScreen() {
     	return (timeToLive <= 0);
     }
 	
 	private void loadBigOpponentResources() {
-    	if (loadResources) {
+    	if (hasOpenGL) {
     		this.loadResources(SPRITE_PATH);
     		musicPlayer.playSound(MusicPlayer.BIG_OPPONENT_EVENT);
     	}
