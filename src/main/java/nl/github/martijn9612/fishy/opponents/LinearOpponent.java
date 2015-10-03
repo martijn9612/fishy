@@ -29,7 +29,7 @@ public class LinearOpponent extends Opponent {
 		this.dimensions = dimensions;
 		this.velocity = velocity;
 		loadResources(velocity.x > 0 ? SPRITE_PATH_R : SPRITE_PATH_L);
-		calculateBoundingbox();
+		updateBoundingbox();
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class LinearOpponent extends Opponent {
 	 */
 	public void objectLogic(GameContainer gc, int deltaTime) {
 	    position.add(velocity);
-	    calculateBoundingbox();
+	    updateBoundingbox();
 	}
 
 	@Override

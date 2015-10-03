@@ -29,7 +29,7 @@ public class SinusOpponent extends Opponent {
         loadResources(SINUS_SPRITE_PATH);
         this.position = position;
         this.dimensions = dimensions;
-        calculateBoundingbox();
+        updateBoundingbox();
     }
 
 	public static SinusOpponent createRandom(Player player, Random random, boolean loadResources) {
@@ -64,7 +64,7 @@ public class SinusOpponent extends Opponent {
         	velocity = new Vector(0, -((position.y % PIXELS_TO_HALT) / DIVIDER + 1));
         }
         position.add(velocity);
-        calculateBoundingbox();
+        updateBoundingbox();
     }
 
 	@Override

@@ -84,7 +84,7 @@ public abstract class Entity {
 	 * Calculates the boundary box around the entity with the right size and
 	 * center.
 	 */
-	public void calculateBoundingbox() {
+	public void updateBoundingbox() {
 		float radiiX = (dimensions.x / 2);
 		float radiiY = (dimensions.y / 2);
 

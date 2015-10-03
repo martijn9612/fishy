@@ -38,7 +38,7 @@ public class TestObject extends TestCase {
 		Entity entity = mock(Entity.class, Mockito.CALLS_REAL_METHODS);
 		entity.position = new Vector(X_VALUE, Y_VALUE);
 		entity.dimensions = new Vector(WIDTH, HEIGHT);
-		entity.calculateBoundingbox();
+		entity.updateBoundingbox();
 		assertTrue(entity.getEllipse() instanceof Ellipse);
 		float width = entity.getEllipse().getWidth();
 		float height = entity.getEllipse().getHeight();

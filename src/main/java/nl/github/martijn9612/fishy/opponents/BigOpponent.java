@@ -18,11 +18,12 @@ public class BigOpponent extends Opponent {
     private static final float BIG_OPPONENT_SIZE = 350;
     private static final float BIG_OPPONENT_SPEED = 1;
     private static final float BIG_OPPONENT_START_X = 930;
-    private static final int INIDACTOR_REMOVED_AT = 20500;
-    private static final int INIDACTOR_MOVES_AT = 21000;
+    private static final int INDICATOR_REMOVED_AT = 20500;
+    private static final int INDICATOR_MOVES_AT = 21000;
     private static final String SPRITE_PATH = "resources/whale.png";
     private BigOpponentIndicator indicator;
     private int timeToLive = 25000;
+	private boolean loadResources;
 	private Player player;
     
     /**
@@ -35,13 +36,14 @@ public class BigOpponent extends Opponent {
 	 */
     public BigOpponent(Vector position, Vector dimensions, Vector velocity, Player player, boolean loadResources) {
     	super(loadResources);
-    	loadBigOpponentResources(loadResources);
+    	this.loadResources = loadResources;
     	indicator = new BigOpponentIndicator(player, loadResources);
         this.position = position;
         this.dimensions = dimensions;
         this.velocity = velocity;
         this.player = player;
-        calculateBoundingbox();
+        loadBigOpponentResources();
+        updateBoundingbox();
     }
     
     /**
@@ -59,15 +61,15 @@ public class BigOpponent extends Opponent {
     public void objectLogic(GameContainer gc, int deltaTime) {
     	indicator.objectLogic(gc, deltaTime);
         position.add(velocity);
-        calculateBoundingbox();
+        updateBoundingbox();
         
 		if (timeToLive > 0) {
 			timeToLive -= deltaTime;
 		}
-		if (timeToLive > INIDACTOR_REMOVED_AT) {
+		if (timeToLive > INDICATOR_REMOVED_AT) {
 			position.y = player.position.y - BIG_OPPONENT_SIZE / 2;
 		}
-		if (timeToLive < INIDACTOR_MOVES_AT) {
+		if (timeToLive < INDICATOR_MOVES_AT) {
 			indicator.acceleration.x = 2;
 		}
     }
@@ -75,14 +77,16 @@ public class BigOpponent extends Opponent {
     @Override
     public void renderObject(Graphics g) {
     	super.renderObject(g);
-		if (timeToLive > INIDACTOR_REMOVED_AT) {
+		if (timeToLive > INDICATOR_REMOVED_AT) {
 			indicator.renderObject(g);
 		}
     }
 
 	@Override
 	public void destroy() {
-		MusicPlayer.getInstance().stopSound(MusicPlayer.BIG_OPPONENT_EVENT);
+		if (loadResources) {
+			musicPlayer.stopSound(MusicPlayer.BIG_OPPONENT_EVENT);
+		}
 		timeToLive = 0;
 	}
 	
@@ -91,10 +95,10 @@ public class BigOpponent extends Opponent {
     	return (timeToLive <= 0);
     }
 	
-	private void loadBigOpponentResources(boolean loadResources) {
+	private void loadBigOpponentResources() {
     	if (loadResources) {
     		this.loadResources(SPRITE_PATH);
-    		MusicPlayer.getInstance().playSound(MusicPlayer.BIG_OPPONENT_EVENT);
+    		musicPlayer.playSound(MusicPlayer.BIG_OPPONENT_EVENT);
     	}
     }
 }

@@ -43,7 +43,7 @@ public class OpponentController {
 			} else {
 				newOpponent = SinusOpponent.createRandom(player, random, loadResources);
 			}
-			opponents.add(newOpponent);
+			addOpponent(newOpponent);
 		}
 		startBigOpponentEvent(player);
 	}
@@ -65,13 +65,13 @@ public class OpponentController {
 	 * @param deltaTime the amount of time that has passed since last update in milliseconds
 	 */
 	public void updateOpponents(GameContainer gc, int deltaTime) {
-		updateRemoveOpponents();
 		for (Opponent opponent : opponents) {
 			opponent.objectLogic(gc, deltaTime);
 			if (opponent.isOffScreen()) {
 				remove(opponent);
 			}
 		}
+		updateRemoveOpponents();
 	}
 	
 	private void updateRemoveOpponents() {
@@ -127,7 +127,7 @@ public class OpponentController {
 		double rand = Math.random();
 		if(rand < 0.0106 && !bigOpponentInstanceExists()) {
 			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player, loadResources);
-			opponents.add(bigOpponent);
+			addOpponent(bigOpponent);
 		}
 	}
 
@@ -138,5 +138,17 @@ public class OpponentController {
 			}
 		}
 		return false;
+	}
+	
+	public ArrayList<Opponent> getToRemove() {
+		return toRemove;
+	}
+	
+	public ArrayList<Opponent> getOpponents() {
+		return opponents;
+	}
+
+	public void addOpponent(Opponent opponent) {
+		opponents.add(opponent);
 	}
 }

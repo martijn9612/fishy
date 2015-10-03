@@ -47,7 +47,7 @@ public class Player extends Entity {
         velocity = new Vector(0, 0);
         acceleration = new Vector(0, 0);
         position = Vector.centerOfScreen();
-        calculateBoundingbox();
+        updateBoundingbox();
     }
 
     /**
@@ -61,7 +61,7 @@ public class Player extends Entity {
         applyWaterDrag();
         updatePosition();
         checkEdges();
-        calculateBoundingbox();
+        updateBoundingbox();
     }
 
     /**
