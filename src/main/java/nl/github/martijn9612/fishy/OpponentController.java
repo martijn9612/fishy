@@ -3,106 +3,54 @@ package nl.github.martijn9612.fishy;
 import java.util.ArrayList;
 import java.util.Random;
 
-import nl.github.martijn9612.fishy.opponents.BigOpponent;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.github.martijn9612.fishy.models.Opponent;
 import nl.github.martijn9612.fishy.models.Player;
-import nl.github.martijn9612.fishy.models.BigOpponentIndicator;
+import nl.github.martijn9612.fishy.opponents.BigOpponent;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
-import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the Opponent Handler of the game.
  */
 public class OpponentController {
 
-	private ArrayList<Opponent> opponents;
-	private ArrayList<Opponent> toRemove;
-	private Random random = new Random();
-	private ArrayList<BigOpponent> bigOpponents;
-	private BigOpponentIndicator indicator;
-	private boolean whaleEventInProgress = false;
-	private MusicPlayer musicPlayer;
 	private boolean loadResources;
-
+	private final Random random = new Random();
+	private ArrayList<Opponent> opponents = new ArrayList<Opponent>();
+	private ArrayList<Opponent> toRemove = new ArrayList<Opponent>();
+	private static final double BIG_OPPONENT_SPAWN_CHANCE = 0.001;
+	private static final int MAX_OPPONENTS = 20;
+	
+	/**
+	 * Constructor to create a new OpponentController.
+	 * @param loadResources whether resources using OpenGL should be loaded.
+	 */
 	public OpponentController(boolean loadResources) {
 		this.loadResources = loadResources;
-		if (loadResources) {
-			musicPlayer = MusicPlayer.getInstance();
-		}
-		opponents = new ArrayList<Opponent>();
-		toRemove = new ArrayList<Opponent>();
-		bigOpponents = new ArrayList<BigOpponent>();
 	}
-	
-    /**
-     * Get method for the variable opponents.
-     * @return opponents - list with all the opponents in it
-     */
-    public ArrayList<Opponent> getOpponents() {
-        return opponents;
-    }
-
-    /**
-     * Get method for the variable toRemove.
-     * @return toRemove - list with all the removed opponents
-     */
-    public ArrayList<Opponent> getToRemove() {
-        return toRemove;
-    }
-
-    /**
-     * Adds an opponent to the list with opponents.
-     * @param opp - opponent to be added to the list
-     */
-    public void addOpponent(Opponent opp) {
-        opponents.add(opp);
-    }
 	  
 	/**
 	 * create a new fish.
 	 */
 	public void spawnOpponents(Player player) {
-		if (opponents.size() < 20) {
-			if ((random.nextInt(5) + 1) > 1) {
-				newLinearOpponent(player);
+		if (opponents.size() < MAX_OPPONENTS) {
+			Opponent newOpponent;
+			if (random.nextInt(5) > 0) {
+				newOpponent = LinearOpponent.createRandom(player, random, loadResources);
 			} else {
-				newSinusOpponent(player);
+				newOpponent = SinusOpponent.createRandom(player, random, loadResources);
 			}
+			addOpponent(newOpponent);
 		}
-	}
-
-	private void newLinearOpponent(Player player) {
-		boolean isleft = random.nextBoolean();
-		int maxSize = (int) (player.getSize() * 2);
-		int minSize = (int) (player.getSize() * 0.5);
-		int size = (random.nextInt((maxSize - minSize)) + minSize);
-		int speed = random.nextInt(4) + 1;
-		int max = 515 - size;
-		int min = size;
-		int ypos = random.nextInt(Math.abs(max - min)) + min;
-		int xpos = (isleft ? 0 - size * 5 : 615 + size * 5);
-		LinearOpponent linearOpponent = new LinearOpponent(isleft, xpos, ypos, size, speed, loadResources);
-		opponents.add(linearOpponent);
-	}
-
-	private void newSinusOpponent(Player player) {
-		int maxSize = (int) (player.getSize() * 2.5);
-		int minSize = (int) (player.getSize() * 0.5);
-		int size = (random.nextInt((maxSize - minSize)) + minSize);
-		int max = 615 - (int) Math.round(size);
-		int min = (int) Math.round(size);
-		int xpos = random.nextInt(Math.abs(max - min)) + min;
-		SinusOpponent sinusOpponent = new SinusOpponent(xpos, size, loadResources);
-		opponents.add(sinusOpponent);
+		startBigOpponentEvent(player);
 	}
 
 	/**
-	 * render all linearOpponents.
+	 * render all Opponents.
 	 * @param graph the graphics.
 	 */
 	public void renderOpponents(Graphics graph) {
@@ -121,39 +69,36 @@ public class OpponentController {
 		for (Opponent opponent : opponents) {
 			opponent.objectLogic(gc, deltaTime);
 			if (opponent.isOffScreen()) {
-				destroy(opponent);
+				remove(opponent);
 			}
 		}
+		updateRemoveOpponents();
+	}
+	
+	private void updateRemoveOpponents() {
 		for (Opponent opponent : toRemove) {
 			opponents.remove(opponent);
 		}
 		toRemove.clear();
-
-		if(whaleEventInProgress) {
-			for(BigOpponent bigOpponent : bigOpponents) {
-				bigOpponent.objectLogic(gc, deltaTime);
-			}
-			indicator.objectLogic(gc, deltaTime);
-		}
 	}
 
 	/**
 	 * Destroy an opponent.
 	 *
-	 * @param fishy opponent to destroy
+	 * @param opponent to destroy
 	 */
-	public void destroy(Opponent fishy) {
-		toRemove.add(fishy);
+	public void remove(Opponent opponent) {
+		opponent.destroy();
+		toRemove.add(opponent);
 	}
 
 	/**
 	 * Destroy all the opponents.
 	 */
-	public void destroyAllOpponents() {
+	public void removeAllOpponents() {
 		for (Opponent opponent : opponents) {
-			destroy(opponent);
+			remove(opponent);
 		}
-		bigOpponents.clear();
 		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
 	}
 
@@ -170,56 +115,41 @@ public class OpponentController {
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
 				if (player.getSize() > opponent.getSize()) {
 					player.eat(opponent);
-					destroy(opponent);
+					remove(opponent);
 				} else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
-					player.resetPlayerVariables();
-					whaleEventInProgress = false;
-					destroyAllOpponents();
-					musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
 					sbg.enterState(Main.GAME_LOSE_STATE);
-				}
-			}
-		}
-
-		if (whaleEventInProgress) {
-			for (BigOpponent bigOpponent : bigOpponents) {
-				if (bigOpponent.intersects(player)) {
-					Main.actionLogger.logLine("Player lost the game because of the bigOpponent", getClass().getSimpleName());
-					player.resetPlayerVariables();
-					whaleEventInProgress = false;
-					destroyAllOpponents();
-					musicPlayer.stopSound(MusicPlayer.WHALE_EVENT);
-					sbg.enterState(Main.GAME_LOSE_STATE);
-					break;
 				}
 			}
 		}
 	}
 
-	public void startWhaleEvent(Player player) {
+	private void startBigOpponentEvent(Player player) {
 		double rand = Math.random();
-		if(rand < 0.0006) {
-			whaleEventInProgress = true;
-			indicator = new BigOpponentIndicator(player, true);
-			BigOpponent bigOpponent = new BigOpponent(player, true);
-			bigOpponents.add(bigOpponent);
-			musicPlayer.playSound(MusicPlayer.WHALE_EVENT);
+		if(rand < BIG_OPPONENT_SPAWN_CHANCE && !bigOpponentInstanceExists()) {
+			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player, loadResources);
+			addOpponent(bigOpponent);
 		}
 	}
 
-	public void renderWhaleEvent(Graphics g){
-		indicator.renderObject(g);
-		for (BigOpponent w : bigOpponents) {
-			w.renderObject(g);
+	private boolean bigOpponentInstanceExists() {
+		for (Opponent opponent : opponents) {
+			if(opponent instanceof BigOpponent) {
+				return true;
+			}
 		}
+		return false;
+	}
+	
+	public ArrayList<Opponent> getToRemove() {
+		return toRemove;
+	}
+	
+	public ArrayList<Opponent> getOpponents() {
+		return opponents;
 	}
 
-	public boolean isWhaleEventInProgress(){
-		return this.whaleEventInProgress;
-	}
-
-	public void setWhaleEventInProgress( boolean status){
-		this.whaleEventInProgress = status;
+	public void addOpponent(Opponent opponent) {
+		opponents.add(opponent);
 	}
 }

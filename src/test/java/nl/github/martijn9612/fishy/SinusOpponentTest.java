@@ -15,17 +15,24 @@ public class SinusOpponentTest extends TestCase {
     
     @Test
     public void testObjectLogic() {
-        Opponent opp = new SinusOpponent(10, 1, false);
-        opp.position = new Vector(0, 0);
-        opp.objectLogic(gc, 0);
-        assertEquals(-1.0, opp.velocity.y, 0.1);
+    	Vector dimensions = new Vector(10,1);
+		Vector position = new Vector(0,0);
+		Vector velocity = new Vector(0,0);
+        Vector acceleration = new Vector(0,0);
+		Opponent testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
+        testopp.objectLogic(gc, 0);
+        assertEquals(-1.0, testopp.velocity.y, 0.1);
     }
 
 	@Test
     public void testObjectLogic2() {
-        Opponent opp = new SinusOpponent(10, 1, false);
-        opp.position = new Vector(1, 1);
-        opp.objectLogic(gc, 0);
-        assertEquals(-((1 % 80) / 20 + 1), opp.velocity.y, 0.1);
+		Vector dimensions = new Vector(10,1);
+		Vector position = new Vector(1,1);
+		Vector velocity = new Vector(0,0);
+        Vector acceleration = new Vector(0,0);
+		Opponent testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
+        testopp.position = new Vector(1, 1);
+        testopp.objectLogic(gc, 0);
+        assertEquals(-((1 % 80) / 20 + 1), testopp.velocity.y, 0.1);
     }
 }

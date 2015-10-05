@@ -44,25 +44,27 @@ public class LevelState extends BasicGameState {
 
     /**
      * Initialization of the play screen.
-     ** @param gc the container holding the game
+     * 
+     * @param gc the container holding the game
      * @param sbg the game holding the state
      * @throws SlickException indicates internal error
      */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
 		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
-		opponentController = new OpponentController(true);
-		player = new Player(true);
 	}
 
     @Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
+		opponentController = new OpponentController(true);
+		player = Player.createPlayer(true);
 	}
 
     /**
      * Renders the game's screen.
+     * 
      * @param gc the container holding the game
      * @param sbg the game holding the state
      * @param g the graphics content used to render
@@ -76,39 +78,22 @@ public class LevelState extends BasicGameState {
 		g.drawString(score, XPOS_SCORE_STRING, YPOS_STATE_STRING);
 		player.renderObject(g);
 		opponentController.renderOpponents(g);
-		if (opponentController.isWhaleEventInProgress()) {
-			opponentController.renderWhaleEvent(g);
-		}
 	}
 
     /**
      * Update the game logic and check if the win condition should be triggered.
+     * 
      * @param gc the container holding the game
      * @param sbg the game holding the state
-     * @param delta the amount of time that has passed since last update in
-     *              milliseconds
+     * @param delta time that has passed since last update in milliseconds
      * @throws SlickException indicates internal error
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         player.objectLogic(gc, delta);
         opponentController.updateOpponents(gc, delta);
         opponentController.spawnOpponents(player);
-        fishPosition = player.position.toString();
-
-		if(!opponentController.isWhaleEventInProgress()) {
-			opponentController.startWhaleEvent(player);
-			if(opponentController.isWhaleEventInProgress()) {
-				time = 25000;
-			}
-		}
-
-		if(time > 0){
-			time -= delta;
-		} else{
-			time = 0;
-			opponentController.setWhaleEventInProgress(false);
-		}
 		opponentController.collide(player, sbg);
+		fishPosition = player.position.toString();
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
             Main.actionLogger.logLine("Player won the game", getClass()
@@ -128,7 +113,9 @@ public class LevelState extends BasicGameState {
     @Override
     public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
         super.leave(gc, sbg);
+        player.resetPlayerVariables();
         musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
+        opponentController.removeAllOpponents();
     }
 
     /**

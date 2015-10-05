@@ -1,6 +1,6 @@
 package nl.github.martijn9612.fishy.position;
 
-import org.lwjgl.opengl.Display;
+import nl.github.martijn9612.fishy.Main;
 
 /**
  * Abstract class that defines the position of an entity.
@@ -37,10 +37,10 @@ public abstract class Position {
 	}
 	
 	public void flipXAxis() {
-		positionX = -positionX + Display.getWidth();
+		positionX = -positionX + Main.WINDOW_WIDTH;
 	}
 	
 	public void flipYAxis() {
-		positionY = -positionY + Display.getHeight();
+		positionY = -positionY + Main.WINDOW_HEIGHT;
 	}
 }
