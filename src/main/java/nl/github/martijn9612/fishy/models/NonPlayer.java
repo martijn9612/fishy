@@ -7,7 +7,7 @@ import nl.github.martijn9612.fishy.Main;
 /**
  * Created by martijn on 23-9-15.
  */
-public abstract class Opponent extends Entity {
+public abstract class NonPlayer extends Entity {
 
 	/**
 	 * OPPONENT_FACTOR determines the amount of pixels the opponent has to be
@@ -24,7 +24,7 @@ public abstract class Opponent extends Entity {
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param hasOpenGL whether OpenGL context is available.
 	 */
-	public Opponent(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean hasOpenGL) {
+	public NonPlayer(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean hasOpenGL) {
 		super(dimensions, position, velocity, acceleration, hasOpenGL);
 	}
 

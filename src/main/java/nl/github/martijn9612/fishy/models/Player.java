@@ -15,8 +15,8 @@ public class Player extends Entity {
     private static final float PLAYER_HEIGHT = 16;
     private static final float WATER_DRAG = 0.3f;
     private static final float PLAYER_MASS = 5;
-    private static final float PLAYER_MAX_SPEED = 8;
-    private static final float PLAYER_MOVE_FORCE = 4;
+    private static float PLAYER_MAX_SPEED = 8;
+    private static float PLAYER_MOVE_FORCE = 4;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
     private static final String PLAYER_SPRITE = "resources/player-" + Main.PLAYER_CHARACTER + ".png";
@@ -27,6 +27,7 @@ public class Player extends Entity {
 		MusicPlayer.BITE_SOUND_2,
 		MusicPlayer.BITE_SOUND_3
 	};
+    private int timer = 0;
 
     /**
      * Creates a new Player instance in the game window.
@@ -73,6 +74,10 @@ public class Player extends Entity {
         updatePosition();
         checkGameEdges();
         updateBoundingbox();
+        if (timer > 0) {
+            timer--;
+        }
+        System.out.println(timer);
     }
 
     /**
@@ -152,7 +157,7 @@ public class Player extends Entity {
      * 
      * @param opponent to eat
      */
-    public void eat(Opponent opponent) {
+    public void eat(NonPlayer opponent) {
         double opponentSize = opponent.getSize();
     	setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
@@ -211,5 +216,14 @@ public class Player extends Entity {
     public void setScore(double score) {
         LevelState.score = String.valueOf(Math.round(score));
         this.score = score;
+    }
+    public void Speedup(){
+        if (timer > 0){
+            PLAYER_MAX_SPEED = 10;
+            PLAYER_MOVE_FORCE = 6;
+        } else {
+            PLAYER_MAX_SPEED = 8;
+            PLAYER_MOVE_FORCE = 4;
+        }
     }
 }

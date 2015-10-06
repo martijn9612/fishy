@@ -4,7 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import nl.github.martijn9612.fishy.models.BigOpponentIndicator;
-import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
@@ -14,7 +14,7 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
  * chance of spawning and fills a large part of the screen.
  * Created by Skullyhoofd on 25/09/2015.
  */
-public class BigOpponent extends Opponent {
+public class BigOpponent extends NonPlayer {
     private static final float BIG_OPPONENT_SIZE = 350;
     private static final float BIG_OPPONENT_SPEED = 1;
     private static final float BIG_OPPONENT_START_X = 930;

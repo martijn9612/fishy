@@ -12,6 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.OpponentController;
 import nl.github.martijn9612.fishy.models.Player;
+import nl.github.martijn9612.fishy.powerups.PowerupController;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
@@ -27,6 +28,7 @@ public class LevelState extends BasicGameState {
 	public static int time = 0;
 	private Image background;
 	private OpponentController opponentController;
+	private PowerupController powerupController;
 	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final int PLAYER_WIN_AT_SCORE = 500;
     private static final int XPOS_STATE_STRING = 300;
@@ -59,6 +61,7 @@ public class LevelState extends BasicGameState {
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
 		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
 		opponentController = new OpponentController(true);
+		powerupController = new PowerupController();
 		player = Player.createPlayer(true);
 	}
 
@@ -78,6 +81,7 @@ public class LevelState extends BasicGameState {
 		g.drawString(score, XPOS_SCORE_STRING, YPOS_STATE_STRING);
 		player.renderObject(g);
 		opponentController.renderOpponents(g);
+		powerupController.renderOpponents(g);
 	}
 
     /**
@@ -93,6 +97,9 @@ public class LevelState extends BasicGameState {
         opponentController.updateOpponents(gc, delta);
         opponentController.spawnOpponents(player);
 		opponentController.collide(player, sbg);
+		powerupController.updatePowerup(gc, delta);
+		powerupController.SpawnPowerup();
+		powerupController.collide(player, sbg);
 		fishPosition = player.position.toString();
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
@@ -116,6 +123,7 @@ public class LevelState extends BasicGameState {
         player.resetPlayerVariables();
         musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
         opponentController.removeAllOpponents();
+        powerupController.Remove();
     }
 
     /**

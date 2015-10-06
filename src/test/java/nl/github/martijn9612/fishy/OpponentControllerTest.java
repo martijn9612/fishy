@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.newdawn.slick.GameContainer;
 
 import junit.framework.TestCase;
-import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
@@ -46,7 +46,7 @@ public class OpponentControllerTest extends TestCase {
 	@Test
 	public void testUpdateOpponents1() {
 		velocity.x = -5;
-		Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
+		NonPlayer testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		testhandler.addOpponent(testopp);
 		assertEquals(testhandler.getOpponents().size(), 1);
 		testhandler.updateOpponents(gc, 0);
@@ -55,7 +55,7 @@ public class OpponentControllerTest extends TestCase {
 
 	@Test
 	public void testUpdateOpponents2() {
-		Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
+		NonPlayer testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		testhandler.addOpponent(testopp);
 		assertEquals(testhandler.getOpponents().size(), 1);
 		testhandler.updateOpponents(gc, 0);
@@ -64,7 +64,7 @@ public class OpponentControllerTest extends TestCase {
 
 	@Test
 	public void testDestroy() {
-		Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
+		NonPlayer testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		int size = testhandler.getToRemove().size();
 		testhandler.remove(testopp);
 		assertEquals(testhandler.getToRemove().size(), size + 1);
