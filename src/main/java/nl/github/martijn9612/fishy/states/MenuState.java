@@ -121,7 +121,6 @@ public class MenuState extends BasicGameState {
             if (mouse.isLeftButtonDown()) {
                 Main.actionLogger.logLine("Game Closed!", getClass()
                         .getSimpleName());
-                Main.actionLogger.close();
                 System.exit(0);
             }
         }
