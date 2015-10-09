@@ -36,7 +36,7 @@ public class PowerupController {
     public void collide(Player player, StateBasedGame sbg) {
         if (!(power == null)){
             if (power.intersects(player)) {
-                String log = "Player collides with powerup " + power.getName();
+                String log = "Player collides with powerup " + power.getClass().getSimpleName();
                 power.Effect(player);
                 Remove();
                 Main.actionLogger.logLine(log, getClass().getSimpleName());
