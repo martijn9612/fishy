@@ -10,7 +10,17 @@ import nl.github.martijn9612.fishy.position.MouseRectangle;
 public class PositionTest extends TestCase {
 	private static int POSITION_X = 8;
 	private static int POSITION_Y = 76;
-
+	
+	/**
+	 * Test the Position class position setters and getters. 
+	 */
+	@Test
+	public void testSetAndGetPosition() {
+		MousePosition mousePos = new MousePosition(POSITION_X, POSITION_Y);
+		assertEquals(POSITION_X, mousePos.getPositionX());
+		assertEquals(POSITION_Y, mousePos.getPositionY());
+	}
+	
 	/**
 	 * Test the MousePosition class by verifying if the correct values were
 	 * inserted in the class constructor and the conversion to the draw
@@ -19,8 +29,6 @@ public class PositionTest extends TestCase {
 	@Test
 	public void testMousePosition() {
 		MousePosition mousePos = new MousePosition(POSITION_X, POSITION_Y);
-		assertEquals(POSITION_X, mousePos.getPositionX());
-		assertEquals(POSITION_Y, mousePos.getPositionY());
 		DrawPosition drawPos = mousePos.getDrawPosition();
 		assertEquals(POSITION_X, drawPos.getPositionX());
 		assertEquals(Main.WINDOW_HEIGHT - POSITION_Y, drawPos.getPositionY());
@@ -34,8 +42,6 @@ public class PositionTest extends TestCase {
 	@Test
 	public void testDrawPosition() {
 		DrawPosition drawPos = new DrawPosition(POSITION_X, POSITION_Y);
-		assertEquals(POSITION_X, drawPos.getPositionX());
-		assertEquals(POSITION_Y, drawPos.getPositionY());
 		MousePosition mousePos = drawPos.getMousePosition();
 		assertEquals(POSITION_X, mousePos.getPositionX());
 		assertEquals(Main.WINDOW_HEIGHT - POSITION_Y, mousePos.getPositionY());
@@ -64,12 +70,12 @@ public class PositionTest extends TestCase {
 	public void testIsInRectangle() {
 		MousePosition mousePos = new MousePosition(POSITION_X, POSITION_Y);
 		MouseRectangle rectangle1 = new MouseRectangle(0, 0, 100, 100);
-		assertTrue(mousePos.isInRectangle(rectangle1));
 		MouseRectangle rectangle2 = new MouseRectangle(100, 0, 100, 100);
-		assertFalse(mousePos.isInRectangle(rectangle2));
 		MouseRectangle rectangle3 = new MouseRectangle(0, 0, 50, 50);
-		assertFalse(mousePos.isInRectangle(rectangle3));
 		MouseRectangle rectangle4 = new MouseRectangle(5, 5, 50, 100);
+		assertTrue(mousePos.isInRectangle(rectangle1));
+		assertFalse(mousePos.isInRectangle(rectangle2));
+		assertFalse(mousePos.isInRectangle(rectangle3));
 		assertTrue(mousePos.isInRectangle(rectangle4));
 	}
 }
