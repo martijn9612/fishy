@@ -18,7 +18,7 @@ public class Poison extends Powerup {
                    Vector acceleration, boolean loadResources, int chance) {
         super(dimensions, position, velocity, acceleration, loadResources, chance);
         loadResources(SPRITE_PATH);
-        name = "Speedup";
+        name = "Poison";
         this.chance = chance;
         if(loadResources && velocity.x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
@@ -30,13 +30,13 @@ public class Poison extends Powerup {
      * @param random an instance to generate random numbers.
      * @param loadResources whether the sprite resources should be loaded.
      */
-    public static Speedup createPowerup(Random random, boolean loadResources) {
+    public static Poison createPowerup(Random random, boolean loadResources) {
         boolean spawnsLeft = random.nextBoolean();
         Vector acceleration = new Vector(0,0);
         Vector dimensions = new Vector(32,32);
         Vector velocity = getRandomVelocity(random, spawnsLeft);
         Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-        return new Speedup(dimensions, position, velocity, acceleration, loadResources, 30);
+        return new Poison(dimensions, position, velocity, acceleration, loadResources, 30);
     }
 
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {

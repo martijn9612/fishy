@@ -31,8 +31,8 @@ public class Player extends Entity {
 		MusicPlayer.BITE_SOUND_3
 	};
     private int lives = 0;
-    private Timer timer;
     private int poisoned = 1;
+    private Timer timer;
 
     /**
      * Creates a new Player instance in the game window.
