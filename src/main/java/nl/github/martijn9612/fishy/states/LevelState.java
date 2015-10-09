@@ -24,6 +24,7 @@ public class LevelState extends BasicGameState {
 	public Sound bgPlayMusic;
 	public String state = "Playing";
 	public String fishPosition = "(" + 0 + "," + 0 + ")";
+	public String lives = "lives: (" + 0 + ")";
 	public static String score = "0";
 	public static int time = 0;
 	private Image background;
@@ -34,6 +35,7 @@ public class LevelState extends BasicGameState {
     private static final int XPOS_STATE_STRING = 300;
     private static final int YPOS_STATE_STRING = 10;
     private static final int XPOS_SCORE_STRING = 450;
+    private static final int XPOS_LIVES_STRING = 500;
 
     /**
      * Constructor for the LevelState.
@@ -79,6 +81,7 @@ public class LevelState extends BasicGameState {
 		g.drawImage(background, 0, 0);
 		g.drawString(fishPosition, XPOS_STATE_STRING, YPOS_STATE_STRING);
 		g.drawString(score, XPOS_SCORE_STRING, YPOS_STATE_STRING);
+		g.drawString(lives, XPOS_LIVES_STRING, YPOS_STATE_STRING);
 		player.renderObject(g);
 		opponentController.renderOpponents(g);
 		powerupController.renderOpponents(g);
@@ -101,6 +104,7 @@ public class LevelState extends BasicGameState {
 		powerupController.SpawnPowerup();
 		powerupController.collide(player, sbg);
 		fishPosition = player.position.toString();
+		lives = player.getLivesAsString();
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
             Main.actionLogger.logLine("Player won the game", getClass()

@@ -3,6 +3,7 @@ package nl.github.martijn9612.fishy.powerups;
 import org.newdawn.slick.GameContainer;
 
 import nl.github.martijn9612.fishy.models.NonPlayer;
+import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 public abstract class Powerup extends NonPlayer {
@@ -26,6 +27,10 @@ public abstract class Powerup extends NonPlayer {
     
     public String getName(){
         return name;
+    }
+    
+    public void Effect(Player player) {
+        
     }
 
 }

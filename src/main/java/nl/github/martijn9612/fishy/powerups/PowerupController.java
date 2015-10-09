@@ -37,7 +37,8 @@ public class PowerupController {
         if (!(power == null)){
             if (power.intersects(player)) {
                 String log = "Player collides with powerup " + power.getName();
-                player.Speedup();
+                power.Effect(player);
+                Remove();
                 Main.actionLogger.logLine(log, getClass().getSimpleName());
             }
         }

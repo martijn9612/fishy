@@ -3,6 +3,7 @@ package nl.github.martijn9612.fishy.powerups;
 import java.util.Random;
 
 import nl.github.martijn9612.fishy.models.Entity;
+import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 public class Speedup extends Powerup{
@@ -50,5 +51,10 @@ public class Speedup extends Powerup{
     }
     public int getChance(){
         return chance;
+    }
+    
+    @Override
+    public void Effect(Player player){
+        player.Speedup(5000);
     }
 }

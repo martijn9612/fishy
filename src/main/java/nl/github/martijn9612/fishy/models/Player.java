@@ -1,5 +1,8 @@
 package nl.github.martijn9612.fishy.models;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -27,7 +30,8 @@ public class Player extends Entity {
 		MusicPlayer.BITE_SOUND_2,
 		MusicPlayer.BITE_SOUND_3
 	};
-    private int timer = 0;
+    private int lives = 0;
+    private Timer timer = new Timer();
 
     /**
      * Creates a new Player instance in the game window.
@@ -74,10 +78,6 @@ public class Player extends Entity {
         updatePosition();
         checkGameEdges();
         updateBoundingbox();
-        if (timer > 0) {
-            timer--;
-        }
-        System.out.println(timer);
     }
 
     /**
@@ -175,6 +175,8 @@ public class Player extends Entity {
         Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
         position = Vector.centerOfScreen();
         dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+        PLAYER_MAX_SPEED = 8;
+        PLAYER_MOVE_FORCE = 4;
         setScore(0);
     }
     
@@ -217,13 +219,32 @@ public class Player extends Entity {
         LevelState.score = String.valueOf(Math.round(score));
         this.score = score;
     }
-    public void Speedup(){
-        if (timer > 0){
-            PLAYER_MAX_SPEED = 10;
-            PLAYER_MOVE_FORCE = 6;
-        } else {
-            PLAYER_MAX_SPEED = 8;
-            PLAYER_MOVE_FORCE = 4;
+    
+    public void Speedup(int time){
+        PLAYER_MAX_SPEED = 20;
+        PLAYER_MOVE_FORCE = 15;
+        timer = new Timer();
+
+        TimerTask action = new TimerTask() {
+            public void run() {
+                PLAYER_MAX_SPEED = 8;
+                PLAYER_MOVE_FORCE = 4;  
+            }
+        };
+        this.timer.schedule(action, time);
         }
+    
+    public void Extralife(){
+     lives++;   
     }
-}
+    public int getLives(){
+        return lives;
+    }
+    public void Loselife(){
+        lives--;
+    }
+    public String getLivesAsString(){
+        return "lives: (" + lives + ")";
+    }
+    }
+

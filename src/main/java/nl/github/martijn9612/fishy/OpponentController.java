@@ -117,8 +117,13 @@ public class OpponentController {
 					player.eat(opponent);
 					remove(opponent);
 				} else {
+				    if (player.getLives() > 0){
+				        remove(opponent);
+				        player.Loselife();
+				    } else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					sbg.enterState(Main.GAME_LOSE_STATE);
+				}
 				}
 			}
 		}

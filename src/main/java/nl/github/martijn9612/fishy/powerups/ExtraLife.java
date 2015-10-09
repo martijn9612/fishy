@@ -3,6 +3,7 @@ package nl.github.martijn9612.fishy.powerups;
 import java.util.Random;
 
 import nl.github.martijn9612.fishy.models.Entity;
+import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 
@@ -53,5 +54,9 @@ public class ExtraLife extends Powerup{
     
     public int getChance(){
         return chance;
+    }
+    
+    public void Effect(Player player){
+        player.Extralife();
     }
 }
