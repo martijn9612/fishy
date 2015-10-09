@@ -18,13 +18,13 @@ public class PowerupTest extends TestCase{
     public void testgetSpeedupChance() {
         Random random = new Random();
         Powerup power = Speedup.createPowerup(random, false);
-        assertEquals(power.getChance(), 30);
+        assertEquals(power.getChance(), 100);
     }
     @Test
     public void testgetExtraLifeChance() {
         Random random = new Random();
         Powerup power = ExtraLife.createPowerup(random, false);
-        assertEquals(power.getChance(), 10);
+        assertEquals(power.getChance(), 30);
     }
     
     @Test
