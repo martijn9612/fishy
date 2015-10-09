@@ -167,7 +167,7 @@ public class Player extends Entity {
      */
     public void eat(NonPlayer opponent) {
         double opponentSize = opponent.getSize();
-    	setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
+    	setScore( score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
         dimensions = new Vector(newDimension, newDimension);
         Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
