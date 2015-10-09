@@ -8,7 +8,6 @@ import nl.github.martijn9612.fishy.models.Vector;
 
 public abstract class Powerup extends NonPlayer {
     private int chance;
-    private String name;
 
     public Powerup(Vector dimensions, Vector position, Vector velocity,
             Vector acceleration, boolean hasOpenGL, int chance) {
@@ -23,10 +22,6 @@ public abstract class Powerup extends NonPlayer {
 
     public int getChance() {
         return this.chance;
-    }
-    
-    public String getName(){
-        return name;
     }
     
     public void Effect(Player player) {

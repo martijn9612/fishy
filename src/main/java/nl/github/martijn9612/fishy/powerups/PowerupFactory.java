@@ -24,7 +24,7 @@ public class PowerupFactory {
         } else {
             powerup = null;
         }
-        //System.out.println("chance: "+power.getChance() +"rand: " + random);
+      
         clearFactory();
         return powerup;
     }
@@ -37,5 +37,8 @@ public class PowerupFactory {
     }
     public void clearFactory(){
         powers.clear();
+    }
+    public ArrayList<Powerup> getPowerups(){
+        return powers;
     }
 }

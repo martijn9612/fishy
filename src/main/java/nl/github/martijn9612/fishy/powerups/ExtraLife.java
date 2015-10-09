@@ -10,13 +10,11 @@ import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 public class ExtraLife extends Powerup{
     private static final String SPRITE_PATH = "resources/Mushroom.png";
     private int chance;
-    private String name;
 
     public ExtraLife(Vector dimensions, Vector position, Vector velocity,
             Vector acceleration, boolean loadResources, int chance) {
         super(dimensions, position, velocity, acceleration, loadResources, chance);
         loadResources(SPRITE_PATH);
-        name = "Extra life";
         this.chance = chance;
         if(loadResources && velocity.x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
