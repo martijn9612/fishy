@@ -10,7 +10,7 @@ import java.util.Random;
  * Created by martijn on 9-10-15.
  */
 public class Poison extends Powerup {
-    private static final String SPRITE_PATH = "resources/whale.png";
+    private static final String SPRITE_PATH = "resources/poison.png";
     private int chance;
     private String name;
 
