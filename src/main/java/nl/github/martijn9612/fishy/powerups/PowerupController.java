@@ -37,6 +37,7 @@ public class PowerupController {
         if (!(power == null)){
             if (power.intersects(player)) {
                 String log = "Player collides with powerup " + power.getClass().getSimpleName();
+                player.playBiteSound();
                 power.Effect(player);
                 Remove();
                 Main.actionLogger.logLine(log, getClass().getSimpleName());

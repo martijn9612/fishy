@@ -15,10 +15,10 @@ public class PowerupFactory {
 
     public Powerup spawnPowerup() {
         setupFactory();
-        int pow = rand.nextInt(2);
+        int pow = rand.nextInt(powers.size());
         Powerup power = powers.get(pow);
         int chance = power.getChance();
-        int random = rand.nextInt(101);
+        int random = rand.nextInt(1001);
         if (random < chance) {
             powerup = power;
         } else {

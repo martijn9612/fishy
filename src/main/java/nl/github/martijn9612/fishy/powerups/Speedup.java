@@ -7,7 +7,7 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 public class Speedup extends Powerup{
-    private static final String SPRITE_PATH = "resources/Mushroom.png";
+    private static final String SPRITE_PATH = "resources/Speedup-fish.png" ;
     private int chance;
     
     public Speedup(Vector dimensions, Vector position, Vector velocity,
@@ -29,10 +29,10 @@ public class Speedup extends Powerup{
     public static Speedup createPowerup(Random random, boolean loadResources) {
         boolean spawnsLeft = random.nextBoolean();
         Vector acceleration = new Vector(0,0);
-        Vector dimensions = new Vector(32,32);
+        Vector dimensions = new Vector(16,16);
         Vector velocity = getRandomVelocity(random, spawnsLeft);
         Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-        return new Speedup(dimensions, position, velocity, acceleration, loadResources, 30);
+        return new Speedup(dimensions, position, velocity, acceleration, loadResources, 100);
     }
     
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {

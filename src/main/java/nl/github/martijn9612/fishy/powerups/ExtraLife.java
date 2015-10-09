@@ -5,10 +5,9 @@ import java.util.Random;
 import nl.github.martijn9612.fishy.models.Entity;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
-import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 
 public class ExtraLife extends Powerup{
-    private static final String SPRITE_PATH = "resources/Mushroom.png";
+    private static final String SPRITE_PATH = "resources/ExtraLife-fish.png";
     private int chance;
 
     public ExtraLife(Vector dimensions, Vector position, Vector velocity,
@@ -34,7 +33,7 @@ public class ExtraLife extends Powerup{
         Vector dimensions = new Vector(16,16);
         Vector velocity = getRandomVelocity(random, spawnsLeft);
         Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-        return new ExtraLife(dimensions, position, velocity, acceleration, loadResources, 10);
+        return new ExtraLife(dimensions, position, velocity, acceleration, loadResources, 30);
     }
     
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {

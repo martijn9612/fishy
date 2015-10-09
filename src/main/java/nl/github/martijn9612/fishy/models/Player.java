@@ -17,7 +17,7 @@ public class Player extends Entity {
     private static final float PLAYER_WIDTH = 16;
     private static final float PLAYER_HEIGHT = 16;
     private static final float WATER_DRAG = 0.3f;
-    private static final float PLAYER_MASS = 5;
+    private static float PLAYER_MASS = 5;
     private static float PLAYER_MAX_SPEED = 8;
     private static float PLAYER_MOVE_FORCE = 4;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
@@ -177,13 +177,14 @@ public class Player extends Entity {
         dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
         PLAYER_MAX_SPEED = 8;
         PLAYER_MOVE_FORCE = 4;
+        PLAYER_MASS = 5;
         setScore(0);
     }
     
     /**
      * Plays a random available bite sound from the list.
      */
-    private void playBiteSound() {
+    public void playBiteSound() {
     	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random()); /* Integer between 1 and array length */
     	musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]); /* Subtract 1 to get array index */
     }
@@ -221,14 +222,17 @@ public class Player extends Entity {
     }
     
     public void Speedup(int time){
-        PLAYER_MAX_SPEED = 20;
-        PLAYER_MOVE_FORCE = 15;
+        timer.cancel();
+        PLAYER_MAX_SPEED = 40;
+        PLAYER_MOVE_FORCE = 30;
+        PLAYER_MASS = 3;
         timer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
                 PLAYER_MAX_SPEED = 8;
-                PLAYER_MOVE_FORCE = 4;  
+                PLAYER_MOVE_FORCE = 4;
+                PLAYER_MASS = 5;
             }
         };
         this.timer.schedule(action, time);
