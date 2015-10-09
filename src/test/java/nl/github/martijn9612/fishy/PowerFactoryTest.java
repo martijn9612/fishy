@@ -12,7 +12,7 @@ public class PowerFactoryTest {
     public void testSetup() {
         PowerupFactory factory = new PowerupFactory(false);
         factory.setupFactory();
-        assertEquals(3, factory.getPowerups().size());
+        assertEquals(4, factory.getPowerups().size());
     }
     
     @Test

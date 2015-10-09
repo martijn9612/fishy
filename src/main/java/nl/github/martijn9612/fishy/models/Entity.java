@@ -3,6 +3,7 @@ package nl.github.martijn9612.fishy.models;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Ellipse;
 
 import nl.github.martijn9612.fishy.Main;
@@ -66,6 +67,15 @@ public abstract class Entity {
 			}
 		}
 	}
+
+	public void loadImage(String imagePath) {
+		try {
+			originalImage = new Image(imagePath);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	/**
 	 * Set the orientation of the sprite. When the orientation changes,
@@ -79,7 +89,7 @@ public abstract class Entity {
 			originalImage = originalImage.getFlippedCopy(true, false);
 			orientation = newOrientation;
 		}
-	}
+    }
 
 	/**
 	 * Renders the object and the boundary box when enabled.
@@ -87,7 +97,7 @@ public abstract class Entity {
 	 * @param g the graphics content used to render.
 	 */
 	public void renderObject(Graphics g) {
-		if (hasOpenGL) {
+        if (hasOpenGL) {
 			Image image = getScaledImage();
 			g.drawImage(image, position.x, position.y);
 			if (Main.DEBUG_MODE) {
@@ -139,7 +149,7 @@ public abstract class Entity {
 			boundingBox.setLocation(position);
 			boundingBox.setRadii(radiiX, radiiY);
 		}
-	}
+    }
 
 	/**
 	 * Get a scaled version of the image sprite. When the dimensions of an
@@ -152,10 +162,10 @@ public abstract class Entity {
 		if (!oldDimensions.equals(dimensions)) {
 			int width = Math.round(dimensions.x);
 			int height = Math.round(dimensions.y);
-			scaledImage = originalImage.getScaledCopy(width, height);
+            scaledImage = originalImage.getScaledCopy(width, height);
 			oldDimensions = dimensions;
 		}
-		return scaledImage;
+        return scaledImage;
 	}
 
 	/**
