@@ -74,7 +74,7 @@ public abstract class Entity {
 	 * @param newOrientation integer defining the orientation.
 	 */
 	public void setImageOrientation(int newOrientation) {
-		if(orientation != newOrientation) {
+		if (orientation != newOrientation) {
 			scaledImage = scaledImage.getFlippedCopy(true, false);
 			originalImage = originalImage.getFlippedCopy(true, false);
 			orientation = newOrientation;
@@ -165,4 +165,8 @@ public abstract class Entity {
 	 * @param deltaTime milliseconds passed since last call.
 	 */
 	public abstract void objectLogic(GameContainer gc, int deltaTime);
+
+	public Ellipse getBoundingBox() {
+	    return boundingBox;
+	}
 }
