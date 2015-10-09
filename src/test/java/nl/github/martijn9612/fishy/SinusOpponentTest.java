@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.newdawn.slick.GameContainer;
 
 import junit.framework.TestCase;
-import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
 
@@ -19,7 +19,7 @@ public class SinusOpponentTest extends TestCase {
 		Vector position = new Vector(0,0);
 		Vector velocity = new Vector(0,0);
         Vector acceleration = new Vector(0,0);
-		Opponent testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
+		NonPlayer testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
         testopp.objectLogic(gc, 0);
         assertEquals(-1.0, testopp.velocity.y, 0.1);
     }
@@ -30,7 +30,7 @@ public class SinusOpponentTest extends TestCase {
 		Vector position = new Vector(1,1);
 		Vector velocity = new Vector(0,0);
         Vector acceleration = new Vector(0,0);
-		Opponent testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
+		NonPlayer testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
         testopp.position = new Vector(1, 1);
         testopp.objectLogic(gc, 0);
         assertEquals(-((1 % 80) / 20 + 1), testopp.velocity.y, 0.1);

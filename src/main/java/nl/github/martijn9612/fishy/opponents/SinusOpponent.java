@@ -5,14 +5,14 @@ import java.util.Random;
 import org.newdawn.slick.GameContainer;
 
 import nl.github.martijn9612.fishy.Main;
-import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 /**
  * Created by martijn on 23-9-15.
  */
-public class SinusOpponent extends Opponent {
+public class SinusOpponent extends NonPlayer {
     private static final String SINUS_SPRITE_PATH = "resources/squid.png";
     public static final int PIXELS_TO_HALT = 80;
     // PIXELS_TO_HALT / DIVIDER = MAX SPEED THE OPPONENT ACHIEVES

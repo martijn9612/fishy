@@ -1,5 +1,8 @@
 package nl.github.martijn9612.fishy.models;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -14,9 +17,9 @@ public class Player extends Entity {
     private static final float PLAYER_WIDTH = 16;
     private static final float PLAYER_HEIGHT = 16;
     private static final float WATER_DRAG = 0.3f;
-    private static final float PLAYER_MASS = 5;
-    private static final float PLAYER_MAX_SPEED = 8;
-    private static final float PLAYER_MOVE_FORCE = 4;
+    private static float PLAYER_MASS = 5;
+    private static float PLAYER_MAX_SPEED = 8;
+    private static float PLAYER_MOVE_FORCE = 4;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
     private static final String PLAYER_SPRITE = "resources/player-" + Main.PLAYER_CHARACTER + ".png";
@@ -27,6 +30,10 @@ public class Player extends Entity {
 		MusicPlayer.BITE_SOUND_2,
 		MusicPlayer.BITE_SOUND_3
 	};
+    private int lives = 0;
+    private int poisoned = 1;
+    private Timer speedUpTimer = new Timer();
+    private Timer poisonTimer = new Timer();
 
     /**
      * Creates a new Player instance in the game window.
@@ -88,20 +95,20 @@ public class Player extends Entity {
         
         if(moveR) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
-        	applyForce(new Vector(PLAYER_MOVE_FORCE, 0));
+        	applyForce(new Vector( poisoned * PLAYER_MOVE_FORCE, 0));
         }
         
         if(moveL) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_LEFT);
-        	applyForce(new Vector(-PLAYER_MOVE_FORCE, 0));
+        	applyForce(new Vector(poisoned * -PLAYER_MOVE_FORCE, 0));
         }
         
         if(moveU) {
-        	applyForce(new Vector(0, -PLAYER_MOVE_FORCE));
+        	applyForce(new Vector(0, poisoned * -PLAYER_MOVE_FORCE));
         }
         
         if(moveD) {
-        	applyForce(new Vector(0, PLAYER_MOVE_FORCE));
+        	applyForce(new Vector(0, poisoned * PLAYER_MOVE_FORCE));
         }
     }
 
@@ -139,7 +146,7 @@ public class Player extends Entity {
     /**
      * Apply a force to the player, according to force = mass * acceleration;
      * 
-     * @param Vector force
+     * @param force
      */
     private void applyForce(Vector force) {
 		Vector newForce = force.copy();
@@ -152,7 +159,7 @@ public class Player extends Entity {
      * 
      * @param opponent to eat
      */
-    public void eat(Opponent opponent) {
+    public void eat(NonPlayer opponent) {
         double opponentSize = opponent.getSize();
     	setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
@@ -170,13 +177,16 @@ public class Player extends Entity {
         Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
         position = Vector.centerOfScreen();
         dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+        PLAYER_MAX_SPEED = 8;
+        PLAYER_MOVE_FORCE = 4;
+        PLAYER_MASS = 5;
         setScore(0);
     }
     
     /**
      * Plays a random available bite sound from the list.
      */
-    private void playBiteSound() {
+    public void playBiteSound() {
     	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random()); /* Integer between 1 and array length */
     	musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]); /* Subtract 1 to get array index */
     }
@@ -212,4 +222,50 @@ public class Player extends Entity {
         LevelState.score = String.valueOf(Math.round(score));
         this.score = score;
     }
+
+    public void Speedup(int time){
+        speedUpTimer.cancel();
+        PLAYER_MAX_SPEED = 40;
+        PLAYER_MOVE_FORCE = 30;
+        PLAYER_MASS = 3;
+        speedUpTimer = new Timer();
+
+        TimerTask action = new TimerTask() {
+            public void run() {
+                PLAYER_MAX_SPEED = 8;
+                PLAYER_MOVE_FORCE = 4;
+                PLAYER_MASS = 5;
+            }
+        };
+        speedUpTimer.schedule(action, time);
+        }
+
+    public void Poison(int time) {
+        poisonTimer.cancel();
+        poisoned = -1;
+        poisonTimer = new Timer();
+
+        TimerTask action = new TimerTask() {
+            public void run() {
+                poisoned = 1;
+            }
+        };
+
+        poisonTimer.schedule(action, time);
+    }
+
+    public void Extralife(){
+     lives++;
+    }
+    public int getLives(){
+        return lives;
+    }
+    public void Loselife(){
+        lives--;
+    }
+
+    public String getLivesAsString(){
+        return "lives: (" + lives + ")";
+    }
 }
+
