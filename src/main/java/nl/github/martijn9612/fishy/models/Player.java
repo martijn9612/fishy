@@ -3,6 +3,7 @@ package nl.github.martijn9612.fishy.models;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -23,6 +24,8 @@ public class Player extends Entity {
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
     private static final String PLAYER_SPRITE = "resources/player-" + Main.PLAYER_CHARACTER + ".png";
+    private static final String PLAYER_FULL_SHIELD_SPRITE = "resources/shield-full.png";
+    private static final String PLAYER_HALF_SHIELD_SPRITE = "resources/shield-half.png";
     
     private double score = 0;
     private static final String[] BITE_SOUNDS = {
@@ -30,10 +33,13 @@ public class Player extends Entity {
 		MusicPlayer.BITE_SOUND_2,
 		MusicPlayer.BITE_SOUND_3
 	};
+
     private int lives = 0;
     private int poisoned = 1;
+    private boolean hasShield;
     private Timer speedUpTimer = new Timer();
     private Timer poisonTimer = new Timer();
+    private Timer shieldRemove = new Timer();
 
     /**
      * Creates a new Player instance in the game window.
@@ -161,7 +167,7 @@ public class Player extends Entity {
      */
     public void eat(NonPlayer opponent) {
         double opponentSize = opponent.getSize();
-    	setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
+    	setScore( score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
         dimensions = new Vector(newDimension, newDimension);
         Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
@@ -266,6 +272,28 @@ public class Player extends Entity {
 
     public String getLivesAsString(){
         return "lives: (" + lives + ")";
+    }
+
+    public boolean hasShield() {
+        return hasShield;
+    }
+
+    public void removeShield(int time) {
+        shieldRemove = new Timer();
+        loadImage(PLAYER_HALF_SHIELD_SPRITE);
+
+        TimerTask action = new TimerTask() {
+            public void run() {
+                hasShield = false;
+                loadImage(PLAYER_SPRITE);
+            }
+        };
+        shieldRemove.schedule(action, time);
+    }
+
+    public void addShield() {
+        loadImage(PLAYER_FULL_SHIELD_SPRITE);
+        hasShield = true;
     }
 }
 
