@@ -24,7 +24,7 @@ public strictfp class Vector extends Vector2f {
 	public static Vector centerOfScreen() {
 		return new Vector(Main.WINDOW_WIDTH / 2, Main.WINDOW_HEIGHT / 2);
 	}
-	
+
 	public String toString() {
 		return "(" + Math.round(x) + "," + Math.round(y) + ")";
 	}

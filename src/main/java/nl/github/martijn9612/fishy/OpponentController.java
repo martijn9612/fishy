@@ -7,7 +7,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
 
-import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.opponents.BigOpponent;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
@@ -20,8 +20,8 @@ public class OpponentController {
 
 	private boolean loadResources;
 	private final Random random = new Random();
-	private ArrayList<Opponent> opponents = new ArrayList<Opponent>();
-	private ArrayList<Opponent> toRemove = new ArrayList<Opponent>();
+	private ArrayList<NonPlayer> opponents = new ArrayList<NonPlayer>();
+	private ArrayList<NonPlayer> toRemove = new ArrayList<NonPlayer>();
 	private static final double BIG_OPPONENT_SPAWN_CHANCE = 0.001;
 	private static final int MAX_OPPONENTS = 20;
 	
@@ -38,7 +38,7 @@ public class OpponentController {
 	 */
 	public void spawnOpponents(Player player) {
 		if (opponents.size() < MAX_OPPONENTS) {
-			Opponent newOpponent;
+			NonPlayer newOpponent;
 			if (random.nextInt(5) > 0) {
 				newOpponent = LinearOpponent.createRandom(player, random, loadResources);
 			} else {
@@ -54,7 +54,7 @@ public class OpponentController {
 	 * @param graph the graphics.
 	 */
 	public void renderOpponents(Graphics graph) {
-		for (Opponent opponent : opponents) {
+		for (NonPlayer opponent : opponents) {
 			opponent.renderObject(graph);
 		}
 	}
@@ -66,7 +66,7 @@ public class OpponentController {
 	 * @param deltaTime the amount of time that has passed since last update in milliseconds
 	 */
 	public void updateOpponents(GameContainer gc, int deltaTime) {
-		for (Opponent opponent : opponents) {
+		for (NonPlayer opponent : opponents) {
 			opponent.objectLogic(gc, deltaTime);
 			if (opponent.isOffScreen()) {
 				remove(opponent);
@@ -76,7 +76,7 @@ public class OpponentController {
 	}
 	
 	private void updateRemoveOpponents() {
-		for (Opponent opponent : toRemove) {
+		for (NonPlayer opponent : toRemove) {
 			opponents.remove(opponent);
 		}
 		toRemove.clear();
@@ -87,7 +87,7 @@ public class OpponentController {
 	 *
 	 * @param opponent to destroy
 	 */
-	public void remove(Opponent opponent) {
+	public void remove(NonPlayer opponent) {
 		opponent.destroy();
 		toRemove.add(opponent);
 	}
@@ -96,7 +96,7 @@ public class OpponentController {
 	 * Destroy all the opponents.
 	 */
 	public void removeAllOpponents() {
-		for (Opponent opponent : opponents) {
+		for (NonPlayer opponent : opponents) {
 			remove(opponent);
 		}
 		Main.actionLogger.logLine("All opponents destroyed", getClass().getSimpleName());
@@ -109,7 +109,7 @@ public class OpponentController {
 	 * @param sbg the game holding the state
 	 */
 	public void collide(Player player, StateBasedGame sbg) {
-		for (Opponent opponent : opponents) {
+		for (NonPlayer opponent : opponents) {
 			if (opponent.intersects(player)) {
 				String log = "Player collides with opponent of size " + Math.floor(opponent.getSize());
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
@@ -117,8 +117,13 @@ public class OpponentController {
 					player.eat(opponent);
 					remove(opponent);
 				} else {
+				    if (player.getLives() > 0){
+				        remove(opponent);
+				        player.Loselife();
+				    } else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					sbg.enterState(Main.GAME_LOSE_STATE);
+				}
 				}
 			}
 		}
@@ -133,7 +138,7 @@ public class OpponentController {
 	}
 
 	private boolean bigOpponentInstanceExists() {
-		for (Opponent opponent : opponents) {
+		for (NonPlayer opponent : opponents) {
 			if(opponent instanceof BigOpponent) {
 				return true;
 			}
@@ -141,15 +146,15 @@ public class OpponentController {
 		return false;
 	}
 	
-	public ArrayList<Opponent> getToRemove() {
+	public ArrayList<NonPlayer> getToRemove() {
 		return toRemove;
 	}
 	
-	public ArrayList<Opponent> getOpponents() {
+	public ArrayList<NonPlayer> getOpponents() {
 		return opponents;
 	}
 
-	public void addOpponent(Opponent opponent) {
+	public void addOpponent(NonPlayer opponent) {
 		opponents.add(opponent);
 	}
 }

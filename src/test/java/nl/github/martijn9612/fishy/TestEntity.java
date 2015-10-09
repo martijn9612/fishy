@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 import nl.github.martijn9612.fishy.models.Entity;
 import nl.github.martijn9612.fishy.models.Vector;
 
-public class TestObject extends TestCase {
+public class TestEntity extends TestCase {
 	
 	public static final float X_VALUE = 10;
 	public static final float Y_VALUE = 100;

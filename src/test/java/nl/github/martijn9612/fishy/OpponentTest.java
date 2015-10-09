@@ -3,7 +3,7 @@ package nl.github.martijn9612.fishy;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
@@ -20,7 +20,7 @@ public class OpponentTest extends TestCase {
         Vector dimensions = new Vector(size,size);
         Vector velocity = new Vector(1,0);
         Vector acceleration = new Vector(0,0);
-    	Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
+    	NonPlayer testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		assertEquals(testopp.getSize(), size, 0.1);
 	}
 
@@ -33,7 +33,7 @@ public class OpponentTest extends TestCase {
 		Vector position = new Vector(10,10);
         Vector dimensions = new Vector(1,1);
         Vector acceleration = new Vector(0,0);
-        Opponent testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
+        NonPlayer testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
 		assertFalse(testopp.isOffScreen());
 		testopp.position = new Vector(10, Main.WINDOW_HEIGHT - 10);
 		assertFalse(testopp.isOffScreen());
@@ -52,7 +52,7 @@ public class OpponentTest extends TestCase {
 		Vector position = new Vector(-10,-10);
 		Vector velocity = new Vector(0,0);
         Vector acceleration = new Vector(0,0);
-		Opponent testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
+		NonPlayer testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
 		assertTrue(testopp.isOffScreen());
 		testopp.position = new Vector(-10, Main.WINDOW_HEIGHT + 10);
 		assertTrue(testopp.isOffScreen());

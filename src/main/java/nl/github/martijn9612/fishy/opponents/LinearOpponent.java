@@ -6,14 +6,14 @@ import org.newdawn.slick.GameContainer;
 
 import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.models.Entity;
-import nl.github.martijn9612.fishy.models.Opponent;
+import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 /**
  * An opponent that moves horizontally with a constant speed.
  */
-public class LinearOpponent extends Opponent {
+public class LinearOpponent extends NonPlayer {
 	private static final String SPRITE_PATH = "resources/opponent-" + Main.OPPONENT_CHARACTER + ".png";
 
 	/**
