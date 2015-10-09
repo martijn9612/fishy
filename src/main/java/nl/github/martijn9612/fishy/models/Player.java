@@ -31,7 +31,9 @@ public class Player extends Entity {
 		MusicPlayer.BITE_SOUND_3
 	};
     private int lives = 0;
-    private Timer timer = new Timer();
+    private int poisoned = 1;
+    private Timer speedUpTimer = new Timer();
+    private Timer poisonTimer = new Timer();
 
     /**
      * Creates a new Player instance in the game window.
@@ -93,20 +95,20 @@ public class Player extends Entity {
         
         if(moveR) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
-        	applyForce(new Vector(PLAYER_MOVE_FORCE, 0));
+        	applyForce(new Vector( poisoned * PLAYER_MOVE_FORCE, 0));
         }
         
         if(moveL) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_LEFT);
-        	applyForce(new Vector(-PLAYER_MOVE_FORCE, 0));
+        	applyForce(new Vector(poisoned * -PLAYER_MOVE_FORCE, 0));
         }
         
         if(moveU) {
-        	applyForce(new Vector(0, -PLAYER_MOVE_FORCE));
+        	applyForce(new Vector(0, poisoned * -PLAYER_MOVE_FORCE));
         }
         
         if(moveD) {
-        	applyForce(new Vector(0, PLAYER_MOVE_FORCE));
+        	applyForce(new Vector(0, poisoned * PLAYER_MOVE_FORCE));
         }
     }
 
@@ -144,7 +146,7 @@ public class Player extends Entity {
     /**
      * Apply a force to the player, according to force = mass * acceleration;
      * 
-     * @param Vector force
+     * @param force
      */
     private void applyForce(Vector force) {
 		Vector newForce = force.copy();
@@ -220,13 +222,13 @@ public class Player extends Entity {
         LevelState.score = String.valueOf(Math.round(score));
         this.score = score;
     }
-    
+
     public void Speedup(int time){
-        timer.cancel();
+        speedUpTimer.cancel();
         PLAYER_MAX_SPEED = 40;
         PLAYER_MOVE_FORCE = 30;
         PLAYER_MASS = 3;
-        timer = new Timer();
+        speedUpTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
@@ -235,11 +237,25 @@ public class Player extends Entity {
                 PLAYER_MASS = 5;
             }
         };
-        this.timer.schedule(action, time);
+        speedUpTimer.schedule(action, time);
         }
-    
+
+    public void Poison(int time) {
+        poisonTimer.cancel();
+        poisoned = -1;
+        poisonTimer = new Timer();
+
+        TimerTask action = new TimerTask() {
+            public void run() {
+                poisoned = 1;
+            }
+        };
+
+        poisonTimer.schedule(action, time);
+    }
+
     public void Extralife(){
-     lives++;   
+     lives++;
     }
     public int getLives(){
         return lives;
@@ -247,8 +263,9 @@ public class Player extends Entity {
     public void Loselife(){
         lives--;
     }
+
     public String getLivesAsString(){
         return "lives: (" + lives + ")";
     }
-    }
+}
 
