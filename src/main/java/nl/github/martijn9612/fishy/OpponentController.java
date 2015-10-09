@@ -117,7 +117,9 @@ public class OpponentController {
 					player.eat(opponent);
 					remove(opponent);
 				} else {
-				    if (player.getLives() > 0){
+					if (player.hasShield()) {
+                        player.removeShield(2000);
+                    } else if (player.getLives() > 0){
 				        remove(opponent);
 				        player.Loselife();
 				    } else {

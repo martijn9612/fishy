@@ -44,9 +44,11 @@ public class PowerupFactory {
         Powerup extralife = ExtraLife.createPowerup(rand, loadResources);
         Powerup speedup = Speedup.createPowerup(rand, loadResources);
         Powerup poison = Poison.createPowerup(rand, loadResources);
+        Powerup shield = Shield.createPowerup(rand, loadResources);
         powers.add(extralife);
         powers.add(speedup);
         powers.add(poison);
+        powers.add(shield);
     }
     /**
      * clear the factory so it doesn't get to big.
