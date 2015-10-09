@@ -33,21 +33,58 @@ public class BigOpponentIndicatorTest extends TestCase {
     }
 
     @Test
-    public void testCreateIndicator() {
+    public void testCreateIndicatorPosition() {
         BigOpponentIndicator testindicator = test
                 .createIndicator(player, false);
         assertEquals(testindicator.position, position);
-
     }
 
     @Test
-    public void testObjectLogic() {
+    public void testCreateIndicatorVelocity() {
+        BigOpponentIndicator testindicator = test
+                .createIndicator(player, false);
+        assertEquals(testindicator.velocity, velocity);
+    }
+    
+    @Test
+    public void testCreateIndicatorAcceleration() {
+        BigOpponentIndicator testindicator = test
+                .createIndicator(player, false);
+        assertEquals(testindicator.acceleration, acceleration);
+    }
+    
+    @Test
+    public void testCreateIndicatorDimensions() {
+        BigOpponentIndicator testindicator = test
+                .createIndicator(player, false);
+        assertEquals(testindicator.dimensions, dimensions);
+    }
+    
+    @Test
+    public void testObjectLogicVelocity() {
         float newIndicatorPosition = player.position.y - (100 / 2);
         posHistory.add(newIndicatorPosition);
         velocity.add(acceleration);
         test.objectLogic(gc, 0);
         assertEquals(test.velocity, velocity);
-
+    }
+    
+    @Test
+    public void testObjectLogicAcceleration() {
+        float newIndicatorPosition = player.position.y - (100 / 2);
+        posHistory.add(newIndicatorPosition);
+        acceleration.scale(0);
+        test.objectLogic(gc, 0);
+        assertEquals(test.acceleration, acceleration);
+    }
+    
+    @Test
+    public void testObjectLogicPosition() {
+        float newIndicatorPosition = player.position.y - (100 / 2);
+        posHistory.add(newIndicatorPosition);
+        position.add(velocity);
+        test.objectLogic(gc, 0);
+        assertEquals(test.position, position);
     }
 
 }
