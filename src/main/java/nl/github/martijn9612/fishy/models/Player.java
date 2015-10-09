@@ -32,7 +32,8 @@ public class Player extends Entity {
 	};
     private int lives = 0;
     private int poisoned = 1;
-    private Timer timer;
+    private Timer speedUpTimer = new Timer();
+    private Timer poisonTimer = new Timer();
 
     /**
      * Creates a new Player instance in the game window.
@@ -223,11 +224,11 @@ public class Player extends Entity {
     }
 
     public void Speedup(int time){
-        timer.cancel();
+        speedUpTimer.cancel();
         PLAYER_MAX_SPEED = 40;
         PLAYER_MOVE_FORCE = 30;
         PLAYER_MASS = 3;
-        timer = new Timer();
+        speedUpTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
@@ -236,12 +237,13 @@ public class Player extends Entity {
                 PLAYER_MASS = 5;
             }
         };
-        timer.schedule(action, time);
+        speedUpTimer.schedule(action, time);
         }
 
     public void Poison(int time) {
+        poisonTimer.cancel();
         poisoned = -1;
-        timer = new Timer();
+        poisonTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
@@ -249,7 +251,7 @@ public class Player extends Entity {
             }
         };
 
-        timer.schedule(action, time);
+        poisonTimer.schedule(action, time);
     }
 
     public void Extralife(){

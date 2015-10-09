@@ -58,6 +58,6 @@ public class Poison extends Powerup {
 
     @Override
     public void Effect(Player player){
-        player.Poison(5000);
+        player.Poison(10000);
     }
 }
