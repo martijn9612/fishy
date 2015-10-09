@@ -32,8 +32,10 @@ public class PowerupFactory {
     public void setupFactory(){
         Powerup extralife = ExtraLife.createPowerup(rand, loadResources);
         Powerup speedup = Speedup.createPowerup(rand, loadResources);
+        Powerup poison = Poison.createPowerup(rand, loadResources);
         powers.add(extralife);
         powers.add(speedup);
+        powers.add(poison);
     }
     public void clearFactory(){
         powers.clear();
