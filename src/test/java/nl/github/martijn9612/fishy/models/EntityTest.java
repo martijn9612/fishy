@@ -4,7 +4,7 @@ import static org.mockito.Mockito.mock;
 import junit.framework.TestCase;
 import nl.github.martijn9612.fishy.OpponentController;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
-import nl.github.martijn9612.fishy.models.Opponent;
+
 
 import org.junit.Test;
 import org.newdawn.slick.GameContainer;
