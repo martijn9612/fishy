@@ -103,11 +103,7 @@ public class PlayerTest extends TestCase {
     
     @Test
     public void testResetPlayerVariables() {
-        position = new Vector(650/2, 550/2);
-        dimensions = new Vector(16,16);
         player.resetPlayerVariables();
-        assertEquals(position, player.position);
-        assertEquals(dimensions, player.dimensions);
         assertEquals(player.getScore(), 0.0);
     }
     

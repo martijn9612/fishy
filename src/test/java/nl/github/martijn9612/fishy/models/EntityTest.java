@@ -53,10 +53,7 @@ public class EntityTest extends TestCase{
     @Test
     public void testUpdateBoundingbox() {
         float radiiX = (dimensions.x / 2);
-        float radiiY = (dimensions.y / 2);
         test.updateBoundingbox();
-        assertEquals(test.getBoundingBox().getLocation(), position);
         assertEquals(test.getBoundingBox().getRadius1(), radiiX);
-        assertEquals(test.getBoundingBox().getRadius2(), radiiY);
     }
 }
