@@ -71,6 +71,7 @@ public abstract class Entity {
 	public void loadImage(String imagePath) {
 		try {
 			originalImage = new Image(imagePath);
+			getScaledImage();
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

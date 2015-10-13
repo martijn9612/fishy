@@ -12,13 +12,11 @@ import java.util.Random;
 public class Shield extends Powerup{
     private static final String SPRITE_PATH = "resources/shield.png";
     private int chance;
-    private String name;
 
     public Shield(Vector dimensions, Vector position, Vector velocity,
                   Vector acceleration, boolean loadResources, int chance) {
         super(dimensions, position, velocity, acceleration, loadResources, chance);
         loadResources(SPRITE_PATH);
-        name = "Shield";
         this.chance = chance;
         if(loadResources && velocity.x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
@@ -58,6 +56,6 @@ public class Shield extends Powerup{
 
     @Override
     public void Effect(Player player){
-        player.addShield();
+        player.addShield(5000);
     }
 }

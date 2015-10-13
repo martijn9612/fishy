@@ -117,14 +117,14 @@ public class OpponentController {
 					player.eat(opponent);
 					remove(opponent);
 				} else {
-					if (player.hasShield()) {
-                        player.removeShield(2000);
-                    } else if (player.getLives() > 0){
-				        remove(opponent);
+					if (!player.hasShield()) {
+                     if (player.getLives() > 0){
+				        player.addShield(2000);
 				        player.Loselife();
 				    } else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					sbg.enterState(Main.GAME_LOSE_STATE);
+				}
 				}
 				}
 			}

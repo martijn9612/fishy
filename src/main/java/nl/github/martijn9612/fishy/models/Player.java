@@ -3,7 +3,6 @@ package nl.github.martijn9612.fishy.models;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -39,7 +38,8 @@ public class Player extends Entity {
     private boolean hasShield;
     private Timer speedUpTimer = new Timer();
     private Timer poisonTimer = new Timer();
-    private Timer shieldRemove = new Timer();
+    private Timer shieldTimer = new Timer();
+    private Timer shieldRemover = new Timer();
 
     /**
      * Creates a new Player instance in the game window.
@@ -278,22 +278,30 @@ public class Player extends Entity {
         return hasShield;
     }
 
-    public void removeShield(int time) {
-        shieldRemove = new Timer();
-        loadImage(PLAYER_HALF_SHIELD_SPRITE);
+    public void addShield(int time) {
+        shieldTimer = new Timer();
+        loadImage(PLAYER_FULL_SHIELD_SPRITE);
 
+        TimerTask action = new TimerTask() {
+            public void run() {
+                removeShield();
+            }
+        };
+        shieldTimer.schedule(action, time);
+    }
+
+    public void removeShield() {
+        shieldRemover = new Timer();
+        loadImage(PLAYER_HALF_SHIELD_SPRITE);
+        
         TimerTask action = new TimerTask() {
             public void run() {
                 hasShield = false;
                 loadImage(PLAYER_SPRITE);
             }
         };
-        shieldRemove.schedule(action, time);
+        shieldRemover.schedule(action,2000);
+        }
     }
 
-    public void addShield() {
-        loadImage(PLAYER_FULL_SHIELD_SPRITE);
-        hasShield = true;
-    }
-}
 
