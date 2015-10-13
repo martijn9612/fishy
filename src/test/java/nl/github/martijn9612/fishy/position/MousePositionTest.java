@@ -18,7 +18,6 @@ public class MousePositionTest extends TestCase {
     private int posX;
     private int posY;
     private MousePosition test;
-    private Mouse mouse = mock(Mouse.class);
 
     
     /**
