@@ -71,6 +71,10 @@ public abstract class Entity {
 	public void loadImage(String imagePath) {
 		try {
 			originalImage = new Image(imagePath);
+			if (orientation != 0) {
+                System.out.println(orientation);
+                originalImage = originalImage.getFlippedCopy(true, false);
+			}
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
