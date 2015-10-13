@@ -18,6 +18,7 @@ public class SinusOpponent extends NonPlayer {
     // PIXELS_TO_HALT / DIVIDER = MAX SPEED THE OPPONENT ACHIEVES
     public static final int DIVIDER = 20;
     private static final int SPAWN_HEIGHT = Main.WINDOW_HEIGHT;
+    public static final int MAX_SIZE = 300;
 
     /**
 	 * Constructor for an opponent that moves in a sinusoid motion.
@@ -56,10 +57,13 @@ public class SinusOpponent extends NonPlayer {
 	 * @return Vector with opponent size.
 	 */
 	private static Vector getRandomDimensions(Player player, Random random) {
-		int maxSize = (int) (player.getSize() * 2.0);
+		int maxSize = (int) (player.getSize() * 1.5);
 		int minSize = (int) (player.getSize() * 0.5);
 		int size = (random.nextInt((maxSize - minSize)) + minSize);
-		return new Vector(size, size);
+        if (size > MAX_SIZE) {
+            size = MAX_SIZE;
+        }
+        return new Vector(size, size);
 	}
 	
 	/**

@@ -112,7 +112,7 @@ public class LoseState extends BasicGameState {
         }
 
         Input input = gc.getInput();
-        if (input.isKeyDown(Input.KEY_ENTER)) {
+        if (input.isKeyDown(Input.KEY_ENTER) || input.isKeyDown(Input.KEY_SPACE)) {
             game.enterState(Main.LEVEL_STATE);
         }
     }

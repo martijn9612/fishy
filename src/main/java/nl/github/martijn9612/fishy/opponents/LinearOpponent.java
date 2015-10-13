@@ -15,6 +15,7 @@ import nl.github.martijn9612.fishy.models.Vector;
  */
 public class LinearOpponent extends NonPlayer {
 	private static final String SPRITE_PATH = "resources/opponent-" + Main.OPPONENT_CHARACTER + ".png";
+	public static final int MAX_SIZE = 300;
 
 	/**
 	 * Constructor for an opponent that moves in a linear motion.
@@ -57,9 +58,12 @@ public class LinearOpponent extends NonPlayer {
 	 * @return Vector with opponent size.
 	 */
 	private static Vector getRandomDimensions(Player player, Random random) {
-		int maxSize = (int) (player.getSize() * 2);
+		int maxSize = (int) (player.getSize() * 1.5);
 		int minSize = (int) (player.getSize() * 0.5);
 		int size = (random.nextInt((maxSize - minSize)) + minSize);
+		if (size > MAX_SIZE) {
+			size = MAX_SIZE;
+		}
 		return new Vector(size, size);
 	}
 	
