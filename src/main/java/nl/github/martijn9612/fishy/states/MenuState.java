@@ -21,14 +21,14 @@ public class MenuState extends BasicGameState {
     private String menu = "Menu";
     private Image play;
     private Image exit;
-    private Image options;
+    private Image help;
     private MousePosition mouse;
     private DrawRectangle playButtonDR;
     private DrawRectangle exitButtonDR;
-    private DrawRectangle optionsButtonDR;
+    private DrawRectangle helpButtonDR;
     private MouseRectangle playButtonMR;
     private MouseRectangle exitButtonMR;
-    private MouseRectangle optionsButtonMR;
+    private MouseRectangle helpButtonMR;
     private MusicPlayer musicPlayer = MusicPlayer.getInstance();
 
     private static final int MENU_TEXT_DRAW_X = 280;
@@ -37,8 +37,8 @@ public class MenuState extends BasicGameState {
     private static final int PLAY_BUTTON_DRAW_Y = 200;
     private static final int EXIT_BUTTON_DRAW_X = 150;
     private static final int EXIT_BUTTON_DRAW_Y = 375;
-    private static final int OPTIONS_BUTTON_DRAW_X = 580;
-    private static final int OPTIONS_BUTTON_DRAW_Y = 10;
+    private static final int HELP_BUTTON_DRAW_X = 580;
+    private static final int HELP_BUTTON_DRAW_Y = 10;
 
     /**
      * Constructor for the MenuState.
@@ -62,16 +62,16 @@ public class MenuState extends BasicGameState {
                 .getSimpleName());
         play = new Image("resources/play-button.gif");
         exit = new Image("resources/exit-button.gif");
-        options = new Image("resources/gears.png");
+        help = new Image("resources/gears.png");
         playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X,
                 PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
         exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X,
                 EXIT_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
-        optionsButtonDR = new DrawRectangle(OPTIONS_BUTTON_DRAW_X,
-                OPTIONS_BUTTON_DRAW_Y, options.getWidth(), options.getHeight());
+        helpButtonDR = new DrawRectangle(HELP_BUTTON_DRAW_X,
+                HELP_BUTTON_DRAW_Y, help.getWidth(), help.getHeight());
         playButtonMR = playButtonDR.getMouseRectangle();
         exitButtonMR = exitButtonDR.getMouseRectangle();
-        optionsButtonMR = optionsButtonDR.getMouseRectangle();
+        helpButtonMR = helpButtonDR.getMouseRectangle();
         mouse = new MousePosition();
     }
 
@@ -104,8 +104,8 @@ public class MenuState extends BasicGameState {
                 playButtonDR.getPositionY());
         g.drawImage(exit, exitButtonDR.getPositionX(),
                 exitButtonDR.getPositionY());
-        g.drawImage(options, optionsButtonDR.getPositionX(),
-                optionsButtonDR.getPositionY());
+        g.drawImage(help, helpButtonDR.getPositionX(),
+                helpButtonDR.getPositionY());
     }
 
     /**
@@ -136,10 +136,11 @@ public class MenuState extends BasicGameState {
             }
         }
 
-        if (mouse.isInRectangle(optionsButtonMR)) {
+        if (mouse.isInRectangle(helpButtonMR)) {
             if (mouse.isLeftButtonDown()) {
-                Main.actionLogger.logLine("Options opened.", getClass().getSimpleName());
-                sbg.enterState(Main.LEVEL_STATE);
+                Main.actionLogger.logLine("HelpState opened.", getClass().getSimpleName());
+                sbg.enterState(Main.HELP_STATE);
+                HelpState.setPrevious(Main.MENU_STATE);
             }
         }
 
