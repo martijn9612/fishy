@@ -36,7 +36,7 @@ public class Poison extends Powerup {
         Vector dimensions = new Vector(32,32);
         Vector velocity = getRandomVelocity(random, spawnsLeft);
         Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-        return new Poison(dimensions, position, velocity, acceleration, loadResources, 30);
+        return new Poison(dimensions, position, velocity, acceleration, loadResources, 100);
     }
 
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {

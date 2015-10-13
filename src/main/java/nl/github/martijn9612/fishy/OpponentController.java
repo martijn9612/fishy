@@ -114,12 +114,13 @@ public class OpponentController {
 				String log = "Player collides with opponent of size " + Math.floor(opponent.getSize());
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
 				if (player.getSize() > opponent.getSize()) {
-					player.eat(opponent);
+					player.eat(opponent.getSize());
+					player. playBiteSound();
 					remove(opponent);
 				} else {
 					if (!player.hasShield()) {
                      if (player.getLives() > 0){
-				        player.addShield(2000);
+				        player.addShield(1000,1000);
 				        player.Loselife();
 				    } else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
