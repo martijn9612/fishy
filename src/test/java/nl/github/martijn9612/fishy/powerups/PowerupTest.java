@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.powerups;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

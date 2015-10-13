@@ -1,14 +1,15 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.models;
 
 import org.junit.Test;
 
 import junit.framework.TestCase;
+import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
 
-public class OpponentTest extends TestCase {
+public class NonPlayerTest extends TestCase {
 
 	/**
 	 * Test case for getSize method

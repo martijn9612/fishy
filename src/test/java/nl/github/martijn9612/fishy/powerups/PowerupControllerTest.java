@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.powerups;
 
 import static org.junit.Assert.*;
 import nl.github.martijn9612.fishy.models.Player;

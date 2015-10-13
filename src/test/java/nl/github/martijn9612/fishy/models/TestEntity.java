@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.models;
 
 import static org.mockito.Mockito.mock;
 
