@@ -19,14 +19,11 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
  * Implements the Level State of the game.
  */
 public class LevelState extends BasicGameState {
-
-	public Player player;
-	public Sound bgPlayMusic;
-	public String state = "Playing";
-	public String fishPosition = "(" + 0 + "," + 0 + ")";
-	public String lives = "lives: (" + 0 + ")";
-	public static String score = "0";
-	public static int time = 0;
+	private Player player;
+	private String state = "Playing";
+	private String fishPosition = "(" + 0 + "," + 0 + ")";
+	private String lives = "lives: (" + 0 + ")";
+	private static String score = "0";
 	private Image background;
 	private OpponentController opponentController;
 	private PowerupController powerupController;
@@ -46,7 +43,11 @@ public class LevelState extends BasicGameState {
         // Blank
     }
 
-    /**
+	public static void setScore(String s) {
+		score = s;
+	}
+
+	/**
      * Initialization of the play screen.
      * 
      * @param gc the container holding the game
@@ -138,4 +139,8 @@ public class LevelState extends BasicGameState {
     public int getID() {
         return Main.LEVEL_STATE;
     }
+
+	public static String getScore() {
+		return score;
+	}
 }
