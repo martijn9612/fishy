@@ -21,6 +21,7 @@ public class Main extends StateBasedGame {
     public static final int LEVEL_STATE = 1;
     public static final int GAME_LOSE_STATE = 2;
     public static final int GAME_WIN_STATE = 3;
+    public static final int HELP_STATE = 4;
 
     private static final String GAME_NAME = "Fishy";
     public static final int WINDOW_WIDTH = 650;
