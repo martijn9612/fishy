@@ -23,6 +23,7 @@ public class OpponentController {
 	private ArrayList<NonPlayer> opponents = new ArrayList<NonPlayer>();
 	private ArrayList<NonPlayer> toRemove = new ArrayList<NonPlayer>();
 	private static final double BIG_OPPONENT_SPAWN_CHANCE = 0.001;
+	private int BIG_OPPONENT_DELAY = 15000;
 	private static final int MAX_OPPONENTS = 20;
 	
 	/**
@@ -125,7 +126,7 @@ public class OpponentController {
 				    } else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					sbg.enterState(Main.GAME_LOSE_STATE);
-				}
+					}
 				}
 			}
 		}
@@ -133,7 +134,8 @@ public class OpponentController {
 
 	private void startBigOpponentEvent(Player player) {
 		double rand = Math.random();
-		if(rand < BIG_OPPONENT_SPAWN_CHANCE && !bigOpponentInstanceExists()) {
+		BIG_OPPONENT_DELAY -= 10;
+        if(rand < BIG_OPPONENT_SPAWN_CHANCE && !bigOpponentInstanceExists() && BIG_OPPONENT_DELAY < 0) {
 			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player, loadResources);
 			addOpponent(bigOpponent);
 		}

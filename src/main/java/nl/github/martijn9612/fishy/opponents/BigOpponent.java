@@ -37,7 +37,7 @@ public class BigOpponent extends NonPlayer {
 	 */
     public BigOpponent(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources, Player player) {
     	super(dimensions, position, velocity, acceleration, loadResources);
-    	this.indicator = BigOpponentIndicator.createIndicator(player, loadResources);
+    	indicator = BigOpponentIndicator.createIndicator(player, loadResources);
         this.player = player;
         loadBigOpponentResources();
     }
@@ -64,7 +64,10 @@ public class BigOpponent extends NonPlayer {
     	indicator.objectLogic(gc, deltaTime);
         position.add(velocity);
         updateBoundingbox();
-        
+		checkProgress(deltaTime);
+    }
+
+	private void checkProgress(int deltaTime) {
 		if (timeToLive > 0) {
 			timeToLive -= deltaTime;
 		}
@@ -74,9 +77,9 @@ public class BigOpponent extends NonPlayer {
 		if (timeToLive < INDICATOR_MOVES_AT) {
 			indicator.acceleration.x = 2;
 		}
-    }
-    
-    /**
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
     @Override
