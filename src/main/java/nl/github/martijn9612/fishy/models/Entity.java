@@ -72,7 +72,6 @@ public abstract class Entity {
 		try {
 			originalImage = new Image(imagePath);
 			if (orientation != 0) {
-                System.out.println(orientation);
                 originalImage = originalImage.getFlippedCopy(true, false);
 			}
 		} catch (SlickException e) {
