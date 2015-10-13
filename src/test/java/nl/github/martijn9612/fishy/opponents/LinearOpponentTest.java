@@ -1,4 +1,4 @@
-package nl.github.martijn9612.fishy;
+package nl.github.martijn9612.fishy.opponents;
 
 import static org.mockito.Mockito.mock;
 
