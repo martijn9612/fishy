@@ -328,13 +328,14 @@ public class Player extends Entity {
     public void addShield(int activeTime, int fadeTime) {
         key = "full";
         hasShield = true;
+        final int fade = fadeTime;
         shieldTimer.cancel();
         shieldRemover.cancel();
         shieldTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
-                removeShield(fadeTime);
+                removeShield(fade);
             }
         };
         shieldTimer.schedule(action, activeTime);
@@ -362,12 +363,8 @@ public class Player extends Entity {
             cor += shield;
             prevkey = key;
         } else {
-            sizeCorrection();
+            eat(-cor);
+            cor = 0;
         }
-    }
-    
-    public void sizeCorrection() {
-        eat(-cor);
-        cor = 0;
     }
 }
