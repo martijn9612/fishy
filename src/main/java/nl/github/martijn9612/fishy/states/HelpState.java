@@ -23,11 +23,16 @@ public class HelpState extends BasicGameState {
     private Image shield;
     private Image extralife;
     private Image speedup;
+    private Image fish;
+    private Image squid;
+    private Image whale;
     private MousePosition mouse;
     private DrawRectangle backButtonDR;
     private MouseRectangle backButtonMR;
     private Font textFont;
     private Font titleFont;
+    private Font introFont;
+    private Color myBlue = new Color(70, 175, 230);
 
     public static int PREVIOUS_STATE = 0;
 
@@ -48,6 +53,7 @@ public class HelpState extends BasicGameState {
     private static final int POWERUP_DRAW_X = 350;
     private static final int POWERUP_DRAW_Y = 40;
     private static final String POWERUP_TEXT = "Power-ups:";
+    private static final String ENEMIES_TEXT = "Enemies:";
     private static final int POISON_DRAW_Y = 85;
     private static final int POISON_TEXT_DRAW_Y = 127;
     private static final String POISON_TEXT = "This is a poisonous mushroom! " +
@@ -68,12 +74,27 @@ public class HelpState extends BasicGameState {
     private static final String EXTRALIFE_TEXT = "This is an extra life! " +
             "Eating this will allow you to be hit by a bigger fish one time. " +
             "Definitely try to get these! ";
+    private static final int SQUID_DRAW_X = 105;
+    private static final int SQUID_DRAW_Y = 220;
+    private static final String ENEMIES_DESCRIPTION = "These are the standard " +
+            "enemies. The fish swim across the screen horizontally while the " +
+            "squid swim from the bottom up.";
+    private static final int ENEMIES_TEXT_DRAW_Y = 265;
+    private static final String WHALE_TEXT = "This is a special enemy, the whale," +
+            " which has a small chance of spawning following a short warning. " +
+            "Whales are huge and cannot be eaten.";
+    private static final int WHALE_TEXT_DRAW_Y = 430;
+
+
 
     private static final String BACK_BUTTON_RESOURCE = "resources/back-button.png";
     private static final String POISON_RESOURCE = "resources/poison.png";
     private static final String EXTRALIFE_RESOURCE = "resources/ExtraLife-fish.png";
     private static final String SHIELD_RESOURCE = "resources/shield.png";
     private static final String SPEEDUP_RESOURCE = "resources/Speedup-fish.png";
+    private static final String FISH_RESOURCE = "resources/opponent-fish.png";
+    private static final String SQUID_RESOURCE = "resources/squid.png";
+    private static final String WHALE_RESOURCE = "resources/whale.png";
 
 
     /**
@@ -97,18 +118,22 @@ public class HelpState extends BasicGameState {
      */
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
-        background.setAlpha(0.2f);
+        background.setAlpha(0.1f);
         back = new Image(BACK_BUTTON_RESOURCE);
-        poison = new Image(POISON_RESOURCE).getScaledCopy(POWERUP_SIZE,POWERUP_SIZE);
-        shield = new Image(SHIELD_RESOURCE).getScaledCopy(POWERUP_SIZE,POWERUP_SIZE);
-        speedup = new Image(SPEEDUP_RESOURCE).getScaledCopy(POWERUP_SIZE,POWERUP_SIZE);
-        extralife = new Image(EXTRALIFE_RESOURCE).getScaledCopy(POWERUP_SIZE,POWERUP_SIZE);
+        poison = new Image(POISON_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
+        shield = new Image(SHIELD_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
+        speedup = new Image(SPEEDUP_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
+        extralife = new Image(EXTRALIFE_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
+        fish = new Image(FISH_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
+        squid = new Image(SQUID_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
+        whale = new Image(WHALE_RESOURCE).getScaledCopy(POWERUP_SIZE * 2, POWERUP_SIZE * 2);
         backButtonDR = new DrawRectangle(BACK_BUTTON_DRAW_X,
                 BACK_BUTTON_DRAW_Y, back.getWidth(), back.getHeight());
         backButtonMR = backButtonDR.getMouseRectangle();
         mouse = new MousePosition();
         textFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.PLAIN , 16), true);
         titleFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.BOLD , 24), true);
+        introFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.BOLD , 16), true);
 
     }
 
@@ -128,13 +153,37 @@ public class HelpState extends BasicGameState {
         g.setColor(Color.black);
         g.fillRect(0, 0, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
         g.drawImage(background, 0, 0);
+
+
+        /* Back button */
         g.drawImage(back, backButtonDR.getPositionX(), backButtonDR.getPositionY());
+        titleFont.drawString(BACK_DRAW_X, BACK_DRAW_Y, BACK_TEXT, myBlue);
+        
+
+        /* Instructions */
         String [] instructions = wrapText(INSTRUCTIONS_TEXT, WRAP_LENGTH);
         for (int i = 0; i < instructions.length; i++) {
-            textFont.drawString(INSTRUCTIONS_DRAW_X, INSTRUCTIONS_DRAW_Y + i * LINE_HEIGHT, instructions[i], Color.white);
+            introFont.drawString(INSTRUCTIONS_DRAW_X, INSTRUCTIONS_DRAW_Y + i * LINE_HEIGHT, instructions[i], Color.white);
         }
-        titleFont.drawString(BACK_DRAW_X, BACK_DRAW_Y, BACK_TEXT, new Color(70,175,230));
-        titleFont.drawString(POWERUP_DRAW_X, POWERUP_DRAW_Y, POWERUP_TEXT, new Color(70,175,230));
+
+
+        /* Enemies */
+        titleFont.drawString(INSTRUCTIONS_DRAW_X, SHIELD_DRAW_Y, ENEMIES_TEXT, myBlue);
+        g.drawImage(fish, INSTRUCTIONS_DRAW_X, SQUID_DRAW_Y);
+        g.drawImage(squid, SQUID_DRAW_X, SQUID_DRAW_Y);
+        String [] enemiestext = wrapText(ENEMIES_DESCRIPTION, WRAP_LENGTH);
+        for (int i = 0; i < enemiestext.length; i++) {
+            textFont.drawString(INSTRUCTIONS_DRAW_X, ENEMIES_TEXT_DRAW_Y + i * LINE_HEIGHT, enemiestext[i], Color.white);
+        }
+        g.drawImage(whale, INSTRUCTIONS_DRAW_X, SPEEDUP_TEXT_DRAW_Y);
+        String [] whaletext = wrapText(WHALE_TEXT, WRAP_LENGTH);
+        for (int i = 0; i < whaletext.length; i++) {
+            textFont.drawString(INSTRUCTIONS_DRAW_X, WHALE_TEXT_DRAW_Y + i * LINE_HEIGHT, whaletext[i], Color.white);
+        }
+
+
+        /* power-ups */
+        titleFont.drawString(POWERUP_DRAW_X, POWERUP_DRAW_Y, POWERUP_TEXT, myBlue);
         g.drawImage(poison, POWERUP_DRAW_X, POISON_DRAW_Y);
         String [] poisontext = wrapText(POISON_TEXT, WRAP_LENGTH);
         for (int i = 0; i < poisontext.length; i++) {
