@@ -3,6 +3,8 @@ package nl.github.martijn9612.fishy;
 import java.util.ArrayList;
 import java.util.Random;
 
+import nl.github.martijn9612.fishy.states.LevelState;
+import nl.github.martijn9612.fishy.utils.MusicPlayer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
@@ -124,8 +126,11 @@ public class OpponentController {
 				        remove(opponent);
 				        player.Loselife();
 				    } else {
-					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
-					sbg.enterState(Main.GAME_LOSE_STATE);
+						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
+						player.resetPlayerVariables();
+						LevelState.getOC().removeAllOpponents();
+						LevelState.getPC().Remove();
+						sbg.enterState(Main.GAME_LOSE_STATE);
 					}
 				}
 			}

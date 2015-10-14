@@ -1,11 +1,6 @@
 package nl.github.martijn9612.fishy.states;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -25,8 +20,8 @@ public class LevelState extends BasicGameState {
 	private String lives = "lives: (" + 0 + ")";
 	private static String score = "0";
 	private Image background;
-	private OpponentController opponentController;
-	private PowerupController powerupController;
+	private static OpponentController opponentController;
+	private static PowerupController powerupController;
 	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private static final int PLAYER_WIN_AT_SCORE = 500;
     private static final int XPOS_STATE_STRING = 300;
@@ -56,16 +51,34 @@ public class LevelState extends BasicGameState {
      */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
-	}
-
-    @Override
-	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-		super.enter(gameContainer, stateBasedGame);
-		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
-		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
 		opponentController = new OpponentController(true);
 		powerupController = new PowerupController();
 		player = Player.createPlayer(true);
+	}
+
+	/**
+	 * Triggers when the state is entered.
+	 * @param gameContainer the container of the game
+	 * @param stateBasedGame the game holding the state
+	 * @throws SlickException
+	 */
+    @Override
+	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
+		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
+	}
+
+	/**
+	 * Triggers when the state is left.
+	 * @param gc the container of the game
+	 * @param sbg the game holding the state
+	 * @throws SlickException
+	 */
+	@Override
+	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		super.leave(gc, sbg);
+		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
 	}
 
     /**
@@ -97,7 +110,15 @@ public class LevelState extends BasicGameState {
      * @throws SlickException indicates internal error
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-        player.objectLogic(gc, delta);
+		Input input = gc.getInput();
+		if (input.isKeyPressed(Input.KEY_P)) {
+
+			gc.setPaused(!gc.isPaused());
+
+			sbg.enterState(Main.HELP_STATE);
+			HelpState.setPrevious(Main.LEVEL_STATE);
+		}
+		player.objectLogic(gc, delta);
         opponentController.updateOpponents(gc, delta);
         opponentController.spawnOpponents(player);
 		opponentController.collide(player, sbg);
@@ -109,27 +130,13 @@ public class LevelState extends BasicGameState {
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
             Main.actionLogger.logLine("Player won the game", getClass()
-                    .getSimpleName());
+					.getSimpleName());
             player.resetPlayerVariables();
             sbg.enterState(Main.GAME_WIN_STATE);
         }
     }
 
-    /**
-     * Notification that we're leaving this game state.
-     *
-     * @param gc the container holding the game
-     * @param sbg the game holding this state
-     * @throws SlickException indicates internal error
-     */
-    @Override
-    public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        super.leave(gc, sbg);
-        player.resetPlayerVariables();
-        musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
-        opponentController.removeAllOpponents();
-        powerupController.Remove();
-    }
+
 
     /**
      * Get the ID of this state.
@@ -142,5 +149,21 @@ public class LevelState extends BasicGameState {
 
 	public static String getScore() {
 		return score;
+	}
+
+	/**
+	 * Get the OpponentController.
+	 * @return the OpponentController
+	 */
+	public static OpponentController getOC() {
+		return opponentController;
+	}
+
+	/**
+	 * Get the PowerupController.
+	 * @return the Powerupcontroller
+	 */
+	public static PowerupController getPC() {
+		return powerupController;
 	}
 }

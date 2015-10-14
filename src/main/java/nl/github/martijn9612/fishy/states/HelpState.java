@@ -5,7 +5,6 @@ import nl.github.martijn9612.fishy.position.DrawRectangle;
 import nl.github.martijn9612.fishy.position.MousePosition;
 import nl.github.martijn9612.fishy.position.MouseRectangle;
 import org.newdawn.slick.*;
-import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -33,6 +32,7 @@ public class HelpState extends BasicGameState {
     public static int PREVIOUS_STATE = 0;
 
     private static final int LINE_HEIGHT = 20;
+    private static final int WRAP_LENGTH = 40;
     private static final int POWERUP_SIZE = 40;
     private static final int BACK_BUTTON_DRAW_X = 10;
     private static final int BACK_BUTTON_DRAW_Y = 30;
@@ -68,8 +68,6 @@ public class HelpState extends BasicGameState {
     private static final String EXTRALIFE_TEXT = "This is an extra life! " +
             "Eating this will allow you to be hit by a bigger fish one time. " +
             "Definitely try to get these! ";
-
-
 
     private static final String BACK_BUTTON_RESOURCE = "resources/back-button.png";
     private static final String POISON_RESOURCE = "resources/poison.png";
@@ -131,31 +129,31 @@ public class HelpState extends BasicGameState {
         g.fillRect(0, 0, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
         g.drawImage(background, 0, 0);
         g.drawImage(back, backButtonDR.getPositionX(), backButtonDR.getPositionY());
-        String [] instructions = wrapText(INSTRUCTIONS_TEXT, 40);
+        String [] instructions = wrapText(INSTRUCTIONS_TEXT, WRAP_LENGTH);
         for (int i = 0; i < instructions.length; i++) {
-            textFont.drawString(INSTRUCTIONS_DRAW_X, INSTRUCTIONS_DRAW_Y + i*LINE_HEIGHT, instructions[i], Color.white);
+            textFont.drawString(INSTRUCTIONS_DRAW_X, INSTRUCTIONS_DRAW_Y + i * LINE_HEIGHT, instructions[i], Color.white);
         }
         titleFont.drawString(BACK_DRAW_X, BACK_DRAW_Y, BACK_TEXT, new Color(70,175,230));
         titleFont.drawString(POWERUP_DRAW_X, POWERUP_DRAW_Y, POWERUP_TEXT, new Color(70,175,230));
         g.drawImage(poison, POWERUP_DRAW_X, POISON_DRAW_Y);
-        String [] poisontext = wrapText(POISON_TEXT, 40);
+        String [] poisontext = wrapText(POISON_TEXT, WRAP_LENGTH);
         for (int i = 0; i < poisontext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, POISON_TEXT_DRAW_Y + i*LINE_HEIGHT, poisontext[i], Color.white);
+            textFont.drawString(POWERUP_DRAW_X, POISON_TEXT_DRAW_Y + i * LINE_HEIGHT, poisontext[i], Color.white);
         }
         g.drawImage(shield, POWERUP_DRAW_X, SHIELD_DRAW_Y);
-        String [] shieldtext = wrapText(SHIELD_TEXT, 40);
+        String [] shieldtext = wrapText(SHIELD_TEXT, WRAP_LENGTH);
         for (int i = 0; i < shieldtext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, SHIELD_TEXT_DRAW_Y + i*LINE_HEIGHT, shieldtext[i], Color.white);
+            textFont.drawString(POWERUP_DRAW_X, SHIELD_TEXT_DRAW_Y + i * LINE_HEIGHT, shieldtext[i], Color.white);
         }
         g.drawImage(speedup, POWERUP_DRAW_X, SPEEDUP_DRAW_Y);
-        String [] speeduptext = wrapText(SPEEDUP_TEXT, 40);
+        String [] speeduptext = wrapText(SPEEDUP_TEXT, WRAP_LENGTH);
         for (int i = 0; i < speeduptext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, SPEEDUP_TEXT_DRAW_Y + i*LINE_HEIGHT, speeduptext[i], Color.white);
+            textFont.drawString(POWERUP_DRAW_X, SPEEDUP_TEXT_DRAW_Y + i * LINE_HEIGHT, speeduptext[i], Color.white);
         }
         g.drawImage(extralife, POWERUP_DRAW_X, EXTRALIFE_DRAW_Y);
-        String [] extralifetext = wrapText(EXTRALIFE_TEXT, 40);
+        String [] extralifetext = wrapText(EXTRALIFE_TEXT, WRAP_LENGTH);
         for (int i = 0; i < extralifetext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, EXTRALIFE_TEXT_DRAW_Y + i*LINE_HEIGHT, extralifetext[i], Color.white);
+            textFont.drawString(POWERUP_DRAW_X, EXTRALIFE_TEXT_DRAW_Y + i * LINE_HEIGHT, extralifetext[i], Color.white);
         }
     }
 
@@ -177,31 +175,39 @@ public class HelpState extends BasicGameState {
 
         if (mouse.isInRectangle(backButtonMR)) {
             if (mouse.isLeftButtonDown()) {
-                game.enterState(PREVIOUS_STATE);
+                game.enterState(getPrevious());
             }
         }
 
         Input input = gc.getInput();
-        if (input.isKeyDown(Input.KEY_P)) {
-            game.enterState(PREVIOUS_STATE);
+        if (input.isKeyPressed(Input.KEY_P)) {
+            game.enterState(getPrevious());
         }
     }
 
-    static String [] wrapText (String text, int len)
-    {
+    /**
+     * Make sure text overflow works properly.
+     * @param text the text to be wrapped
+     * @param len max length of the text in characters
+     * @return Array of individual lines
+     */
+    static String[] wrapText(String text, int len) {
         // return empty array for null text
-        if (text == null)
-            return new String [] {};
+        if (text == null) {
+            return new String[]{};
+        }
 
         // return text if len is zero or less
-        if (len <= 0)
-            return new String [] {text};
+        if (len <= 0) {
+            return new String[] {text};
+        }
 
         // return text if less than length
-        if (text.length() <= len)
-            return new String [] {text};
+        if (text.length() <= len) {
+            return new String[]{text};
+        }
 
-        char [] chars = text.toCharArray();
+        char[] chars = text.toCharArray();
         java.util.Vector lines = new Vector();
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
