@@ -16,10 +16,7 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
  * scaled copy of) itself.
  */
 public abstract class Entity {
-	public Vector position;
-	public Vector velocity;
-	public Vector acceleration;
-	public Vector dimensions;
+	public Moveable data;
 	public static final int IMAGE_ORIENTATE_LEFT = 0;
 	public static final int IMAGE_ORIENTATE_RIGHT = 1;
 	protected MusicPlayer musicPlayer;
@@ -39,11 +36,8 @@ public abstract class Entity {
 	 * @param acceleration initial acceleration of the entity.
 	 * @param hasOpenGL whether openGL context should be invoked.
 	 */
-	public Entity(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean hasOpenGL) {
-		this.position = position;
-		this.velocity = velocity;
-		this.acceleration = acceleration;
-		this.dimensions = dimensions;
+	public Entity(Moveable data, boolean hasOpenGL) {
+		this.data = data;
 		this.oldDimensions = new Vector(-1,-1);
 		this.hasOpenGL = hasOpenGL;
 		updateBoundingbox();
@@ -99,7 +93,7 @@ public abstract class Entity {
 	public void renderObject(Graphics g) {
         if (hasOpenGL) {
 			Image image = getScaledImage();
-			g.drawImage(image, position.x, position.y);
+			g.drawImage(image, data.position.x, data.position.y);
 			if (Main.DEBUG_MODE) {
 				g.drawOval(boundingBox.getX(), boundingBox.getY(), boundingBox.getWidth(), boundingBox.getHeight());
 			}
@@ -112,7 +106,7 @@ public abstract class Entity {
 	 * @return size value
 	 */
 	public float getSize() {
-		return ((dimensions.x + dimensions.y) / 2);
+		return ((data.dimensions.x + data.dimensions.y) / 2);
 	}
 
 	/**
@@ -140,13 +134,13 @@ public abstract class Entity {
 	 * created to act as bounding box.
 	 */
 	public void updateBoundingbox() {
-		float radiiX = (dimensions.x / 2);
-		float radiiY = (dimensions.y / 2);
+		float radiiX = (data.dimensions.x / 2);
+		float radiiY = (data.dimensions.y / 2);
 
 		if (boundingBox == null) {
-			boundingBox = new Ellipse(position.x, position.y, radiiX, radiiY);
+			boundingBox = new Ellipse(data.position.x, data.position.y, radiiX, radiiY);
 		} else {
-			boundingBox.setLocation(position);
+			boundingBox.setLocation(data.position);
 			boundingBox.setRadii(radiiX, radiiY);
 		}
     }
@@ -159,11 +153,11 @@ public abstract class Entity {
 	 * @return Image a scaled version of the entity image.
 	 */
 	private Image getScaledImage() {
-		if (!oldDimensions.equals(dimensions)) {
-			int width = Math.round(dimensions.x);
-			int height = Math.round(dimensions.y);
+		if (!oldDimensions.equals(data.dimensions)) {
+			int width = Math.round(data.dimensions.x);
+			int height = Math.round(data.dimensions.y);
             scaledImage = originalImage.getScaledCopy(width, height);
-			oldDimensions = dimensions;
+			oldDimensions = data.dimensions;
 		}
         return scaledImage;
 	}

@@ -1,10 +1,11 @@
 package nl.github.martijn9612.fishy.powerups;
 
+import java.util.Random;
+
 import nl.github.martijn9612.fishy.models.Entity;
+import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
-
-import java.util.Random;
 
 /**
  * Created by martijn on 9-10-15.
@@ -14,13 +15,12 @@ public class Poison extends Powerup {
     private int chance;
     private String name;
 
-    public Poison(Vector dimensions, Vector position, Vector velocity,
-                   Vector acceleration, boolean loadResources, int chance) {
-        super(dimensions, position, velocity, acceleration, loadResources, chance);
+    public Poison(Moveable data, boolean loadResources, int chance) {
+        super(data, loadResources, chance);
         loadResources(SPRITE_PATH);
         name = "Poison";
         this.chance = chance;
-        if(loadResources && velocity.x > 0) {
+        if(loadResources && data.velocity.x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         }
     }
@@ -31,12 +31,12 @@ public class Poison extends Powerup {
      * @param loadResources whether the sprite resources should be loaded.
      */
     public static Poison createPowerup(Random random, boolean loadResources) {
-        boolean spawnsLeft = random.nextBoolean();
-        Vector acceleration = new Vector(0,0);
-        Vector dimensions = new Vector(32,32);
-        Vector velocity = getRandomVelocity(random, spawnsLeft);
-        Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-        return new Poison(dimensions, position, velocity, acceleration, loadResources, 30);
+        Moveable data = new Moveable();
+    	boolean spawnsLeft = random.nextBoolean();
+    	data.dimensions = new Vector(32,32);
+    	data.velocity = getRandomVelocity(random, spawnsLeft);
+    	data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
+        return new Poison(data, loadResources, 30);
     }
 
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {

@@ -11,7 +11,7 @@ import org.newdawn.slick.GameContainer;
  */
 public class BigOpponentIndicator extends Entity {
 
-    private Player player;
+    private Moveable playerData;
     private static final int LAG_BY_FRAMES = 15;
     private static final float WHALE_START_X = 580;
     private static final float WHALE_SIZE_X = 115;
@@ -29,10 +29,10 @@ public class BigOpponentIndicator extends Entity {
 	 * @param loadResources whether the sprite resources should be loaded.
 	 * @param player an instance of the Player class.
 	 */
-    public BigOpponentIndicator(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources, Player player) {
-    	super(dimensions, position, velocity, acceleration, loadResources);
+    public BigOpponentIndicator(Moveable data, boolean loadResources, Moveable playerData) {
+    	super(data, loadResources);
         loadResources(SPRITE_PATH);
-        this.player = player;
+        this.playerData = playerData;
     }
     
     /**
@@ -41,12 +41,13 @@ public class BigOpponentIndicator extends Entity {
 	 * @param player an instance of the Player class.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
-    public static BigOpponentIndicator createIndicator(Player player, boolean loadResources) {
-    	Vector velocity = new Vector(0,0);
-    	Vector acceleration = new Vector(0,0);
-    	Vector dimensions = new Vector(WHALE_SIZE_X, WHALE_SIZE_Y);
-    	Vector position = new Vector(WHALE_START_X, player.position.y - (WHALE_SIZE_Y / 2));
-        return new BigOpponentIndicator(dimensions, position, velocity, acceleration, loadResources, player);
+    public static BigOpponentIndicator createIndicator(Moveable playerData, boolean loadResources) {
+    	Moveable data = new Moveable();
+    	data.velocity = new Vector(0,0);
+    	data.acceleration = new Vector(0,0);
+    	data.dimensions = new Vector(WHALE_SIZE_X, WHALE_SIZE_Y);
+    	data.position = new Vector(WHALE_START_X, playerData.position.y - (WHALE_SIZE_Y / 2));
+        return new BigOpponentIndicator(data, loadResources, playerData);
     }
     
     /**
@@ -58,12 +59,10 @@ public class BigOpponentIndicator extends Entity {
      */
 	@Override
 	public void objectLogic(GameContainer gc, int deltaTime) {
-		float newIndicatorPosition = player.position.y - (WHALE_SIZE_Y / 2);
+		float newIndicatorPosition = playerData.position.y - (WHALE_SIZE_Y / 2);
 		positionHistory.add(newIndicatorPosition);
 		updateIndicatorY();
-		velocity.add(acceleration);
-		position.add(velocity);
-		acceleration.scale(0);
+		data.updatePosition(100);
 	}
 	
 	/**
@@ -72,7 +71,7 @@ public class BigOpponentIndicator extends Entity {
 	 */
 	private void updateIndicatorY() {
 		if(positionHistory.size() > LAG_BY_FRAMES) {
-			position.y = positionHistory.get(0);
+			data.position.y = positionHistory.get(0);
 			positionHistory.remove(0);
 		}
 	}

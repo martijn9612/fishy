@@ -3,12 +3,11 @@ package nl.github.martijn9612.fishy.models;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import nl.github.martijn9612.fishy.states.LevelState;
 import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.states.LevelState;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
@@ -18,9 +17,9 @@ public class Player extends Entity {
     private static final float PLAYER_WIDTH = 16;
     private static final float PLAYER_HEIGHT = 16;
     private static final float WATER_DRAG = 0.3f;
-    private static float PLAYER_MASS = 5;
-    private static float PLAYER_MAX_SPEED = 8;
-    private static float PLAYER_MOVE_FORCE = 4;
+    private static float playerMass = 5;
+    private static float playerMaxSpeed = 8;
+    private static float playerMoveForce = 4;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
     private static final String PLAYER_SPRITE = "resources/player-" + Main.PLAYER_CHARACTER + ".png";
@@ -50,8 +49,8 @@ public class Player extends Entity {
 	 * @param acceleration initial acceleration of the player.
 	 * @param loadResources whether the sprite resources should be loaded.
      */
-    public Player(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources) {
-    	super(dimensions, position, velocity, acceleration, loadResources);
+    public Player(Moveable data, boolean loadResources) {
+    	super(data, loadResources);
     	Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
     	loadResources(PLAYER_SPRITE);
     }
@@ -63,11 +62,11 @@ public class Player extends Entity {
 	 * @return Player instance.
 	 */
 	public static Player createPlayer(boolean loadResources) {
-		Vector dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
-		Vector velocity = new Vector(0, 0);
-		Vector acceleration = new Vector(0, 0);
-		Vector position = Vector.centerOfScreen();
-		return new Player(dimensions, position, velocity, acceleration, loadResources);
+		Moveable data = new Moveable();
+		data.dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+		data.position = Vector.centerOfScreen();
+		data.mass = playerMass;
+		return new Player(data, loadResources);
 	}
     
 	/**
@@ -82,8 +81,8 @@ public class Player extends Entity {
     public void objectLogic(GameContainer gc, int deltaTime) {
         Input keyboardInput = gc.getInput();
     	movePlayer(keyboardInput);
-        applyWaterDrag();
-        updatePosition();
+        data.applyWaterDrag(WATER_DRAG);
+        data.updatePosition(playerMaxSpeed);
         checkGameEdges();
         updateBoundingbox();
     }
@@ -101,64 +100,30 @@ public class Player extends Entity {
         
         if(moveR) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
-        	applyForce(new Vector( poisoned * PLAYER_MOVE_FORCE, 0));
+        	data.applyForce(new Vector( poisoned * playerMoveForce, 0));
         }
         
         if(moveL) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_LEFT);
-        	applyForce(new Vector(poisoned * -PLAYER_MOVE_FORCE, 0));
+        	data.applyForce(new Vector(poisoned * -playerMoveForce, 0));
         }
         
         if(moveU) {
-        	applyForce(new Vector(0, poisoned * -PLAYER_MOVE_FORCE));
+        	data.applyForce(new Vector(0, poisoned * -playerMoveForce));
         }
         
         if(moveD) {
-        	applyForce(new Vector(0, poisoned * PLAYER_MOVE_FORCE));
+        	data.applyForce(new Vector(0, poisoned * playerMoveForce));
         }
     }
-
-    /**
-     * Updates the position of the player according to grandpa Newton.
-     */
-    private void updatePosition() {
-    	velocity.add(acceleration);
-        velocity.limit(PLAYER_MAX_SPEED);
-        position.add(velocity);
-        acceleration.scale(0);
-    }
-    
-    /**
-     * Calculates the drag force the water applies to the player.
-     */
-    private void applyWaterDrag() {
-		float speed = velocity.length();
-		float dragMagnitude = WATER_DRAG * speed * speed;
-		Vector drag = velocity.copy();
-		drag.negateLocal();
-		drag.normalise();
-		drag.scale(dragMagnitude);
-		applyForce(drag);
-	}
     
     /**
      * Checks whether the player is within the screen bounds and corrects them if necessary.
      */
     private void checkGameEdges() {
-        position.x = limit(position.x, 0, Main.WINDOW_WIDTH - dimensions.x);
-        position.y = limit(position.y, 0, Main.WINDOW_HEIGHT - dimensions.y);
+    	data.position.x = limit(data.position.x, 0, Main.WINDOW_WIDTH - data.dimensions.x);
+    	data.position.y = limit(data.position.y, 0, Main.WINDOW_HEIGHT - data.dimensions.y);
     }
-    
-    /**
-     * Apply a force to the player, according to force = mass * acceleration;
-     * 
-     * @param force
-     */
-    private void applyForce(Vector force) {
-		Vector newForce = force.copy();
-		newForce.scale(1 / PLAYER_MASS);
-		acceleration.add(newForce);
-	}
 
     /**
      * Consume a specific Opponent.
@@ -169,7 +134,7 @@ public class Player extends Entity {
         double opponentSize = opponent.getSize();
     	setScore( score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
-        dimensions = new Vector(newDimension, newDimension);
+        data.dimensions = new Vector(newDimension, newDimension);
         Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
         Main.actionLogger.logLine("Player score is " + Math.floor(score), getClass().getSimpleName());
         playBiteSound();
@@ -181,11 +146,11 @@ public class Player extends Entity {
     public void resetPlayerVariables() {
         Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
         Main.actionLogger.logLine("Score was " + LevelState.score, getClass().getSimpleName());
-        position = Vector.centerOfScreen();
-        dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
-        PLAYER_MAX_SPEED = 8;
-        PLAYER_MOVE_FORCE = 4;
-        PLAYER_MASS = 5;
+        data.position = Vector.centerOfScreen();
+        data.dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+        playerMaxSpeed = 8;
+        playerMoveForce = 4;
+        playerMass = 5;
         setScore(0);
     }
     
@@ -231,16 +196,16 @@ public class Player extends Entity {
 
     public void Speedup(int time){
         speedUpTimer.cancel();
-        PLAYER_MAX_SPEED = 40;
-        PLAYER_MOVE_FORCE = 30;
-        PLAYER_MASS = 3;
+        playerMaxSpeed = 40;
+        playerMoveForce = 30;
+        playerMass = 3;
         speedUpTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
-                PLAYER_MAX_SPEED = 8;
-                PLAYER_MOVE_FORCE = 4;
-                PLAYER_MASS = 5;
+                playerMaxSpeed = 8;
+                playerMoveForce = 4;
+                playerMass = 5;
             }
         };
         speedUpTimer.schedule(action, time);
@@ -260,40 +225,42 @@ public class Player extends Entity {
         poisonTimer.schedule(action, time);
     }
 
-    public void Extralife(){
-     lives++;
-    }
-    public int getLives(){
-        return lives;
-    }
-    public void Loselife(){
-        lives--;
-    }
+	public void Extralife() {
+		lives++;
+	}
 
-    public String getLivesAsString(){
-        return "lives: (" + lives + ")";
-    }
+	public int getLives() {
+		return lives;
+	}
 
-    public boolean hasShield() {
-        return hasShield;
-    }
+	public void Loselife() {
+		lives--;
+	}
 
-    public void removeShield(int time) {
-        shieldRemove = new Timer();
-        loadImage(PLAYER_HALF_SHIELD_SPRITE);
+	public String getLivesAsString() {
+		return "lives: (" + lives + ")";
+	}
 
-        TimerTask action = new TimerTask() {
-            public void run() {
-                hasShield = false;
-                loadImage(PLAYER_SPRITE);
-            }
-        };
-        shieldRemove.schedule(action, time);
-    }
+	public boolean hasShield() {
+		return hasShield;
+	}
 
-    public void addShield() {
-        loadImage(PLAYER_FULL_SHIELD_SPRITE);
-        hasShield = true;
-    }
+	public void removeShield(int time) {
+		shieldRemove = new Timer();
+		loadImage(PLAYER_HALF_SHIELD_SPRITE);
+
+		TimerTask action = new TimerTask() {
+			public void run() {
+				hasShield = false;
+				loadImage(PLAYER_SPRITE);
+			}
+		};
+		shieldRemove.schedule(action, time);
+	}
+
+	public void addShield() {
+		loadImage(PLAYER_FULL_SHIELD_SPRITE);
+		hasShield = true;
+	}
 }
 

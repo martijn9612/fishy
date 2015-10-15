@@ -134,7 +134,7 @@ public class OpponentController {
 	private void startBigOpponentEvent(Player player) {
 		double rand = Math.random();
 		if(rand < BIG_OPPONENT_SPAWN_CHANCE && !bigOpponentInstanceExists()) {
-			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player, loadResources);
+			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player.data, loadResources);
 			addOpponent(bigOpponent);
 		}
 	}

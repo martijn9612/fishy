@@ -5,6 +5,7 @@ import java.util.Random;
 import org.newdawn.slick.GameContainer;
 
 import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
@@ -28,8 +29,8 @@ public class SinusOpponent extends NonPlayer {
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
-    public SinusOpponent(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources) {
-        super(dimensions, position, velocity, acceleration, loadResources);
+    public SinusOpponent(Moveable data, boolean loadResources) {
+        super(data, loadResources);
         loadResources(SINUS_SPRITE_PATH);
     }
     
@@ -41,11 +42,10 @@ public class SinusOpponent extends NonPlayer {
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
 	public static SinusOpponent createRandom(Player player, Random random, boolean loadResources) {
-		Vector velocity = new Vector(0,0);
-        Vector acceleration = new Vector(0,0);
-		Vector dimensions = getRandomDimensions(player, random);
-		Vector position = getRandomPosition(random, dimensions);
-		return new SinusOpponent(dimensions, position, velocity, acceleration, loadResources);
+		Moveable data = new Moveable();
+		data.dimensions = getRandomDimensions(player, random);
+		data.position = getRandomPosition(random, data.dimensions);
+		return new SinusOpponent(data, loadResources);
 	}
 	
 	/**
@@ -84,12 +84,12 @@ public class SinusOpponent extends NonPlayer {
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
-        if (position.y <= 0) {
-            velocity = new Vector(0, -1);
+        if (data.position.y <= 0) {
+        	data.velocity = new Vector(0, -1);
         } else {
-        	velocity = new Vector(0, -((position.y % PIXELS_TO_HALT) / DIVIDER + 1));
+        	data.velocity = new Vector(0, -((data.position.y % PIXELS_TO_HALT) / DIVIDER + 1));
         }
-        position.add(velocity);
+        data.updatePosition(100);
         updateBoundingbox();
     }
 }
