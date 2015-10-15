@@ -64,7 +64,10 @@ public class BigOpponent extends NonPlayer {
     	indicator.objectLogic(gc, deltaTime);
     	data.updatePosition(100);
         updateBoundingbox();
-        
+		checkProgress(deltaTime);
+    }
+
+	private void checkProgress(int deltaTime) {
 		if (timeToLive > 0) {
 			timeToLive -= deltaTime;
 		}
@@ -74,9 +77,9 @@ public class BigOpponent extends NonPlayer {
 		if (timeToLive < INDICATOR_MOVES_AT) {
 			indicator.data.acceleration.x = 2;
 		}
-    }
-    
-    /**
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
     @Override
