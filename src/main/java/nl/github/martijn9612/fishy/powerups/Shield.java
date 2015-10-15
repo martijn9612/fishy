@@ -23,7 +23,7 @@ public class Shield extends Powerup{
         }
     }
     /**
-     * Creates an instance of LinearOpponent at a random screen side location.
+     * Creates an instance of shield at a random screen side location.
      *
      * @param random an instance to generate random numbers.
      * @param loadResources whether the sprite resources should be loaded.
@@ -37,6 +37,13 @@ public class Shield extends Powerup{
         return new Shield(dimensions, position, velocity, acceleration, loadResources, 100);
     }
 
+    /**
+     * create a random position vector.
+     * @param random the randomizer.
+     * @param spawnsLeft whether it starts left or right.
+     * @param dimensions size of the instance.
+     * @return the position vector.
+     */
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {
         int min = Math.round(dimensions.x);
         int max = 515 - min;
@@ -44,16 +51,25 @@ public class Shield extends Powerup{
         int xpos = (spawnsLeft ? 0 - min * 5 : 615 + min * 5);
         return new Vector(xpos, ypos);
     }
-
+    /**
+     * create a random speed vector.
+     * @param random the randomizer.
+     * @param spawnsLeft whether the instance is starting left or right.
+     * @return a speed vector.
+     */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
         return new Vector((spawnsLeft ? speed : -speed), 0);
     }
-
+    /**
+     * return the spawn chance.
+     */
     public int getChance(){
         return chance;
     }
-
+    /**
+     * start the effect on the player.
+     */
     @Override
     public void Effect(Player player){
         player.addShield(5000,2000);
