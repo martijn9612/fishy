@@ -212,10 +212,8 @@ public class Player extends Entity {
      * Reset player values, can be used when the player dies.
      */
     public void resetPlayerVariables() {
-        Main.actionLogger
-                .logLine("Player resetted", getClass().getSimpleName());
-        Main.actionLogger.logLine("Score was " + LevelState.score, getClass()
-                .getSimpleName());
+        Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
+        Main.actionLogger.logLine("Score was " + LevelState.getScore(), getClass().getSimpleName());
         position = Vector.centerOfScreen();
         dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
         PLAYER_MAX_SPEED = 8;
@@ -270,7 +268,7 @@ public class Player extends Entity {
      *            new score value
      */
     public void setScore(double score) {
-        LevelState.score = String.valueOf(Math.round(score));
+        LevelState.setScore(String.valueOf(Math.round(score)));
         this.score = score;
     }
 
