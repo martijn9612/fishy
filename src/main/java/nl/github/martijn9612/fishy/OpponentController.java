@@ -115,18 +115,19 @@ public class OpponentController {
 				String log = "Player collides with opponent of size " + Math.floor(opponent.getSize());
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
 				if (player.getSize() > opponent.getSize()) {
-					player.eat(opponent);
+					player.eat(opponent.getSize());
+					player. playBiteSound();
 					remove(opponent);
 				} else {
-					if (player.hasShield()) {
-                        player.removeShield(2000);
-                    } else if (player.getLives() > 0){
-				        remove(opponent);
+					if (!player.hasShield()) {
+                     if (player.getLives() > 0){
+				        player.addShield(1000,1000);
 				        player.Loselife();
 				    } else {
 					Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 					sbg.enterState(Main.GAME_LOSE_STATE);
 					}
+				}
 				}
 			}
 		}
