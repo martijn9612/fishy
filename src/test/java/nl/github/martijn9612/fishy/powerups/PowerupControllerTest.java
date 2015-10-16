@@ -14,9 +14,14 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+
+/**
+ * Testclass for PowerupController
+ * @author Danique Lummen
+ *
+ */
 public class PowerupControllerTest extends TestCase {
 
     PowerupController powercontroller = new PowerupController();
@@ -27,6 +32,9 @@ public class PowerupControllerTest extends TestCase {
     StateBasedGame sbg = mock(StateBasedGame.class);
     Powerup powerup;
     
+    /**
+     * Setup before the testcases are executed.
+     */
     @Override
     protected void setUp() {
         Random random = new Random();
@@ -35,12 +43,20 @@ public class PowerupControllerTest extends TestCase {
         powercontroller.setPowerupFactory(factory);
     }
     
+    /**
+     * Test for spawnPowerup.
+     * Case where power == null
+     */
     @Test
     public void testSpawnPowerup1() {
         powercontroller.SpawnPowerup();
         assertEquals(powerup, powercontroller.getPower());
     }
     
+    /**
+     * Test for spawnPowerup.
+     * Case where power != null
+     */
     @Test
     public void testSpawnPowerup2() {
         powercontroller.SpawnPowerup();
@@ -48,18 +64,30 @@ public class PowerupControllerTest extends TestCase {
         assertFalse(powercontroller.getPower().equals(null));
     }
     
+    /**
+     * Test for updatePowerup.
+     * Case where power == null.
+     */
     @Test
     public void testUpdatePowerup() {
         powercontroller.updatePowerup(gc, 0);
         assertEquals(powercontroller.getPower(), null);
     }
     
+    /**
+     * Test for updatePowerup.
+     * Case where power != null & !power.isOffScreen().
+     */
     @Test
     public void testUpdatePowerup2() {
         powercontroller.SpawnPowerup();
         powercontroller.updatePowerup(gc, 0);
     }
     
+    /**
+     * Test for updatePowerup.
+     * Case where power != null & power.isOffScreen().
+     */
     @Test 
     public void testUpdatePowerup3() {
         powercontroller.SpawnPowerup();
@@ -68,12 +96,20 @@ public class PowerupControllerTest extends TestCase {
         powercontroller.updatePowerup(gc, 0); 
     }
     
+    /**
+     * Test for renderOpponents.
+     * Case where power == null.
+     */
     @Test
     public void testRenderOpponents1() {
         powercontroller.renderOpponents(g);
         assertEquals(powercontroller.getPower(), null);
     }
     
+    /**
+     * Test for renderOpponents.
+     * Case where power != null.
+     */
     @Test
     public void testRenderOpponents2() {
         powercontroller.SpawnPowerup();
@@ -81,12 +117,20 @@ public class PowerupControllerTest extends TestCase {
         assertFalse(powercontroller.getPower().equals(null));    
     }
     
+    /**
+     * Test for collide.
+     * Case where power == null.
+     */
     @Test
     public void testCollide1() {
         powercontroller.collide(player, sbg);
         assertEquals(powercontroller.getPower(), null);
     }
     
+    /**
+     * Test for collide.
+     * Case where power.intersects(player) is true.
+     */
     @Test
     public void testCollide2() {
         Powerup powerup = mock(Powerup.class);
@@ -96,6 +140,10 @@ public class PowerupControllerTest extends TestCase {
         powercontroller.collide(player, sbg);
     }
     
+    /**
+     * Test for collide.
+     * Case where power.intersects(player) is false.
+     */
     @Test
     public void testCollide3() {
         Powerup powerup = mock(Powerup.class);
@@ -104,6 +152,10 @@ public class PowerupControllerTest extends TestCase {
         powercontroller.collide(player, sbg);
     }
     
+    /**
+     * Test for Remove.
+     * Case where power == null.
+     */
     @Test
     public void testRemove() {
         powercontroller.Remove();
