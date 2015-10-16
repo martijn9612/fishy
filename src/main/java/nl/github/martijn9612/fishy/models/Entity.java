@@ -68,6 +68,7 @@ public abstract class Entity {
 			if (orientation != 0) {
                 originalImage = originalImage.getFlippedCopy(true, false);
 			}
+			getScaledImage();
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

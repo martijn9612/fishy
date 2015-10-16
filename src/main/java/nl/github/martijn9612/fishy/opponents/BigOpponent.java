@@ -115,4 +115,13 @@ public class BigOpponent extends NonPlayer {
     		musicPlayer.playSound(MusicPlayer.BIG_OPPONENT_EVENT);
     	}
     }
+	
+	public void changeTimeToLive(int newtime) {
+	    timeToLive = newtime;
+	}
+	
+	public int getTimeToLive() {
+	    return timeToLive;
+	}
+	
 }
