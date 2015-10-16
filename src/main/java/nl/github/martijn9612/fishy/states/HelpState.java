@@ -136,6 +136,8 @@ public class HelpState extends BasicGameState {
         introFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.BOLD , 16), true);
 
     }
+    
+  
 
     /**
      * Renders the game's screen.
@@ -154,56 +156,10 @@ public class HelpState extends BasicGameState {
         g.fillRect(0, 0, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
         g.drawImage(background, 0, 0);
 
-
-        /* Back button */
-        g.drawImage(back, backButtonDR.getPositionX(), backButtonDR.getPositionY());
-        titleFont.drawString(BACK_DRAW_X, BACK_DRAW_Y, BACK_TEXT, myBlue);
-        
-
-        /* Instructions */
-        String [] instructions = wrapText(INSTRUCTIONS_TEXT, WRAP_LENGTH);
-        for (int i = 0; i < instructions.length; i++) {
-            introFont.drawString(INSTRUCTIONS_DRAW_X, INSTRUCTIONS_DRAW_Y + i * LINE_HEIGHT, instructions[i], Color.white);
-        }
-
-
-        /* Enemies */
-        titleFont.drawString(INSTRUCTIONS_DRAW_X, SHIELD_DRAW_Y, ENEMIES_TEXT, myBlue);
-        g.drawImage(fish, INSTRUCTIONS_DRAW_X, SQUID_DRAW_Y);
-        g.drawImage(squid, SQUID_DRAW_X, SQUID_DRAW_Y);
-        String [] enemiestext = wrapText(ENEMIES_DESCRIPTION, WRAP_LENGTH);
-        for (int i = 0; i < enemiestext.length; i++) {
-            textFont.drawString(INSTRUCTIONS_DRAW_X, ENEMIES_TEXT_DRAW_Y + i * LINE_HEIGHT, enemiestext[i], Color.white);
-        }
-        g.drawImage(whale, INSTRUCTIONS_DRAW_X, SPEEDUP_TEXT_DRAW_Y);
-        String [] whaletext = wrapText(WHALE_TEXT, WRAP_LENGTH);
-        for (int i = 0; i < whaletext.length; i++) {
-            textFont.drawString(INSTRUCTIONS_DRAW_X, WHALE_TEXT_DRAW_Y + i * LINE_HEIGHT, whaletext[i], Color.white);
-        }
-
-
-        /* power-ups */
-        titleFont.drawString(POWERUP_DRAW_X, POWERUP_DRAW_Y, POWERUP_TEXT, myBlue);
-        g.drawImage(poison, POWERUP_DRAW_X, POISON_DRAW_Y);
-        String [] poisontext = wrapText(POISON_TEXT, WRAP_LENGTH);
-        for (int i = 0; i < poisontext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, POISON_TEXT_DRAW_Y + i * LINE_HEIGHT, poisontext[i], Color.white);
-        }
-        g.drawImage(shield, POWERUP_DRAW_X, SHIELD_DRAW_Y);
-        String [] shieldtext = wrapText(SHIELD_TEXT, WRAP_LENGTH);
-        for (int i = 0; i < shieldtext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, SHIELD_TEXT_DRAW_Y + i * LINE_HEIGHT, shieldtext[i], Color.white);
-        }
-        g.drawImage(speedup, POWERUP_DRAW_X, SPEEDUP_DRAW_Y);
-        String [] speeduptext = wrapText(SPEEDUP_TEXT, WRAP_LENGTH);
-        for (int i = 0; i < speeduptext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, SPEEDUP_TEXT_DRAW_Y + i * LINE_HEIGHT, speeduptext[i], Color.white);
-        }
-        g.drawImage(extralife, POWERUP_DRAW_X, EXTRALIFE_DRAW_Y);
-        String [] extralifetext = wrapText(EXTRALIFE_TEXT, WRAP_LENGTH);
-        for (int i = 0; i < extralifetext.length; i++) {
-            textFont.drawString(POWERUP_DRAW_X, EXTRALIFE_TEXT_DRAW_Y + i * LINE_HEIGHT, extralifetext[i], Color.white);
-        }
+        renderBackButton(g);
+        renderInstructions(g);
+        renderEnemies(g);
+        renderPowerups(g);
     }
 
     /**
@@ -320,5 +276,120 @@ public class HelpState extends BasicGameState {
     @Override
     public int getID() {
         return Main.HELP_STATE;
+    }
+    
+    /**
+     * Renders the back button in the HelpState screen.
+     * @param g - the graphics content to render
+     */
+    private void renderBackButton(Graphics g) {
+        g.drawImage(back, backButtonDR.getPositionX(), backButtonDR.getPositionY());
+        titleFont.drawString(BACK_DRAW_X, BACK_DRAW_Y, BACK_TEXT, myBlue);
+    }
+    
+    /**
+     * Renders the game's instructions in the screen.
+     * @param g - the graphics content to render
+     */
+    private void renderInstructions(Graphics g) {
+        String [] instructions = wrapText(INSTRUCTIONS_TEXT, WRAP_LENGTH);
+        for (int i = 0; i < instructions.length; i++) {
+            introFont.drawString(INSTRUCTIONS_DRAW_X, INSTRUCTIONS_DRAW_Y + i * LINE_HEIGHT, instructions[i], Color.white);
+        }
+    }
+    
+    /**
+     * Renders the information about the different enemies.
+     * @param g - the graphics content to render
+     */
+    private void renderEnemies(Graphics g) {
+        titleFont.drawString(INSTRUCTIONS_DRAW_X, SHIELD_DRAW_Y, ENEMIES_TEXT, myBlue);
+        renderEnemiesFishSquid(g);
+        renderEnemiesWhale(g);
+    }
+    
+    /**
+     * Renders the information about the different powerups.
+     * @param g - the graphics content to render
+     */
+    private void renderPowerups(Graphics g) {
+        titleFont.drawString(POWERUP_DRAW_X, POWERUP_DRAW_Y, POWERUP_TEXT, myBlue);
+        renderPowerupPoison(g);
+        renderPowerupShield(g);
+        renderPowerupSpeedup(g);
+        renderPowerupExtraLife(g);
+    }
+    
+    /**
+     * Renders the information about the powerup poison.
+     * @param g - the graphics content to render
+     */
+    private void renderPowerupPoison(Graphics g) {
+        g.drawImage(poison, POWERUP_DRAW_X, POISON_DRAW_Y);
+        String [] poisontext = wrapText(POISON_TEXT, WRAP_LENGTH);
+        for (int i = 0; i < poisontext.length; i++) {
+            textFont.drawString(POWERUP_DRAW_X, POISON_TEXT_DRAW_Y + i * LINE_HEIGHT, poisontext[i], Color.white);
+        }
+    }
+    
+    /**
+     * Renders the information about the powerup shield.
+     * @param g - the graphics content to render
+     */
+    private void renderPowerupShield(Graphics g) {
+        g.drawImage(shield, POWERUP_DRAW_X, SHIELD_DRAW_Y);
+        String [] shieldtext = wrapText(SHIELD_TEXT, WRAP_LENGTH);
+        for (int i = 0; i < shieldtext.length; i++) {
+            textFont.drawString(POWERUP_DRAW_X, SHIELD_TEXT_DRAW_Y + i * LINE_HEIGHT, shieldtext[i], Color.white);
+        }
+    }
+    
+    /**
+     * Renders the information about the powerup speedup.
+     * @param g - the graphics content to render
+     */
+    private void renderPowerupSpeedup(Graphics g) {
+        g.drawImage(speedup, POWERUP_DRAW_X, SPEEDUP_DRAW_Y);
+        String [] speeduptext = wrapText(SPEEDUP_TEXT, WRAP_LENGTH);
+        for (int i = 0; i < speeduptext.length; i++) {
+            textFont.drawString(POWERUP_DRAW_X, SPEEDUP_TEXT_DRAW_Y + i * LINE_HEIGHT, speeduptext[i], Color.white);
+        }
+    }
+    
+    /**
+     * Renders the information about the powerup extralife.
+     * @param g - the graphics content to render
+     */
+    private void renderPowerupExtraLife(Graphics g) {
+        g.drawImage(extralife, POWERUP_DRAW_X, EXTRALIFE_DRAW_Y);
+        String [] extralifetext = wrapText(EXTRALIFE_TEXT, WRAP_LENGTH);
+        for (int i = 0; i < extralifetext.length; i++) {
+            textFont.drawString(POWERUP_DRAW_X, EXTRALIFE_TEXT_DRAW_Y + i * LINE_HEIGHT, extralifetext[i], Color.white);
+        }
+    }
+    
+    /**
+     * Renders the information about the fish and squid enemies.
+     * @param g - the graphics content to render
+     */
+    private void renderEnemiesFishSquid(Graphics g) {
+        g.drawImage(fish, INSTRUCTIONS_DRAW_X, SQUID_DRAW_Y);
+        g.drawImage(squid, SQUID_DRAW_X, SQUID_DRAW_Y);
+        String [] enemiestext = wrapText(ENEMIES_DESCRIPTION, WRAP_LENGTH);
+        for (int i = 0; i < enemiestext.length; i++) {
+            textFont.drawString(INSTRUCTIONS_DRAW_X, ENEMIES_TEXT_DRAW_Y + i * LINE_HEIGHT, enemiestext[i], Color.white);
+        }
+    }
+    
+    /**
+     * Renders the information about the whale enemy.
+     * @param g - the graphics content to render
+     */
+    private void renderEnemiesWhale(Graphics g) {
+        g.drawImage(whale, INSTRUCTIONS_DRAW_X, SPEEDUP_TEXT_DRAW_Y);
+        String [] whaletext = wrapText(WHALE_TEXT, WRAP_LENGTH);
+        for (int i = 0; i < whaletext.length; i++) {
+            textFont.drawString(INSTRUCTIONS_DRAW_X, WHALE_TEXT_DRAW_Y + i * LINE_HEIGHT, whaletext[i], Color.white);
+        }
     }
 }
