@@ -43,8 +43,6 @@ public class BigOpponentIndicator extends Entity {
 	 */
     public static BigOpponentIndicator createIndicator(Moveable playerData, boolean loadResources) {
     	Moveable data = new Moveable();
-    	data.velocity = new Vector(0,0);
-    	data.acceleration = new Vector(0,0);
     	data.dimensions = new Vector(WHALE_SIZE_X, WHALE_SIZE_Y);
     	data.position = new Vector(WHALE_START_X, playerData.position.y - (WHALE_SIZE_Y / 2));
         return new BigOpponentIndicator(data, loadResources, playerData);

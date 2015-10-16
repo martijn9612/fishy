@@ -22,17 +22,33 @@ public class BigOpponentIndicatorTest extends TestCase {
     protected void setUp() {
         player = Player.createPlayer(false);
         opponentData = new Moveable();
-        opponentData.velocity = new Vector(115, 100);
+        opponentData.dimensions = new Vector(115, 100);
         opponentData.position = new Vector(580, player.data.position.y - (100 / 2));
         testIndicator = new BigOpponentIndicator(opponentData, false, player.data);
     }
 
     @Test
-    public void testCreateIndicatorMovement() {
-        assertEquals(testIndicator.data.velocity, opponentData.velocity);
-        assertEquals(testIndicator.data.acceleration, opponentData.acceleration);
-        assertEquals(testIndicator.data.dimensions, opponentData.dimensions);
-        assertEquals(testIndicator.data.position, opponentData.position);
+    public void testIndicatortPosition() {
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
+        assertEquals(indicator.data.position, opponentData.position);
+    }
+    
+    @Test
+    public void testIndicatorVelocity() {
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
+        assertEquals(indicator.data.velocity, opponentData.velocity);
+    }
+    
+    @Test
+    public void testIndicatorAcceleration() {
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
+        assertEquals(indicator.data.acceleration, opponentData.acceleration);
+    }
+    
+    @Test
+    public void testIndicatorDimensions() {
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
+        assertEquals(indicator.data.dimensions, opponentData.dimensions);
     }
     
     @Test
