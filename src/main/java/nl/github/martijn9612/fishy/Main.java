@@ -1,6 +1,12 @@
 package nl.github.martijn9612.fishy;
 
-import nl.github.martijn9612.fishy.states.*;
+import nl.github.martijn9612.fishy.states.HelpState;
+import nl.github.martijn9612.fishy.states.LevelState;
+import nl.github.martijn9612.fishy.states.LoseState;
+import nl.github.martijn9612.fishy.states.MenuState;
+import nl.github.martijn9612.fishy.states.WinState;
+
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
