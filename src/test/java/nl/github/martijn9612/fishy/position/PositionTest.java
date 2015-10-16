@@ -3,10 +3,6 @@ package nl.github.martijn9612.fishy.position;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import nl.github.martijn9612.fishy.Main;
-import nl.github.martijn9612.fishy.position.DrawPosition;
-import nl.github.martijn9612.fishy.position.MousePosition;
-import nl.github.martijn9612.fishy.position.MouseRectangle;
 
 /**
  * Testclass for the Position class

@@ -12,7 +12,7 @@ import nl.github.martijn9612.fishy.powerups.Speedup;
 
 import org.junit.Test;
 
-public class PowerupTest extends TestCase{
+public class PowerupTest extends TestCase {
 
     @Test
     public void testgetSpeedupChance() {

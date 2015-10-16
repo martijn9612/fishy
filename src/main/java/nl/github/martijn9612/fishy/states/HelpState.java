@@ -85,8 +85,6 @@ public class HelpState extends BasicGameState {
             "Whales are huge and cannot be eaten.";
     private static final int WHALE_TEXT_DRAW_Y = 430;
 
-
-
     private static final String BACK_BUTTON_RESOURCE = "resources/back-button.png";
     private static final String POISON_RESOURCE = "resources/poison.png";
     private static final String EXTRALIFE_RESOURCE = "resources/ExtraLife-fish.png";
@@ -95,7 +93,6 @@ public class HelpState extends BasicGameState {
     private static final String FISH_RESOURCE = "resources/opponent-fish.png";
     private static final String SQUID_RESOURCE = "resources/squid.png";
     private static final String WHALE_RESOURCE = "resources/whale.png";
-
 
     /**
      * Constructor for the Help State.
@@ -134,10 +131,7 @@ public class HelpState extends BasicGameState {
         textFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.PLAIN , 16), true);
         titleFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.BOLD , 24), true);
         introFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.BOLD , 16), true);
-
     }
-    
-  
 
     /**
      * Renders the game's screen.
@@ -213,7 +207,7 @@ public class HelpState extends BasicGameState {
         }
 
         char[] chars = text.toCharArray();
-        java.util.Vector lines = new Vector();
+        Vector<String> lines = new Vector<String>();
         StringBuilder line = new StringBuilder();
         StringBuilder word = new StringBuilder();
 
@@ -245,7 +239,7 @@ public class HelpState extends BasicGameState {
 
         String [] ret = new String[lines.size()];
         int c = 0; // counter
-        for (Enumeration e = lines.elements(); e.hasMoreElements(); c++) {
+        for (Enumeration<String> e = lines.elements(); e.hasMoreElements(); c++) {
             ret[c] = (String) e.nextElement();
         }
 

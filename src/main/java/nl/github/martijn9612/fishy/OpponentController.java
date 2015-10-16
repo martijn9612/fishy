@@ -3,8 +3,6 @@ package nl.github.martijn9612.fishy;
 import java.util.ArrayList;
 import java.util.Random;
 
-import nl.github.martijn9612.fishy.states.LevelState;
-import nl.github.martijn9612.fishy.utils.MusicPlayer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
@@ -14,6 +12,7 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.opponents.BigOpponent;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
+import nl.github.martijn9612.fishy.states.LevelState;
 
 /**
  * Implements the Opponent Handler of the game.

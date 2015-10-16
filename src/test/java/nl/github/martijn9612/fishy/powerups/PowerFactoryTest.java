@@ -1,12 +1,10 @@
 package nl.github.martijn9612.fishy.powerups;
 
-import static org.junit.Assert.*;
-import nl.github.martijn9612.fishy.powerups.Powerup;
-import nl.github.martijn9612.fishy.powerups.PowerupFactory;
-
 import org.junit.Test;
 
-public class PowerFactoryTest {
+import junit.framework.TestCase;
+
+public class PowerFactoryTest extends TestCase {
 
     @Test
     public void testSetup() {

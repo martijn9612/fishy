@@ -1,11 +1,8 @@
 package nl.github.martijn9612.fishy.position;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import junit.framework.TestCase;
-
 import org.junit.Test;
-import org.lwjgl.input.Mouse;
+
+import junit.framework.TestCase;
 
 /**
  * Test class for MousePosition.java.

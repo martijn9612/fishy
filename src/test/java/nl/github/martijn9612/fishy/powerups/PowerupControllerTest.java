@@ -1,14 +1,11 @@
 package nl.github.martijn9612.fishy.powerups;
 
-import static org.junit.Assert.*;
-import nl.github.martijn9612.fishy.models.Player;
-import nl.github.martijn9612.fishy.powerups.Powerup;
-import nl.github.martijn9612.fishy.powerups.PowerupController;
-import nl.github.martijn9612.fishy.powerups.PowerupFactory;
-
 import org.junit.Test;
 
-public class PowerupControllerTest {
+import junit.framework.TestCase;
+import nl.github.martijn9612.fishy.models.Player;
+
+public class PowerupControllerTest extends TestCase {
 
     private Player player;
     private PowerupController testhandler;
