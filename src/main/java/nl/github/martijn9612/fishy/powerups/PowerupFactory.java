@@ -63,4 +63,24 @@ public class PowerupFactory {
     public ArrayList<Powerup> getPowerups(){
         return powers;
     }
+    
+    
+    /**
+     * Method to make testing easier.
+     * Sets the current random.
+     * @param random - random value to be set to.
+     */
+    public void setRandom(Random random) {
+        rand = random;
+    }
+    
+    /**
+     * Method to make testing easier.
+     * Returns the current powerup.
+     * @return the current powerup.
+     */
+    public Powerup getPowerup() {
+        return powerup;
+    }
 }
+
