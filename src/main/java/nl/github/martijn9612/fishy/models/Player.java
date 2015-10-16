@@ -302,4 +302,12 @@ public class Player extends Entity {
 	public boolean hasShield() {
 		return hasShield;
 	}
+	
+	public void setKey(String newKey) {
+	    key = newKey;
+	}
+	
+	public String getKey() {
+	    return key;
+	}
 }

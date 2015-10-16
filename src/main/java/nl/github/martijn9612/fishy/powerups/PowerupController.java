@@ -72,4 +72,31 @@ public class PowerupController {
         power = null;
         }
     }
+    
+    
+    /**
+     * Method to get power, makes testing easier.
+     * @return power;
+     */
+    public Powerup getPower() {
+        return power;
+    }
+    
+    /**
+     * Method to make testing easier.
+     * sets power.
+     * @param powerup - powerup to which power has to be set.
+     */
+    public void setPower(Powerup powerup) {
+        power = powerup;
+    }
+    
+    /**
+     * Method to make testing easier.
+     * sets the powerupfactory
+     * @param factory - factory to be set.
+     */
+    public void setPowerupFactory(PowerupFactory factory) {
+        powerfac = factory;
+    }
 }

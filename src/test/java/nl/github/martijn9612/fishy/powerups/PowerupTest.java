@@ -2,15 +2,21 @@ package nl.github.martijn9612.fishy.powerups;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+
 import java.util.Random;
 
+
+
 import junit.framework.TestCase;
+import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.powerups.ExtraLife;
 import nl.github.martijn9612.fishy.powerups.Powerup;
 import nl.github.martijn9612.fishy.powerups.Speedup;
+import nl.github.martijn9612.fishy.models.Vector;
 
 import org.junit.Test;
+import org.newdawn.slick.GameContainer;
 
 public class PowerupTest extends TestCase{
 
@@ -80,4 +86,15 @@ public class PowerupTest extends TestCase{
         
     }
 
+    @Test
+    public void testObjectLogic() {
+        GameContainer gc = mock(GameContainer.class);
+        Random random = new Random();
+        Powerup powerup = ExtraLife.createPowerup(random, false);
+        Vector pos = powerup.data.position;
+        pos.add(powerup.data.velocity);
+        powerup.objectLogic(gc, 0);
+        assertEquals(powerup.data.position, pos);
+    }
+    
 }
