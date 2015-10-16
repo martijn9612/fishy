@@ -33,17 +33,36 @@ public class PlayerTest extends TestCase {
     }
 
     @Test
-    public void testMovePlayerLeft() {
+    public void testMovePlayerLeft1() {
         when(input.isKeyDown(Input.KEY_A)).thenReturn(true);
         player.objectLogic(gc, 0);
         Vector force = new Vector(-4, 0);
         force.scale(1 / 5);
         assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
     }
+    
+    @Test
+    public void testMovePlayerLeft2() {
+        when(input.isKeyDown(Input.KEY_LEFT)).thenReturn(true);
+        player.objectLogic(gc, 0);
+        Vector force = new Vector(-4, 0);
+        force.scale(1 / 5);
+        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+    }
+    
 
     @Test
-    public void testMovePlayerUp() {
+    public void testMovePlayerUp1() {
         when(input.isKeyDown(Input.KEY_W)).thenReturn(true);
+        player.objectLogic(gc, 0);
+        Vector force = new Vector(0, -4);
+        force.scale(1 / 5);
+        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+    }
+    
+    @Test
+    public void testMovePlayerUp2() {
+        when(input.isKeyDown(Input.KEY_UP)).thenReturn(true);
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, -4);
         force.scale(1 / 5);
@@ -51,41 +70,29 @@ public class PlayerTest extends TestCase {
     }
 
     @Test
-    public void testMovePlayerDown() {
+    public void testMovePlayerDown1() {
         when(input.isKeyDown(Input.KEY_S)).thenReturn(true);
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, 4);
         force.scale(1 / 5);
         assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
     }
+    
+    @Test
+    public void testMovePlayerDown2() {
+        when(input.isKeyDown(Input.KEY_DOWN)).thenReturn(true);
+        player.objectLogic(gc, 0);
+        Vector force = new Vector(0, 4);
+        force.scale(1 / 5);
+        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+    }
 
-    // @Test
-    // public void testMovePlayerRight() {
-    // when(input.isKeyDown(Input.KEY_D)).thenReturn(true);
-    // doNothing().when(entity).setImageOrientation(1);
-    //
-    // player.objectLogic(gc, 0);
-    // Vector force = new Vector(4,0);
-    // force.scale(1 / 5);
-    // assertEquals(acceleration.add(force), player.acceleration);
-    // }
 
     @Test
     public void testSetScore() {
         player.setScore(1);
         assertEquals(1.0, player.getScore());
     }
-
-    // @Test
-    // public void testEat() {
-    // doNothing().when(playermock).playBiteSound();
-    // int oppsize = (16 + 16)/2;
-    // float score = oppsize * 0.2f;
-    // float newDimension = 16 + Math.round(score * 0.5f);
-    // dimensions = new Vector(newDimension, newDimension);
-    // player.eat(opponent);
-    // assertEquals(player.dimensions, dimensions);
-    // }
 
     @Test
     public void testResetPlayerVariablesDimensions() {
@@ -106,5 +113,64 @@ public class PlayerTest extends TestCase {
         player.resetPlayerVariables();
         assertEquals(player.getScore(), 0.0);
     }
+    
+    @Test
+    public void testEat() {
+        double testscore = player.getScore() + 1 * 0.2f;
+        player.eat(1);
+        assertEquals(player.getScore(), testscore);
+    }
+    
+    @Test
+    public void testSpeedup() {
+        //NOT FINISHED!
+        player.Speedup(0);
 
+    }
+    
+    @Test
+    public void testPoison() {
+        //NOT FINISHED!
+        player.Poison(0);
+    }
+    
+    @Test
+    public void testExtraLife() {
+        int lives = player.getLives();
+        player.Extralife();
+        assertEquals(player.getLives(), lives + 1);
+    }
+    
+    @Test
+    public void testLoseLife() {
+        int lives = player.getLives();
+        player.Loselife();
+        assertEquals(player.getLives(), lives - 1);
+    }
+
+    @Test
+    public void testGetLivesAsString() {
+        String lives = "lives: (" + player.getLives() + ")";
+        assertEquals(player.getLivesAsString(), lives);
+    }
+    
+    @Test
+    public void testAddShield() {
+        player.setKey("half");
+        player.addShield(0, 0);
+        assertEquals("full", player.getKey());
+
+    }
+    
+    @Test
+    public void testRemoveShield() {
+        player.setKey("full");
+        player.removeShield(1);
+        assertEquals("half", player.getKey());
+    }
+    
+    @Test
+    public void testHasShield() {
+        assertFalse(player.hasShield());
+    }
 }
