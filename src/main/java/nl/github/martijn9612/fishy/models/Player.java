@@ -36,8 +36,8 @@ public class Player extends Entity {
     };
 
     private int lives = 0;
-    private int poisoned = 1;
-    private boolean hasShield;
+    private boolean poisoned = false;
+    private boolean hasShield = false;
     private Timer speedUpTimer = new Timer();
     private Timer poisonTimer = new Timer();
     private Timer shieldTimer = new Timer();
@@ -110,23 +110,24 @@ public class Player extends Entity {
         boolean moveR = (input.isKeyDown(Input.KEY_D) || input.isKeyDown(Input.KEY_RIGHT));
         boolean moveU = (input.isKeyDown(Input.KEY_W) || input.isKeyDown(Input.KEY_UP));
         boolean moveD = (input.isKeyDown(Input.KEY_S) || input.isKeyDown(Input.KEY_DOWN));
+        float moveForce = poisoned ? -playerMoveForce : playerMoveForce;
         
         if(moveR) {
-        	setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
-        	data.applyForce(new Vector( poisoned * playerMoveForce, 0));
+        	setImageOrientation(poisoned ? Entity.IMAGE_ORIENTATE_LEFT : Entity.IMAGE_ORIENTATE_RIGHT);
+        	data.applyForce(new Vector(moveForce, 0));
         }
         
         if(moveL) {
-        	setImageOrientation(Entity.IMAGE_ORIENTATE_LEFT);
-        	data.applyForce(new Vector(poisoned * -playerMoveForce, 0));
+        	setImageOrientation(poisoned ? Entity.IMAGE_ORIENTATE_RIGHT : Entity.IMAGE_ORIENTATE_LEFT);
+        	data.applyForce(new Vector(-moveForce, 0));
         }
         
         if(moveU) {
-        	data.applyForce(new Vector(0, poisoned * -playerMoveForce));
+        	data.applyForce(new Vector(0, -moveForce));
         }
         
         if(moveD) {
-        	data.applyForce(new Vector(0, poisoned * playerMoveForce));
+        	data.applyForce(new Vector(0, moveForce));
         }
     }
     
@@ -164,6 +165,7 @@ public class Player extends Entity {
         playerMaxSpeed = 8;
         playerMoveForce = 4;
         playerMass = 5;
+        poisoned = false;
         setScore(0);
     }
 
@@ -233,12 +235,12 @@ public class Player extends Entity {
 
     public void Poison(int time) {
         poisonTimer.cancel();
-        poisoned = -1;
+        poisoned = true;
         poisonTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
-                poisoned = 1;
+                poisoned = false;
             }
         };
 
