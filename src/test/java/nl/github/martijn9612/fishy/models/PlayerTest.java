@@ -163,9 +163,17 @@ public class PlayerTest extends TestCase {
     
     @Test
     public void testAddShield() {
-        //NOT FINISHED!
-        player.addShield(1,1);
-//        Mockito.verify(timer).run();
+        player.setKey("half");
+        player.addShield(0, 0);
+        assertEquals("full", player.getKey());
+
+    }
+    
+    @Test
+    public void testRemoveShield() {
+        player.setKey("full");
+        player.removeShield(1);
+        assertEquals("half", player.getKey());
     }
     
     @Test
