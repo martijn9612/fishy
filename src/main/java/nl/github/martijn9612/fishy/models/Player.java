@@ -1,14 +1,14 @@
 package nl.github.martijn9612.fishy.models;
 
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
-import nl.github.martijn9612.fishy.states.LevelState;
 import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.states.LevelState;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
@@ -18,42 +18,46 @@ public class Player extends Entity {
     private static final float PLAYER_WIDTH = 16;
     private static final float PLAYER_HEIGHT = 16;
     private static final float WATER_DRAG = 0.3f;
-    private static float PLAYER_MASS = 5;
-    private static float PLAYER_MAX_SPEED = 8;
-    private static float PLAYER_MOVE_FORCE = 4;
+    private static float playerMass = 5;
+    private static float playerMaxSpeed = 8;
+    private static float playerMoveForce = 4;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
-    private static final String PLAYER_SPRITE = "resources/player-" + Main.PLAYER_CHARACTER + ".png";
+    private static final String PLAYER_SPRITE = "resources/player-"
+            + Main.PLAYER_CHARACTER + ".png";
     private static final String PLAYER_FULL_SHIELD_SPRITE = "resources/shield-full.png";
     private static final String PLAYER_HALF_SHIELD_SPRITE = "resources/shield-half.png";
-    
+
     private double score = 0;
     private static final String[] BITE_SOUNDS = {
-		MusicPlayer.BITE_SOUND_1,
-		MusicPlayer.BITE_SOUND_2,
-		MusicPlayer.BITE_SOUND_3
-	};
+    	MusicPlayer.BITE_SOUND_1,
+    	MusicPlayer.BITE_SOUND_2,
+    	MusicPlayer.BITE_SOUND_3
+    };
 
     private int lives = 0;
     private int poisoned = 1;
     private boolean hasShield;
     private Timer speedUpTimer = new Timer();
     private Timer poisonTimer = new Timer();
-    private Timer shieldRemove = new Timer();
+    private Timer shieldTimer = new Timer();
+    private Timer shieldRemover = new Timer();
+    private HashMap<String, String> shieldImages = new HashMap<String, String>();
+    private String key = "none";
+    private String prevkey = "none";
 
     /**
-     * Creates a new Player instance in the game window.
+     * Creates a new default Player instance.
      * 
-     * @param dimensions size of the new player.
-	 * @param position vector with the start position of the player.
-	 * @param velocity initial speed of the player.
-	 * @param acceleration initial acceleration of the player.
-	 * @param loadResources whether the sprite resources should be loaded.
+     * @param loadResources
+     *            whether the player's resources should be loaded.
+     * @return Player instance.
      */
-    public Player(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources) {
-    	super(dimensions, position, velocity, acceleration, loadResources);
+    public Player(Moveable data, boolean loadResources) {
+    	super(data, loadResources);
     	Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
     	loadResources(PLAYER_SPRITE);
+    	fillHashMap();
     }
     
 	/**
@@ -63,11 +67,11 @@ public class Player extends Entity {
 	 * @return Player instance.
 	 */
 	public static Player createPlayer(boolean loadResources) {
-		Vector dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
-		Vector velocity = new Vector(0, 0);
-		Vector acceleration = new Vector(0, 0);
-		Vector position = Vector.centerOfScreen();
-		return new Player(dimensions, position, velocity, acceleration, loadResources);
+		Moveable data = new Moveable();
+		data.dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+		data.position = Vector.centerOfScreen();
+		data.mass = playerMass;
+		return new Player(data, loadResources);
 	}
     
 	/**
@@ -82,16 +86,24 @@ public class Player extends Entity {
     public void objectLogic(GameContainer gc, int deltaTime) {
         Input keyboardInput = gc.getInput();
     	movePlayer(keyboardInput);
-        applyWaterDrag();
-        updatePosition();
+        data.applyWaterDrag(WATER_DRAG);
+        data.updatePosition(playerMaxSpeed);
         checkGameEdges();
         updateBoundingbox();
+        updateShieldImage(key);
+    }
+
+    private void fillHashMap() {
+        shieldImages.put("none", PLAYER_SPRITE);
+        shieldImages.put("half", PLAYER_HALF_SHIELD_SPRITE);
+        shieldImages.put("full", PLAYER_FULL_SHIELD_SPRITE);
     }
 
     /**
      * Handles the keyboard controls so the player is able to move around.
      * 
-     * @param input object to access keyboard button states.
+     * @param input
+     *            object to access keyboard button states.
      */
     private void movePlayer(Input input) {
         boolean moveL = (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT));
@@ -101,78 +113,44 @@ public class Player extends Entity {
         
         if(moveR) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
-        	applyForce(new Vector( poisoned * PLAYER_MOVE_FORCE, 0));
+        	data.applyForce(new Vector( poisoned * playerMoveForce, 0));
         }
         
         if(moveL) {
         	setImageOrientation(Entity.IMAGE_ORIENTATE_LEFT);
-        	applyForce(new Vector(poisoned * -PLAYER_MOVE_FORCE, 0));
+        	data.applyForce(new Vector(poisoned * -playerMoveForce, 0));
         }
         
         if(moveU) {
-        	applyForce(new Vector(0, poisoned * -PLAYER_MOVE_FORCE));
+        	data.applyForce(new Vector(0, poisoned * -playerMoveForce));
         }
         
         if(moveD) {
-        	applyForce(new Vector(0, poisoned * PLAYER_MOVE_FORCE));
+        	data.applyForce(new Vector(0, poisoned * playerMoveForce));
         }
     }
-
-    /**
-     * Updates the position of the player according to grandpa Newton.
-     */
-    private void updatePosition() {
-    	velocity.add(acceleration);
-        velocity.limit(PLAYER_MAX_SPEED);
-        position.add(velocity);
-        acceleration.scale(0);
-    }
     
     /**
-     * Calculates the drag force the water applies to the player.
-     */
-    private void applyWaterDrag() {
-		float speed = velocity.length();
-		float dragMagnitude = WATER_DRAG * speed * speed;
-		Vector drag = velocity.copy();
-		drag.negateLocal();
-		drag.normalise();
-		drag.scale(dragMagnitude);
-		applyForce(drag);
-	}
-    
-    /**
-     * Checks whether the player is within the screen bounds and corrects them if necessary.
+     * Checks whether the player is within the screen bounds and corrects them
+     * if necessary.
      */
     private void checkGameEdges() {
-        position.x = limit(position.x, 0, Main.WINDOW_WIDTH - dimensions.x);
-        position.y = limit(position.y, 0, Main.WINDOW_HEIGHT - dimensions.y);
+    	data.position.x = limit(data.position.x, 0, Main.WINDOW_WIDTH - data.dimensions.x);
+    	data.position.y = limit(data.position.y, 0, Main.WINDOW_HEIGHT - data.dimensions.y);
     }
-    
-    /**
-     * Apply a force to the player, according to force = mass * acceleration;
-     * 
-     * @param force
-     */
-    private void applyForce(Vector force) {
-		Vector newForce = force.copy();
-		newForce.scale(1 / PLAYER_MASS);
-		acceleration.add(newForce);
-	}
 
     /**
      * Consume a specific Opponent.
      * 
-     * @param opponent to eat
+     * @param opponent
+     *            to eat
      */
-    public void eat(NonPlayer opponent) {
-        double opponentSize = opponent.getSize();
-    	setScore( score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
+    public void eat(double opponentSize) {
+        setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
-        dimensions = new Vector(newDimension, newDimension);
+        data.dimensions = new Vector(newDimension, newDimension);
         Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
         Main.actionLogger.logLine("Player score is " + Math.floor(score), getClass().getSimpleName());
-        playBiteSound();
     }
 
     /**
@@ -180,34 +158,40 @@ public class Player extends Entity {
      */
     public void resetPlayerVariables() {
         Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
-        Main.actionLogger.logLine("Score was " + LevelState.getScore(), getClass().getSimpleName());
-        position = Vector.centerOfScreen();
-        dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
-        PLAYER_MAX_SPEED = 8;
-        PLAYER_MOVE_FORCE = 4;
-        PLAYER_MASS = 5;
+		Main.actionLogger.logLine("Score was " + LevelState.getScore(), getClass().getSimpleName());
+        data.position = Vector.centerOfScreen();
+        data.dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+        playerMaxSpeed = 8;
+        playerMoveForce = 4;
+        playerMass = 5;
         setScore(0);
     }
-    
+
     /**
      * Plays a random available bite sound from the list.
      */
     public void playBiteSound() {
-    	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random()); /* Integer between 1 and array length */
-    	musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]); /* Subtract 1 to get array index */
+    	/* Integer between 1 and array length */
+    	int biteSoundNumber = (int) Math.ceil(BITE_SOUNDS.length * Math.random());
+    	 /* Subtract 1 to get array index */
+        musicPlayer.playSound(BITE_SOUNDS[biteSoundNumber - 1]);
     }
 
     /**
-     * Validates whether the given number is within the given limits. If the number
-     * is not within the given bounds, the closest limit value is returned.
+     * Validates whether the given number is within the given limits. If the
+     * number is not within the given bounds, the closest limit value is
+     * returned.
      * 
-     * @param x integer to test
-     * @param min lower limit value
-     * @param f upper limit value
+     * @param x
+     *            integer to test
+     * @param min
+     *            lower limit value
+     * @param f
+     *            upper limit value
      * @return float
      */
     private float limit(float x, float min, float f) {
-    	return Math.max(Math.min(x, f), min);
+        return Math.max(Math.min(x, f), min);
     }
 
     /**
@@ -222,29 +206,30 @@ public class Player extends Entity {
     /**
      * Set the players score.
      * 
-     * @param score new score value
+     * @param score
+     *            new score value
      */
     public void setScore(double score) {
         LevelState.setScore(String.valueOf(Math.round(score)));
         this.score = score;
     }
 
-    public void Speedup(int time){
+    public void Speedup(int time) {
         speedUpTimer.cancel();
-        PLAYER_MAX_SPEED = 40;
-        PLAYER_MOVE_FORCE = 30;
-        PLAYER_MASS = 3;
+        playerMaxSpeed = 40;
+        playerMoveForce = 30;
+        playerMass = 3;
         speedUpTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
-                PLAYER_MAX_SPEED = 8;
-                PLAYER_MOVE_FORCE = 4;
-                PLAYER_MASS = 5;
+                playerMaxSpeed = 8;
+                playerMoveForce = 4;
+                playerMass = 5;
             }
         };
         speedUpTimer.schedule(action, time);
-        }
+    }
 
     public void Poison(int time) {
         poisonTimer.cancel();
@@ -260,40 +245,61 @@ public class Player extends Entity {
         poisonTimer.schedule(action, time);
     }
 
-    public void Extralife(){
-     lives++;
+    public void Extralife() {
+        lives++;
     }
-    public int getLives(){
+
+    public int getLives() {
         return lives;
     }
-    public void Loselife(){
+
+    public void Loselife() {
         lives--;
     }
 
-    public String getLivesAsString(){
+    public String getLivesAsString() {
         return "lives: (" + lives + ")";
     }
 
-    public boolean hasShield() {
-        return hasShield;
-    }
-
-    public void removeShield(int time) {
-        shieldRemove = new Timer();
-        loadImage(PLAYER_HALF_SHIELD_SPRITE);
+    public void addShield(int activeTime, int fadeTime) {
+        key = "full";
+        hasShield = true;
+        final int fade = fadeTime;
+        shieldTimer.cancel();
+        shieldRemover.cancel();
+        shieldTimer = new Timer();
 
         TimerTask action = new TimerTask() {
             public void run() {
-                hasShield = false;
-                loadImage(PLAYER_SPRITE);
+                removeShield(fade);
             }
         };
-        shieldRemove.schedule(action, time);
+        shieldTimer.schedule(action, activeTime);
     }
 
-    public void addShield() {
-        loadImage(PLAYER_FULL_SHIELD_SPRITE);
-        hasShield = true;
+    public void removeShield(int fadeTime) {
+        key = "half";
+        shieldRemover.cancel();
+        shieldRemover = new Timer();
+        
+        TimerTask action = new TimerTask() {
+            public void run() {
+                hasShield = false;
+                key = "none";
+            }
+        };
+        shieldRemover.schedule(action, fadeTime);
     }
+
+    public void updateShieldImage(String key) {
+        if (!key.equals(prevkey)) {
+            String image = shieldImages.get(key);
+            loadImage(image);
+            prevkey = key;
+        }
+    }
+
+	public boolean hasShield() {
+		return hasShield;
+	}
 }
-

@@ -3,6 +3,7 @@ package nl.github.martijn9612.fishy.powerups;
 import java.util.Random;
 
 import nl.github.martijn9612.fishy.models.Entity;
+import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
@@ -18,12 +19,11 @@ public class Speedup extends Powerup{
      * @param loadResources whether or not to load resources.
      * @param chance the chance it gets returned in the factory.
      */
-    public Speedup(Vector dimensions, Vector position, Vector velocity,
-            Vector acceleration, boolean loadResources, int chance) {
-        super(dimensions, position, velocity, acceleration, loadResources, chance);
+    public Speedup(Moveable data, boolean loadResources, int chance) {
+        super(data, loadResources, chance);
         loadResources(SPRITE_PATH);
         this.chance = chance;
-        if(loadResources && velocity.x > 0) {
+        if(loadResources && data.velocity.x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         }
     }
@@ -35,12 +35,12 @@ public class Speedup extends Powerup{
      * @param loadResources whether the sprite resources should be loaded.
      */
     public static Speedup createPowerup(Random random, boolean loadResources) {
-        boolean spawnsLeft = random.nextBoolean();
-        Vector acceleration = new Vector(0,0);
-        Vector dimensions = new Vector(16,16);
-        Vector velocity = getRandomVelocity(random, spawnsLeft);
-        Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-        return new Speedup(dimensions, position, velocity, acceleration, loadResources, 100);
+    	Moveable data = new Moveable();
+    	boolean spawnsLeft = random.nextBoolean();
+    	data.dimensions = new Vector(16,16);
+    	data.velocity = getRandomVelocity(random, spawnsLeft);
+    	data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
+        return new Speedup(data, loadResources, 100);
     }
     /**
      * creates a random position vector.

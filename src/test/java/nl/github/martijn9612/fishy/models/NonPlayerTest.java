@@ -17,11 +17,10 @@ public class NonPlayerTest extends TestCase {
 	@Test
 	public void testGetSize() {
 		float size = 5.0f;
-		Vector position = new Vector(0,0);
-        Vector dimensions = new Vector(size,size);
-        Vector velocity = new Vector(1,0);
-        Vector acceleration = new Vector(0,0);
-    	NonPlayer testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
+		Moveable opponentData = new Moveable();
+		opponentData.dimensions = new Vector(size,size);
+		opponentData.velocity = new Vector(1,0);
+    	NonPlayer testopp = new LinearOpponent(opponentData, false);
 		assertEquals(testopp.getSize(), size, 0.1);
 	}
 
@@ -30,18 +29,17 @@ public class NonPlayerTest extends TestCase {
 	 */
 	@Test
 	public void testIsOpponentOnScreen() {
-		Vector velocity = new Vector(0,0);
-		Vector position = new Vector(10,10);
-        Vector dimensions = new Vector(1,1);
-        Vector acceleration = new Vector(0,0);
-        NonPlayer testopp = new LinearOpponent(dimensions, position, velocity, acceleration, false);
-		assertFalse(testopp.isOffScreen());
-		testopp.position = new Vector(10, Main.WINDOW_HEIGHT - 10);
-		assertFalse(testopp.isOffScreen());
-		testopp.position = new Vector(Main.WINDOW_WIDTH - 10, Main.WINDOW_HEIGHT - 10);
-		assertFalse(testopp.isOffScreen());
-		testopp.position = new Vector(Main.WINDOW_WIDTH - 10, 10);
-		assertFalse(testopp.isOffScreen());
+        Moveable opponentData = new Moveable();
+        opponentData.position = new Vector(10, 10);
+		opponentData.dimensions = new Vector(1, 1);
+        NonPlayer testOpponent = new LinearOpponent(opponentData, false);
+		assertFalse(testOpponent.isOffScreen());
+		testOpponent.data.position = new Vector(10, Main.WINDOW_HEIGHT - 10);
+		assertFalse(testOpponent.isOffScreen());
+		testOpponent.data.position = new Vector(Main.WINDOW_WIDTH - 10, Main.WINDOW_HEIGHT - 10);
+		assertFalse(testOpponent.isOffScreen());
+		testOpponent.data.position = new Vector(Main.WINDOW_WIDTH - 10, 10);
+		assertFalse(testOpponent.isOffScreen());
 	}
 
 	/**
@@ -49,17 +47,16 @@ public class NonPlayerTest extends TestCase {
 	 */
 	@Test
 	public void testIsOpponentOffScreen() {
-		Vector dimensions = new Vector(1,1);
-		Vector position = new Vector(-10,-10);
-		Vector velocity = new Vector(0,0);
-        Vector acceleration = new Vector(0,0);
-		NonPlayer testopp = new SinusOpponent(dimensions, position, velocity, acceleration, false);
-		assertTrue(testopp.isOffScreen());
-		testopp.position = new Vector(-10, Main.WINDOW_HEIGHT + 10);
-		assertTrue(testopp.isOffScreen());
-		testopp.position = new Vector(Main.WINDOW_WIDTH + 10, Main.WINDOW_HEIGHT + 10);
-		assertTrue(testopp.isOffScreen());
-		testopp.position = new Vector(Main.WINDOW_WIDTH + 10, -10);
-		assertTrue(testopp.isOffScreen());
+		Moveable opponentData = new Moveable();
+        opponentData.position = new Vector(-10, -10);
+		opponentData.dimensions = new Vector(1, 1);
+		NonPlayer testOpponent = new SinusOpponent(opponentData, false);
+		assertTrue(testOpponent.isOffScreen());
+		testOpponent.data.position = new Vector(-10, Main.WINDOW_HEIGHT + 10);
+		assertTrue(testOpponent.isOffScreen());
+		testOpponent.data.position = new Vector(Main.WINDOW_WIDTH + 10, Main.WINDOW_HEIGHT + 10);
+		assertTrue(testOpponent.isOffScreen());
+		testOpponent.data.position = new Vector(Main.WINDOW_WIDTH + 10, -10);
+		assertTrue(testOpponent.isOffScreen());
 	}
 }

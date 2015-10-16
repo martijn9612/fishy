@@ -2,49 +2,34 @@ package nl.github.martijn9612.fishy.models;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doNothing;
-import junit.framework.TestCase;
-import nl.github.martijn9612.fishy.opponents.LinearOpponent;
-import nl.github.martijn9612.fishy.states.LevelState;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
+
+import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {
 
     private Player player;
-    private LinearOpponent opponent;
-    private LevelState levelstate = mock(LevelState.class);
-    private Player playermock = mock(Player.class);
-    private Entity entity = Mockito.mock(Entity.class,
-            Mockito.CALLS_REAL_METHODS);
     private final GameContainer gc = mock(GameContainer.class);
     private final Input input = mock(Input.class);
-    private Vector dimensions;
-    private Vector velocity;
-    private Vector position;
-    private Vector acceleration;
+    private Moveable opponentData;
 
     @Override
     protected void setUp() {
         player = Player.createPlayer(false);
-        position = new Vector(650 / 2, 550 / 2);
-        velocity = new Vector(0, 0);
-        dimensions = new Vector(16, 16);
-        acceleration = new Vector(0, 0);
-        opponent = new LinearOpponent(dimensions, position, velocity,
-                acceleration, false);
+        opponentData = new Moveable();
+        opponentData.position = new Vector(650 / 2, 550 / 2);
+        opponentData.velocity = new Vector(0, 0);
+        opponentData.dimensions = new Vector(16, 16);
         when(gc.getInput()).thenReturn(input);
-
     };
 
     @Test
     public void testCreatePlayer() {
-        Player test = new Player(dimensions, position, velocity, acceleration,
-                false);
-        assertEquals(test.position, player.position);
+        Player test = new Player(opponentData, false);
+        assertEquals(test.data.position, player.data.position);
     }
 
     @Test
@@ -53,7 +38,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(-4, 0);
         force.scale(1 / 5);
-        assertEquals(acceleration.add(force), player.acceleration);
+        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
     }
 
     @Test
@@ -62,7 +47,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, -4);
         force.scale(1 / 5);
-        assertEquals(acceleration.add(force), player.acceleration);
+        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
     }
 
     @Test
@@ -71,7 +56,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, 4);
         force.scale(1 / 5);
-        assertEquals(acceleration.add(force), player.acceleration);
+        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
     }
 
     // @Test
@@ -104,16 +89,16 @@ public class PlayerTest extends TestCase {
 
     @Test
     public void testResetPlayerVariablesDimensions() {
-        dimensions = new Vector(16, 16);
+        Vector dimensions = new Vector(16, 16);
         player.resetPlayerVariables();
-        assertEquals(dimensions, player.dimensions);
+        assertEquals(dimensions, player.data.dimensions);
     }
     
     @Test
     public void testResetPlayerVariablesPosition() {
-        position = new Vector(650 / 2, 550 / 2);
+        Vector position = new Vector(650 / 2, 550 / 2);
         player.resetPlayerVariables();
-        assertEquals(position, player.position);
+        assertEquals(position, player.data.position);
     }
 
     @Test

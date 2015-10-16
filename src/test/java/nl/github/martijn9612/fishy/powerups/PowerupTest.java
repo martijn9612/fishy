@@ -28,6 +28,19 @@ public class PowerupTest extends TestCase{
     }
     
     @Test
+    public void testgetShieldChance() {
+        Random random = new Random();
+        Powerup power = Shield.createPowerup(random, false);
+        assertEquals(power.getChance(), 30);
+    }
+    @Test
+    public void testgetPoisonChance() {
+        Random random = new Random();
+        Powerup power = Poison.createPowerup(random, false);
+        assertEquals(power.getChance(), 30);
+    }
+    
+    @Test
     public void testPlayerEffect(){
         Player player = mock(Player.class);
         Random random = new Random();
@@ -44,6 +57,26 @@ public class PowerupTest extends TestCase{
         Powerup power = ExtraLife.createPowerup(random, false);
         power.Effect(player);
         verify(player).Extralife();
+        
+    }
+    
+    @Test
+    public void testPlayerEffect3(){
+        Player player = mock(Player.class);
+        Random random = new Random();
+        Powerup power = Shield.createPowerup(random, false);
+        power.Effect(player);
+        verify(player).addShield(5000,2000);
+        
+    }
+    
+    @Test
+    public void testPlayerEffect4(){
+        Player player = mock(Player.class);
+        Random random = new Random();
+        Powerup power = Poison.createPowerup(random, false);
+        power.Effect(player);
+        verify(player).Poison(10000);
         
     }
 

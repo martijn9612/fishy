@@ -25,7 +25,7 @@ public class OpponentController {
 	private ArrayList<NonPlayer> opponents = new ArrayList<NonPlayer>();
 	private ArrayList<NonPlayer> toRemove = new ArrayList<NonPlayer>();
 	private static final double BIG_OPPONENT_SPAWN_CHANCE = 0.001;
-	private int BIG_OPPONENT_DELAY = 15000;
+	private int bigOpponentDelay = 15000;
 	private static final int MAX_OPPONENTS = 20;
 	
 	/**
@@ -117,7 +117,8 @@ public class OpponentController {
 				String log = "Player collides with opponent of size " + Math.floor(opponent.getSize());
 				Main.actionLogger.logLine(log, getClass().getSimpleName());
 				if (player.getSize() > opponent.getSize()) {
-					player.eat(opponent);
+					player.eat(opponent.getSize());
+					player.playBiteSound();
 					remove(opponent);
 				} else {
 					if (player.hasShield()) {
@@ -131,17 +132,27 @@ public class OpponentController {
 						LevelState.getOC().removeAllOpponents();
 						LevelState.getPC().Remove();
 						sbg.enterState(Main.GAME_LOSE_STATE);
+
+					if (!player.hasShield()) {
+						if (player.getLives() > 0) {
+							player.addShield(1000, 1000);
+							player.Loselife();
+						} else {
+							Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
+							sbg.enterState(Main.GAME_LOSE_STATE);
+						}
 					}
 				}
 			}
+		}
 		}
 	}
 
 	private void startBigOpponentEvent(Player player) {
 		double rand = Math.random();
-		BIG_OPPONENT_DELAY -= 10;
-        if(rand < BIG_OPPONENT_SPAWN_CHANCE && !bigOpponentInstanceExists() && BIG_OPPONENT_DELAY < 0) {
-			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player, loadResources);
+		bigOpponentDelay -= 10;
+        if(rand < BIG_OPPONENT_SPAWN_CHANCE && !bigOpponentInstanceExists() && bigOpponentDelay < 0) {
+			BigOpponent bigOpponent = BigOpponent.createBigOpponent(player.data, loadResources);
 			addOpponent(bigOpponent);
 		}
 	}
