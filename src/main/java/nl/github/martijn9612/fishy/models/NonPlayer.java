@@ -24,8 +24,8 @@ public abstract class NonPlayer extends Entity {
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param hasOpenGL whether OpenGL context is available.
 	 */
-	public NonPlayer(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean hasOpenGL) {
-		super(dimensions, position, velocity, acceleration, hasOpenGL);
+	public NonPlayer(Moveable data, boolean hasOpenGL) {
+		super(data, hasOpenGL);
 	}
 
 	/**
@@ -34,12 +34,12 @@ public abstract class NonPlayer extends Entity {
 	 * @return returns true if the opponent is not visible on the screen.
 	 */
 	public boolean isOffScreen() {
-		if (position.x < 0 - dimensions.x * OPPONENT_FACTOR - 1
-				|| position.x > Main.WINDOW_WIDTH + dimensions.x * OPPONENT_FACTOR + 1) {
+		if (data.position.x < 0 - data.dimensions.x * OPPONENT_FACTOR - 1
+				|| data.position.x > Main.WINDOW_WIDTH + data.dimensions.x * OPPONENT_FACTOR + 1) {
 			return true;
 		}
-		if (position.y < 0 - dimensions.y * OPPONENT_FACTOR - 1
-				|| position.y > Main.WINDOW_HEIGHT + dimensions.y * OPPONENT_FACTOR + 1) {
+		if (data.position.y < 0 - data.dimensions.y * OPPONENT_FACTOR - 1
+				|| data.position.y > Main.WINDOW_HEIGHT + data.dimensions.y * OPPONENT_FACTOR + 1) {
 			return true;
 		}
 		return false;

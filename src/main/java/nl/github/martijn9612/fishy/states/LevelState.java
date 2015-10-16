@@ -5,7 +5,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -104,7 +103,7 @@ public class LevelState extends BasicGameState {
 		powerupController.updatePowerup(gc, delta);
 		powerupController.SpawnPowerup();
 		powerupController.collide(player, sbg);
-		fishPosition = player.position.toString();
+		fishPosition = player.data.position.toString();
 		lives = player.getLivesAsString();
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {

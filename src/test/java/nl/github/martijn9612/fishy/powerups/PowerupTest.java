@@ -31,13 +31,13 @@ public class PowerupTest extends TestCase{
     public void testgetShieldChance() {
         Random random = new Random();
         Powerup power = Shield.createPowerup(random, false);
-        assertEquals(power.getChance(), 100);
+        assertEquals(power.getChance(), 30);
     }
     @Test
     public void testgetPoisonChance() {
         Random random = new Random();
         Powerup power = Poison.createPowerup(random, false);
-        assertEquals(power.getChance(), 100);
+        assertEquals(power.getChance(), 30);
     }
     
     @Test

@@ -1,10 +1,11 @@
 package nl.github.martijn9612.fishy.powerups;
 
+import java.util.Random;
+
 import nl.github.martijn9612.fishy.models.Entity;
+import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
-
-import java.util.Random;
 
 /**
  * Created by martijn on 9-10-15.
@@ -12,18 +13,16 @@ import java.util.Random;
 public class Poison extends Powerup {
     private static final String SPRITE_PATH = "resources/poison.png";
     private int chance;
-    private String name;
 
-    public Poison(Vector dimensions, Vector position, Vector velocity,
-                   Vector acceleration, boolean loadResources, int chance) {
-        super(dimensions, position, velocity, acceleration, loadResources, chance);
+    public Poison(Moveable data, boolean loadResources, int chance) {
+        super(data, loadResources, chance);
         loadResources(SPRITE_PATH);
-        name = "Poison";
         this.chance = chance;
-        if(loadResources && velocity.x > 0) {
+        if(loadResources && data.velocity.x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         }
     }
+    
     /**
      * Creates an instance of poison at a random screen side location.
      *
@@ -31,13 +30,14 @@ public class Poison extends Powerup {
      * @param loadResources whether the sprite resources should be loaded.
      */
     public static Poison createPowerup(Random random, boolean loadResources) {
-        boolean spawnsLeft = random.nextBoolean();
-        Vector acceleration = new Vector(0,0);
-        Vector dimensions = new Vector(32,32);
-        Vector velocity = getRandomVelocity(random, spawnsLeft);
-        Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-        return new Poison(dimensions, position, velocity, acceleration, loadResources, 100);
+        Moveable data = new Moveable();
+    	boolean spawnsLeft = random.nextBoolean();
+    	data.dimensions = new Vector(32,32);
+    	data.velocity = getRandomVelocity(random, spawnsLeft);
+    	data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
+        return new Poison(data, loadResources, 30);
     }
+    
     /**
      * create a random position vector.
      * @param random the randomizer.
@@ -52,6 +52,7 @@ public class Poison extends Powerup {
         int xpos = (spawnsLeft ? 0 - min * 5 : 615 + min * 5);
         return new Vector(xpos, ypos);
     }
+    
     /**
      * create a random speed vector.
      * @param random the randomizer.
@@ -62,12 +63,14 @@ public class Poison extends Powerup {
         int speed = random.nextInt(4) + 1;
         return new Vector((spawnsLeft ? speed : -speed), 0);
     }
+    
     /**
      * get the spawn chance.
      */
     public int getChance(){
         return chance;
     }
+    
     /**
      * start the effect on the player.
      */

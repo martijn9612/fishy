@@ -4,8 +4,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
 import nl.github.martijn9612.fishy.models.BigOpponentIndicator;
+import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.NonPlayer;
-import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
@@ -23,7 +23,7 @@ public class BigOpponent extends NonPlayer {
     private static final String SPRITE_PATH = "resources/whale.png";
     private BigOpponentIndicator indicator;
     private int timeToLive = 25000;
-	private Player player;
+	private Moveable playerData;
     
     /**
 	 * Creates an instance of BigOpponent at the given location.
@@ -35,10 +35,10 @@ public class BigOpponent extends NonPlayer {
 	 * @param loadResources whether the sprite resources should be loaded.
 	 * @param player instance of the Player class.
 	 */
-    public BigOpponent(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources, Player player) {
-    	super(dimensions, position, velocity, acceleration, loadResources);
-    	indicator = BigOpponentIndicator.createIndicator(player, loadResources);
-        this.player = player;
+    public BigOpponent(Moveable data, boolean loadResources, Moveable playerData) {
+    	super(data, loadResources);
+    	this.indicator = BigOpponentIndicator.createIndicator(playerData, loadResources);
+        this.playerData = playerData;
         loadBigOpponentResources();
     }
     
@@ -48,12 +48,12 @@ public class BigOpponent extends NonPlayer {
 	 * @param player an instance of the Player class.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
-	public static BigOpponent createBigOpponent(Player player, boolean loadResources) {
-		Vector acceleration = new Vector(0,0);
-		Vector velocity = new Vector(-BIG_OPPONENT_SPEED, 0);
-		Vector dimensions = new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE);
-		Vector position = new Vector(BIG_OPPONENT_START_X, player.position.y - BIG_OPPONENT_SIZE / 2);
-		return new BigOpponent(dimensions, position, velocity, acceleration, loadResources, player);
+	public static BigOpponent createBigOpponent(Moveable playerData, boolean loadResources) {
+		Moveable data = new Moveable();
+		data.velocity = new Vector(-BIG_OPPONENT_SPEED, 0);
+		data.dimensions = new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE);
+		data.position = new Vector(BIG_OPPONENT_START_X, playerData.position.y - BIG_OPPONENT_SIZE / 2);
+		return new BigOpponent(data, loadResources, playerData);
     }
 	
 	/**
@@ -62,7 +62,7 @@ public class BigOpponent extends NonPlayer {
 	@Override
     public void objectLogic(GameContainer gc, int deltaTime) {
     	indicator.objectLogic(gc, deltaTime);
-        position.add(velocity);
+    	data.updatePosition(100);
         updateBoundingbox();
 		checkProgress(deltaTime);
     }
@@ -72,10 +72,10 @@ public class BigOpponent extends NonPlayer {
 			timeToLive -= deltaTime;
 		}
 		if (timeToLive > INDICATOR_REMOVED_AT) {
-			position.y = player.position.y - BIG_OPPONENT_SIZE / 2;
+			data.position.y = playerData.position.y - BIG_OPPONENT_SIZE / 2;
 		}
 		if (timeToLive < INDICATOR_MOVES_AT) {
-			indicator.acceleration.x = 2;
+			indicator.data.acceleration.x = 2;
 		}
 	}
 

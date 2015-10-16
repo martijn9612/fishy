@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 
 import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.models.Entity;
+import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
@@ -25,10 +26,10 @@ public class LinearOpponent extends NonPlayer {
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
-	public LinearOpponent(Vector dimensions, Vector position, Vector velocity, Vector acceleration, boolean loadResources) {
-		super(dimensions, position, velocity, acceleration, loadResources);
+	public LinearOpponent(Moveable data, boolean loadResources) {
+		super(data, loadResources);
 		loadResources(SPRITE_PATH);
-		if(loadResources && velocity.x > 0) {
+		if(loadResources && data.velocity.x > 0) {
 			setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
 		}
 	}
@@ -41,12 +42,12 @@ public class LinearOpponent extends NonPlayer {
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */
 	public static LinearOpponent createRandom(Player player, Random random, boolean loadResources) {
+		Moveable data = new Moveable();
 		boolean spawnsLeft = random.nextBoolean();
-		Vector acceleration = new Vector(0,0);
-		Vector dimensions = getRandomDimensions(player, random);
-		Vector velocity = getRandomVelocity(random, spawnsLeft);
-		Vector position = getRandomPosition(random, spawnsLeft, dimensions);
-		return new LinearOpponent(dimensions, position, velocity, acceleration, loadResources);
+		data.dimensions = getRandomDimensions(player, random);
+		data.velocity = getRandomVelocity(random, spawnsLeft);
+		data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
+		return new LinearOpponent(data, loadResources);
 	}
 	
 	/**
@@ -98,7 +99,7 @@ public class LinearOpponent extends NonPlayer {
 	 */
 	@Override
 	public void objectLogic(GameContainer gc, int deltaTime) {
-	    position.add(velocity);
+	    data.updatePosition(100);
 	    updateBoundingbox();
 	}
 }
