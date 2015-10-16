@@ -22,6 +22,8 @@ public class MenuState extends BasicGameState {
     private Image play;
     private Image exit;
     private Image help;
+    private Image title;
+    private Image background;
     private MousePosition mouse;
     private DrawRectangle playButtonDR;
     private DrawRectangle exitButtonDR;
@@ -33,8 +35,10 @@ public class MenuState extends BasicGameState {
 
     private static final int MENU_TEXT_DRAW_X = 280;
     private static final int MENU_TEXT_DRAW_Y = 10;
+    private static final int TITLE_IMAGE_DRAW_X = 190;
+    private static final int TITLE_IMAGE_DRAW_Y = 50;
     private static final int PLAY_BUTTON_DRAW_X = 150;
-    private static final int PLAY_BUTTON_DRAW_Y = 200;
+    private static final int PLAY_BUTTON_DRAW_Y = 230;
     private static final int EXIT_BUTTON_DRAW_X = 150;
     private static final int EXIT_BUTTON_DRAW_Y = 375;
     private static final int HELP_BUTTON_DRAW_X = 580;
@@ -63,6 +67,8 @@ public class MenuState extends BasicGameState {
         play = new Image("resources/play-button.gif");
         exit = new Image("resources/exit-button.gif");
         help = new Image("resources/gears.png");
+        title = new Image("resources/something-fishy.png");
+        background = new Image("resources/bg-menu.jpg");
         playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X,
                 PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
         exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X,
@@ -99,13 +105,15 @@ public class MenuState extends BasicGameState {
      */
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
             throws SlickException {
-        g.drawString(menu, MENU_TEXT_DRAW_X, MENU_TEXT_DRAW_Y);
+    	g.drawImage(background, 0, 0); 
+    	g.drawString(menu, MENU_TEXT_DRAW_X, MENU_TEXT_DRAW_Y);
         g.drawImage(play, playButtonDR.getPositionX(),
                 playButtonDR.getPositionY());
         g.drawImage(exit, exitButtonDR.getPositionX(),
                 exitButtonDR.getPositionY());
         g.drawImage(help, helpButtonDR.getPositionX(),
                 helpButtonDR.getPositionY());
+        g.drawImage(title.getScaledCopy(0.5f), TITLE_IMAGE_DRAW_X, TITLE_IMAGE_DRAW_Y);
     }
 
     /**
@@ -132,7 +140,7 @@ public class MenuState extends BasicGameState {
             if (mouse.isLeftButtonDown()) {
                 Main.actionLogger.logLine("Game Closed!", getClass()
                         .getSimpleName());
-                System.exit(0);
+                gc.exit();
             }
         }
 
@@ -150,7 +158,7 @@ public class MenuState extends BasicGameState {
         }
 
         if (input.isKeyDown(Input.KEY_ESCAPE)) {
-            System.exit(0);
+        	gc.exit();
         }
     }
 
