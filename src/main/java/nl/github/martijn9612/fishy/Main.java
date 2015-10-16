@@ -1,14 +1,17 @@
 package nl.github.martijn9612.fishy;
 
+import nl.github.martijn9612.fishy.states.HelpState;
+import nl.github.martijn9612.fishy.states.LevelState;
+import nl.github.martijn9612.fishy.states.LoseState;
+import nl.github.martijn9612.fishy.states.MenuState;
+import nl.github.martijn9612.fishy.states.WinState;
+
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import nl.github.martijn9612.fishy.states.LevelState;
-import nl.github.martijn9612.fishy.states.LoseState;
-import nl.github.martijn9612.fishy.states.MenuState;
-import nl.github.martijn9612.fishy.states.WinState;
 import nl.github.martijn9612.fishy.utils.ActionLogger;
 
 import java.util.logging.Logger;
@@ -21,6 +24,7 @@ public class Main extends StateBasedGame {
     public static final int LEVEL_STATE = 1;
     public static final int GAME_LOSE_STATE = 2;
     public static final int GAME_WIN_STATE = 3;
+    public static final int HELP_STATE = 4;
 
     private static final String GAME_NAME = "Fishy";
     public static final int WINDOW_WIDTH = 650;
@@ -44,6 +48,7 @@ public class Main extends StateBasedGame {
         this.addState(new LevelState(LEVEL_STATE));
         this.addState(new WinState(GAME_WIN_STATE));
         this.addState(new LoseState(GAME_LOSE_STATE));
+        this.addState(new HelpState(HELP_STATE));
     }
 
     /**
@@ -60,6 +65,7 @@ public class Main extends StateBasedGame {
         this.getState(LEVEL_STATE).init(gc, this);
         this.getState(GAME_LOSE_STATE).init(gc, this);
         this.getState(GAME_WIN_STATE).init(gc, this);
+        this.getState(HELP_STATE).init(gc, this);
         this.enterState(MENU_STATE);
     }
 
