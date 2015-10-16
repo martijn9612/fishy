@@ -2,14 +2,8 @@ package nl.github.martijn9612.fishy.models;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
@@ -20,7 +14,6 @@ public class PlayerTest extends TestCase {
     private Player player;
     private final GameContainer gc = mock(GameContainer.class);
     private final Input input = mock(Input.class);
-    private TimerTask timer = mock(TimerTask.class);
     private Moveable opponentData;
 
     @Override

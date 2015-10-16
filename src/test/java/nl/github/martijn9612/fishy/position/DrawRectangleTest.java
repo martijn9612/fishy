@@ -1,12 +1,8 @@
 package nl.github.martijn9612.fishy.position;
 
-import static org.mockito.Mockito.mock;
-import junit.framework.TestCase;
-
 import org.junit.Test;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import nl.github.martijn9612.fishy.position.DrawRectangle;
+
+import junit.framework.TestCase;
 
 public class DrawRectangleTest extends TestCase {
 
@@ -15,8 +11,6 @@ public class DrawRectangleTest extends TestCase {
     private int posX;
     private int posY;
     private DrawRectangle test;
-    private Graphics g = mock(Graphics.class);
-    private Image im = mock(Image.class);
     
     @Override
     protected void setUp() {

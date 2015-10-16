@@ -62,9 +62,9 @@ public class BigOpponent extends NonPlayer {
 	@Override
     public void objectLogic(GameContainer gc, int deltaTime) {
     	indicator.objectLogic(gc, deltaTime);
+    	checkProgress(deltaTime);
     	data.updatePosition(100);
         updateBoundingbox();
-		checkProgress(deltaTime);
     }
 
 	private void checkProgress(int deltaTime) {

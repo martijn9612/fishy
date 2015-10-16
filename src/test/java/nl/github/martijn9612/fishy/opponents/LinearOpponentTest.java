@@ -2,17 +2,13 @@ package nl.github.martijn9612.fishy.opponents;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.util.Random;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.newdawn.slick.GameContainer;
 
 import junit.framework.TestCase;
-import nl.github.martijn9612.fishy.models.Entity;
 import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
@@ -22,7 +18,6 @@ public class LinearOpponentTest extends TestCase {
     private final GameContainer gc = mock(GameContainer.class);
     private final Random random = mock(Random.class);
     private Player player = mock(Player.class);
-    private Entity entity = mock(Entity.class);
 
     /**
      * Test case for objectLogic method. Spawns the opponent at the left side of
