@@ -29,8 +29,8 @@ public class Main extends StateBasedGame {
     private static final String GAME_NAME = "Fishy";
     public static final int WINDOW_WIDTH = 650;
     public static final int WINDOW_HEIGHT = 550;
-    public static final String PLAYER_CHARACTER = "fish";
-    public static final String OPPONENT_CHARACTER = "fish";
+    public static final String PLAYER_CHARACTER = "cheep-cheep";
+    public static final String OPPONENT_CHARACTER = "cheep-cheep";
     public static final String LEVEL_BACKGROUND = "seabed";
     public static final int FRAMERATE = 60;
     public static ActionLogger actionLogger = new ActionLogger();
