@@ -9,6 +9,7 @@ import nl.github.martijn9612.fishy.Main;
 
 /**
  * This class logs to a file to observe the behaviour of a program.
+ * Software Engineering Methods Project - Group 11.
  */
 public class ActionLogger {
     public static final boolean APPEND = true;
@@ -29,8 +30,8 @@ public class ActionLogger {
 
     /**
      * Logs one line to file to log in.
-     * @param text Text to log
-     * @param className Class the log is called in
+     * @param text - Text to log.
+     * @param className - Class the log is called in.
      */
 	public void logLine(String text, String className) {
 		logLine(text, className, false);
@@ -38,9 +39,9 @@ public class ActionLogger {
 
     /**
      * Logs one line to file to log in.
-     * @param text Text to log
-     * @param className Class the log is called in
-     * @param isError Adds additional error text if set to true
+     * @param text - Text to log.
+     * @param className - Class the log is called in.
+     * @param isError - Adds additional error text if set to true.
      */
 	public void logLine(String text, String className, boolean isError) {
 		try {
@@ -62,7 +63,7 @@ public class ActionLogger {
 
     /**
      * Gets the current time to specify the moment the log was made.
-     * @return String with the current time
+     * @return String with the current time.
      */
     private String getTimeStamp() {
         return dateFormat.format(new Date());
