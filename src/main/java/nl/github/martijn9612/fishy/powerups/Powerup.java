@@ -6,33 +6,47 @@ import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.NonPlayer;
 import nl.github.martijn9612.fishy.models.Player;
 
+/**
+ * Implements the PowerUp
+ * Software Engineering Methods Project - Group 11.
+ */
 public abstract class Powerup extends NonPlayer {
     private int chance;
+    
     /**
-     * the contructor of powerups.
-     * @param dimensions the size.
-     * @param position the starting position.
-     * @param velocity the speed at which it travels trough the screen.
-     * @param acceleration its acceleration. usually 0. 
-     * @param hasOpenGL
-     * @param chance the chance it gets returned in the factory.
+     * Creates a new PowerUp.
+     * @param data - the moveable data of the new PowerUp.
+     * @param hasOpenGL - true if OpenGL content should be loaded, false if not.
+     * @param chance - the chance its gets returned in powerupfactary, in promille.
      */
     public Powerup(Moveable data, boolean hasOpenGL, int chance) {
         super(data, hasOpenGL);
     }
 
+    /**
+     * Executes the object logic of the Powerup.
+     * @param gc - the container the game is in.
+     * @param deltaTime - time elapsed since method was called in milliseconds.
+     */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
     	data.position.add(data.velocity);
         updateBoundingbox();
     }
 
+    /**
+     * Gets the chance that the powerup is chosen in the PowerupFactory.
+     * @return the chance of the powerup.
+     */
     public int getChance() {
         return this.chance;
     }
-    
-    public void Effect(Player player) {
-        
+    /**
+     * Starts the effect of the powerup 
+     * upon collision with a player.
+     * @param player - the current Player in the game.
+     */
+    public void Effect(Player player) {  
     }
 
 }

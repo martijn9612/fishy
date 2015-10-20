@@ -8,12 +8,19 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 /**
- * Created by martijn on 9-10-15.
+ * Implements the Poison powerup.
+ * Software Engineering Methods Project - Group 11.
  */
 public class Poison extends Powerup {
     private static final String SPRITE_PATH = "resources/poison.png";
     private int chance;
 
+    /**
+     * Creates a new Poison powerup.
+     * @param data - the moveable data of the new Poison.
+     * @param loadResources - true if OpenGL content should be loaded, false if not.
+     * @param chance - the chance its gets returned in powerupfactary, in promille.
+     */
     public Poison(Moveable data, boolean loadResources, int chance) {
         super(data, loadResources, chance);
         loadResources(SPRITE_PATH);
@@ -24,10 +31,10 @@ public class Poison extends Powerup {
     }
     
     /**
-     * Creates an instance of poison at a random screen side location.
-     *
+     * Creates an instance of Poison at a random screen side location.
      * @param random an instance to generate random numbers.
      * @param loadResources whether the sprite resources should be loaded.
+     * @return a new Poison powerup at a random screen side location.
      */
     public static Poison createPowerup(Random random, boolean loadResources) {
         Moveable data = new Moveable();
@@ -39,11 +46,11 @@ public class Poison extends Powerup {
     }
     
     /**
-     * create a random position vector.
-     * @param random the randomizer.
-     * @param spawnsLeft whether it spawns left or right.
-     * @param dimensions the size of the instance.
-     * @return a position vector.
+     * Creates a random position vector for the Poison class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @param dimensions - Vector with the dimensions of the Poison.
+     * @return Vector with the Poison location.
      */
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {
         int min = Math.round(dimensions.x);
@@ -54,10 +61,10 @@ public class Poison extends Powerup {
     }
     
     /**
-     * create a random speed vector.
-     * @param random the randomizer.
-     * @param spawnsLeft whether it starts left or right.
-     * @return a speed vector.
+     * Creates a random velocity vector for the Poison class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @return Vector with Poison velocity.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
@@ -65,14 +72,17 @@ public class Poison extends Powerup {
     }
     
     /**
-     * get the spawn chance.
+     * Gets the chance that Poison is chosen in the PowerupFactory.
+     * @return the chance of Poison.
      */
     public int getChance(){
         return chance;
     }
     
     /**
-     * start the effect on the player.
+     * Starts the effect of the Poison powerup 
+     * upon collision with a player.
+     * @param player - the current Player in the game.
      */
     @Override
     public void Effect(Player player){
