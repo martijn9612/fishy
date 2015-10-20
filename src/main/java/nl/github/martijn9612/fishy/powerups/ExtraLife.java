@@ -76,7 +76,7 @@ public class ExtraLife extends Powerup{
     /**
      * the effect of this powerup upon collision.
      */
-    public void Effect(Player player){
+    public void effect(Player player){
         player.extraLife();
     }
 }

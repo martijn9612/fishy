@@ -6,9 +6,6 @@ import junit.framework.TestCase;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import nl.github.martijn9612.fishy.models.Player;
-import nl.github.martijn9612.fishy.powerups.Powerup;
-import nl.github.martijn9612.fishy.powerups.PowerupController;
-import nl.github.martijn9612.fishy.powerups.PowerupFactory;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -49,7 +46,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testSpawnPowerup1() {
-        powercontroller.SpawnPowerup();
+        powercontroller.spawnPowerup();
         assertEquals(powerup, powercontroller.getPower());
     }
     
@@ -59,8 +56,8 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testSpawnPowerup2() {
-        powercontroller.SpawnPowerup();
-        powercontroller.SpawnPowerup();
+        powercontroller.spawnPowerup();
+        powercontroller.spawnPowerup();
         assertFalse(powercontroller.getPower().equals(null));
     }
     
@@ -80,7 +77,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testUpdatePowerup2() {
-        powercontroller.SpawnPowerup();
+        powercontroller.spawnPowerup();
         powercontroller.updatePowerup(gc, 0);
     }
     
@@ -90,7 +87,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test 
     public void testUpdatePowerup3() {
-        powercontroller.SpawnPowerup();
+        powercontroller.spawnPowerup();
         powercontroller.getPower().data.dimensions.x = 0;
         powercontroller.getPower().data.position.x = 700;
         powercontroller.updatePowerup(gc, 0); 
@@ -112,7 +109,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testRenderOpponents2() {
-        powercontroller.SpawnPowerup();
+        powercontroller.spawnPowerup();
         powercontroller.renderOpponents(g);
         assertFalse(powercontroller.getPower().equals(null));    
     }
@@ -153,12 +150,12 @@ public class PowerupControllerTest extends TestCase {
     }
     
     /**
-     * Test for Remove.
+     * Test for remove.
      * Case where power == null.
      */
     @Test
     public void testRemove() {
-        powercontroller.Remove();
+        powercontroller.remove();
         assertEquals(powercontroller.getPower(), null);
     }
 

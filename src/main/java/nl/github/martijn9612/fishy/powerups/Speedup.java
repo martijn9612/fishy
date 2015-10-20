@@ -76,7 +76,7 @@ public class Speedup extends Powerup{
      * activate the speedup effect on the player on collision.
      */
     @Override
-    public void Effect(Player player){
+    public void effect(Player player){
         player.speedUp(5000);
     }
 }

@@ -128,7 +128,7 @@ public class LevelState extends BasicGameState {
         opponentController.spawnOpponents(player);
 		opponentController.collide(player, sbg);
 		powerupController.updatePowerup(gc, delta);
-		powerupController.SpawnPowerup();
+		powerupController.spawnPowerup();
 		powerupController.collide(player, sbg);
 		fishPosition = player.data.position.toString();
 		lives = player.getLivesAsString();

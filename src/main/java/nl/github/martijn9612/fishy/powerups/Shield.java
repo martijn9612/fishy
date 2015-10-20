@@ -71,7 +71,7 @@ public class Shield extends Powerup{
      * start the effect on the player.
      */
     @Override
-    public void Effect(Player player){
+    public void effect(Player player){
         player.addShield(5000,2000);
     }
 }

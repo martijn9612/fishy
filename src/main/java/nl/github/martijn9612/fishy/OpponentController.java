@@ -18,7 +18,6 @@ import nl.github.martijn9612.fishy.states.LevelState;
  * Implements the Opponent Handler of the game.
  */
 public class OpponentController {
-
 	private boolean loadResources;
 	private final Random random = new Random();
 	private ArrayList<NonPlayer> opponents = new ArrayList<NonPlayer>();
@@ -129,7 +128,7 @@ public class OpponentController {
 						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 						player.resetPlayerVariables();
 						LevelState.getOC().removeAllOpponents();
-						LevelState.getPC().Remove();
+						LevelState.getPC().remove();
 						sbg.enterState(Main.GAME_LOSE_STATE);
 
 					if (!player.hasShield()) {

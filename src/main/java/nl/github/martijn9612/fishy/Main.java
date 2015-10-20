@@ -33,7 +33,7 @@ public class Main extends StateBasedGame {
     public static final String OPPONENT_CHARACTER = "cheep-cheep";
     public static final String LEVEL_BACKGROUND = "seabed";
     public static final int FRAMERATE = 60;
-    public static ActionLogger actionLogger = new ActionLogger();
+    public static final ActionLogger actionLogger = new ActionLogger();
     public static final boolean DEBUG_MODE = false;
 
     /**
@@ -97,16 +97,6 @@ public class Main extends StateBasedGame {
     public boolean closeRequested() {
         Main.actionLogger.logLine("Game Closed!", getClass().getSimpleName());
         return true;
-    }
-
-    /**
-     * Set method for the ActionLogger.
-     * 
-     * @param ac
-     *            - the actionlogger to be set to
-     */
-    public static void setActionLogger(ActionLogger ac) {
-        actionLogger = ac;
     }
 
     /**

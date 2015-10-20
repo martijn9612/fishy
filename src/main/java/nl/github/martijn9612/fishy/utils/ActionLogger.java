@@ -12,8 +12,8 @@ import nl.github.martijn9612.fishy.Main;
  */
 public class ActionLogger {
     public static final boolean APPEND = true;
-    private static FileWriter fileWriter;
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private FileWriter fileWriter;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
     /**
      * Instantiates a new FileWriter to log to a file, each time overwriting the old file.

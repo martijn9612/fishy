@@ -31,7 +31,7 @@ public abstract class Powerup extends NonPlayer {
         return this.chance;
     }
     
-    public void Effect(Player player) {
+    public void effect(Player player) {
         
     }
 

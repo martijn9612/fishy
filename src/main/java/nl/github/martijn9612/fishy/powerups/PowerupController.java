@@ -19,7 +19,7 @@ public class PowerupController {
     /**
      * spawn a powerup if none are present.
      */
-    public void SpawnPowerup(){
+    public void spawnPowerup(){
         if(power == null){
         power = powerfac.spawnPowerup();
         }
@@ -33,7 +33,7 @@ public class PowerupController {
         if (!(power == null)) {
             power.objectLogic(gc, deltaTime);
             if (power.isOffScreen()) {
-                Remove();
+                remove();
                 
             }
         }
@@ -57,8 +57,8 @@ public class PowerupController {
             if (power.intersects(player)) {
                 String log = "Player collides with powerup " + power.getClass().getSimpleName();
                 player.playBiteSound();
-                power.Effect(player);
-                Remove();
+                power.effect(player);
+                remove();
                 Main.actionLogger.logLine(log, getClass().getSimpleName());
             }
         }
@@ -66,7 +66,7 @@ public class PowerupController {
     /**
      * remove the power up.
      */
-    public void Remove(){
+    public void remove(){
         if (!(power == null)){
         power.destroy();
         power = null;

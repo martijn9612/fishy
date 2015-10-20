@@ -75,7 +75,7 @@ public class Poison extends Powerup {
      * start the effect on the player.
      */
     @Override
-    public void Effect(Player player){
+    public void effect(Player player){
         player.poison(10000);
     }
 }
