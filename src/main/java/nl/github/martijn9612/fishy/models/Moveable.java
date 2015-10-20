@@ -1,5 +1,10 @@
 package nl.github.martijn9612.fishy.models;
 
+/**
+ * Implements the moveable object that contains the position, velocity,
+ * acceleration, dimensions and mass of an object. 
+ * Software Engineering Methods Project - Group 11.
+ */
 public class Moveable {
 	public Vector position = new Vector(0, 0);
 	public Vector velocity = new Vector(0, 0);
@@ -8,7 +13,7 @@ public class Moveable {
 	public float mass = 1;
 
     /**
-     * Updates the position of the player according to grandpa Newton.
+     * Updates the position of the player according to Newton standards.
      */
     public void updatePosition(float maxSpeed) {
     	velocity.add(acceleration);
@@ -19,6 +24,7 @@ public class Moveable {
     
     /**
      * Calculates the drag force the water applies to the player.
+     * @param waterDragCoefficient - the amount of drag foce the water applies.
      */
     public void applyWaterDrag(float waterDragCoefficient) {
 		float speed = velocity.length();
@@ -31,9 +37,8 @@ public class Moveable {
 	}
     
     /**
-     * Apply a force to the player, according to force = mass * acceleration;
-     * 
-     * @param force
+     * Applies a force to the player, according to force = mass * acceleration;
+     * @param force - Force to be applied to the player.
      */
     public void applyForce(Vector force) {
 		Vector newForce = force.copy();
