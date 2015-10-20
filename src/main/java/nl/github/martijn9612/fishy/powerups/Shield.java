@@ -52,10 +52,10 @@ public class Shield extends Powerup{
         return new Vector(xpos, ypos);
     }
     /**
-     * create a random speed vector.
+     * create a random speedUp vector.
      * @param random the randomizer.
      * @param spawnsLeft whether the instance is starting left or right.
-     * @return a speed vector.
+     * @return a speedUp vector.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;

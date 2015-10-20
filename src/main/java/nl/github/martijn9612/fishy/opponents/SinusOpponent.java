@@ -25,7 +25,7 @@ public class SinusOpponent extends NonPlayer {
 	 * 
 	 * @param dimensions size of the new opponent.
 	 * @param position vector with the start position of the opponent.
-	 * @param velocity initial speed of the opponent.
+	 * @param velocity initial speedUp of the opponent.
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */

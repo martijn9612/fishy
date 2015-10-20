@@ -65,13 +65,13 @@ public class MousePosition extends Position {
 		position.flipYAxis();
 		return position;
 	}
-	
+
 	/**
 	 * Debug method which formats the contents of the MousePosition object into a single String.
 	 * @return {String}
 	 */
 	public String toString() {
-		return new String("Mouse position X: "+positionX+", Y: "+positionY);
+		return new StringBuilder().append("Mouse position X: ").append(positionX).append(", Y: ").append(positionY).toString();
 	}
-	
+
 }

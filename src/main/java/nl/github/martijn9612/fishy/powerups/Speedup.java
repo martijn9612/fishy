@@ -8,13 +8,13 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 public class Speedup extends Powerup{
-    private static final String SPRITE_PATH = "resources/Speedup-fish.png" ;
+    private static final String SPRITE_PATH = "resources/speedUp-fish.png" ;
     private int chance;
     /**
      * the contstructor of speedup.
      * @param dimensions the size of the power up.
      * @param position the starting position.
-     * @param velocity the speed at which it travels.
+     * @param velocity the speedUp at which it travels.
      * @param acceleration its acceleration.
      * @param loadResources whether or not to load resources.
      * @param chance the chance it gets returned in the factory.
@@ -57,10 +57,10 @@ public class Speedup extends Powerup{
         return new Vector(xpos, ypos);
     }
     /**
-     * create a random speed vector.
+     * create a random speedUp vector.
      * @param random the randomizer.
      * @param spawnsLeft whether it spawns left or right.
-     * @return a speed vector.
+     * @return a speedUp vector.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
@@ -77,6 +77,6 @@ public class Speedup extends Powerup{
      */
     @Override
     public void Effect(Player player){
-        player.Speedup(5000);
+        player.speedUp(5000);
     }
 }

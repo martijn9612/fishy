@@ -12,7 +12,7 @@ public abstract class Powerup extends NonPlayer {
      * the contructor of powerups.
      * @param dimensions the size.
      * @param position the starting position.
-     * @param velocity the speed at which it travels trough the screen.
+     * @param velocity the speedUp at which it travels trough the screen.
      * @param acceleration its acceleration. usually 0. 
      * @param hasOpenGL
      * @param chance the chance it gets returned in the factory.

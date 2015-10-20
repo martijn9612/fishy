@@ -12,7 +12,7 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 /**
- * An opponent that moves horizontally with a constant speed.
+ * An opponent that moves horizontally with a constant speedUp.
  */
 public class LinearOpponent extends NonPlayer {
 	private static final String SPRITE_PATH = "resources/opponent-" + Main.OPPONENT_CHARACTER + ".png";
@@ -22,7 +22,7 @@ public class LinearOpponent extends NonPlayer {
 	 * 
 	 * @param dimensions size of the new opponent.
 	 * @param position vector with the start position of the opponent.
-	 * @param velocity initial speed of the opponent.
+	 * @param velocity initial speedUp of the opponent.
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 */

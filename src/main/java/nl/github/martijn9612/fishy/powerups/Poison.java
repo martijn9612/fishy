@@ -54,10 +54,10 @@ public class Poison extends Powerup {
     }
     
     /**
-     * create a random speed vector.
+     * create a random speedUp vector.
      * @param random the randomizer.
      * @param spawnsLeft whether it starts left or right.
-     * @return a speed vector.
+     * @return a speedUp vector.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
@@ -76,6 +76,6 @@ public class Poison extends Powerup {
      */
     @Override
     public void Effect(Player player){
-        player.Poison(10000);
+        player.poison(10000);
     }
 }

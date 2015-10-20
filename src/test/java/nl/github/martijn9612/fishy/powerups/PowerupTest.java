@@ -46,7 +46,7 @@ public class PowerupTest extends TestCase {
         Random random = new Random();
         Powerup power = Speedup.createPowerup(random, false);
         power.Effect(player);
-        verify(player).Speedup(5000);
+        verify(player).speedUp(5000);
         
     }
     
@@ -56,7 +56,7 @@ public class PowerupTest extends TestCase {
         Random random = new Random();
         Powerup power = ExtraLife.createPowerup(random, false);
         power.Effect(player);
-        verify(player).Extralife();
+        verify(player).extraLife();
         
     }
     
@@ -76,7 +76,7 @@ public class PowerupTest extends TestCase {
         Random random = new Random();
         Powerup power = Poison.createPowerup(random, false);
         power.Effect(player);
-        verify(player).Poison(10000);
+        verify(player).poison(10000);
         
     }
 

@@ -14,7 +14,6 @@ import org.newdawn.slick.Image;
  * 
  */
 public class DrawPosition extends Position {
-	
 	public DrawPosition(int positionX, int positionY) {
 		super(positionX, positionY);
 	}
@@ -32,13 +31,12 @@ public class DrawPosition extends Position {
 		position.flipYAxis();
 		return position;
 	}
-	
+
 	/**
 	 * Debug method which formats the contents of the DrawPosition object into a single String.
 	 * @return {String}
 	 */
 	public String toString() {
-		return new String("Draw position X: "+positionX+", Y: "+positionY);
+		return new StringBuilder().append("Draw position X: ").append(positionX).append(", Y: ").append(positionY).toString();
 	}
-	
 }

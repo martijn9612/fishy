@@ -124,7 +124,7 @@ public class OpponentController {
                         player.removeShield(2000);
                     } else if (player.getLives() > 0){
 				        remove(opponent);
-				        player.Loselife();
+				        player.loseLife();
 				    } else {
 						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 						player.resetPlayerVariables();
@@ -135,7 +135,7 @@ public class OpponentController {
 					if (!player.hasShield()) {
 						if (player.getLives() > 0) {
 							player.addShield(1000, 1000);
-							player.Loselife();
+							player.loseLife();
 						} else {
 							Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 							sbg.enterState(Main.GAME_LOSE_STATE);

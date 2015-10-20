@@ -7,12 +7,11 @@ import nl.github.martijn9612.fishy.Main;
  * The exact meaning of position depends on the subclass.
  */
 public abstract class Position {
-	
 	protected int positionX = 0;
 	protected int positionY = 0;
-	
+
 	public Position() {
-		
+
 	}
 	
 	public Position(int positionX, int positionY) {

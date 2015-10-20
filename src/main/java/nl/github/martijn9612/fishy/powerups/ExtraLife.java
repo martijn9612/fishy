@@ -14,8 +14,8 @@ public class ExtraLife extends Powerup{
      * the constructor of extra life.
      * @param dimensions the size of the power up.
      * @param position the starting position.
-     * @param velocity the speed it travels.
-     * @param acceleration the speed at which it speeds up.
+     * @param velocity the speedUp it travels.
+     * @param acceleration the speedUp at which it speeds up.
      * @param loadResources whether or not to load resources.
      * @param chance the chance its gets returned in powerupfactary, in promille.
      */
@@ -58,10 +58,10 @@ public class ExtraLife extends Powerup{
         return new Vector(xpos, ypos);
     }
     /**
-     * create a random speed vector.
+     * create a random speedUp vector.
      * @param random the randomizer
      * @param spawnsLeft whether it spawns left or right.
-     * @return the speed vector.
+     * @return the speedUp vector.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
@@ -77,6 +77,6 @@ public class ExtraLife extends Powerup{
      * the effect of this powerup upon collision.
      */
     public void Effect(Player player){
-        player.Extralife();
+        player.extraLife();
     }
 }

@@ -30,12 +30,12 @@ public class DrawRectangle extends DrawPosition {
 		rectangle.setPositionY(rectangle.getPositionY() - height);
 		return rectangle;
 	}
-	
+
 	/**
 	 * Debug method which formats the contents of the DrawRectangle object into a single String.
 	 * @return {String}
 	 */
 	public String toString() {
-		return new String("Draw rectangle X: "+positionX+", Y: "+positionY+", width: "+width+", height: "+height);
+		return new StringBuilder().append("Draw rectangle X: ").append(positionX).append(", Y: ").append(positionY).append(", width: ").append(width).append(", height: ").append(height).toString();
 	}
 }

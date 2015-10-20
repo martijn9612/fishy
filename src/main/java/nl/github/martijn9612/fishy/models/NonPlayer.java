@@ -20,7 +20,7 @@ public abstract class NonPlayer extends Entity {
 	 * 
 	 * @param dimensions size of the opponent in vector notation.
 	 * @param position start location of the opponent.
-	 * @param velocity initial speed of the opponent.
+	 * @param velocity initial speedUp of the opponent.
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param hasOpenGL whether OpenGL context is available.
 	 */
