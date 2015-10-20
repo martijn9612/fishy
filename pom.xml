@@ -11,15 +11,22 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <targetJdk>1.8</targetJdk>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <checkstyle.plugin.version>2.15</checkstyle.plugin.version>
-        <pmd.plugin.version>3.4</pmd.plugin.version>
+        <pmd.plugin.version>3.5</pmd.plugin.version>
         <findbugs.version>3.0.0</findbugs.version>
     </properties>
 
     <repositories>
         <repository>
-            <id>Internal lwjgl repo</id>
-            <url>file://${basedir}/libs/$artifactId.$extension</url>
+            <id>Internal lwjgl repo 1</id>
+            <url>file://${basedir}/libraries/$artifactId.$extension</url>
+            <layout>custom</layout>
+        </repository>
+        <repository>
+            <id>Internal lwjgl repo 2</id>
+            <url>file://${basedir}/lwjgl/jar/$artifactId.$extension</url>
             <layout>custom</layout>
         </repository>
     </repositories>
@@ -38,9 +45,9 @@
                         <goal>install-file</goal>
                     </goals>
                     <configuration>
-                        <version>1.0.1</version>
-                        <groupId>org.slick2d</groupId>
-                        <artifactId>slick2d-core</artifactId>
+                        <version>1.0</version>
+                        <groupId>org.newdawn.slick</groupId>
+                        <artifactId>slick</artifactId>
                         <packaging>jar</packaging>
                         <file>${basedir}/libs/slick.jar</file>
                     </configuration>
@@ -88,10 +95,40 @@
                     </configuration>
                 </execution>
             </executions>
-        </plugin></plugins>
+        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.16</version>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <propertyExpansion>samedir=${basedir}</propertyExpansion>
+                            <configLocation>${basedir}/checkstyle.xml</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+                            <failsOnError>true</failsOnError>
+                            <!--<linkXRef>false</linkXRef>-->
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
-
-
 
     <dependencies>
         <dependency>
@@ -100,14 +137,9 @@
             <version>5.0</version>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
-        </dependency>
-        <dependency>
             <groupId>pmd</groupId>
             <artifactId>pmd</artifactId>
-            <version>4.3</version>
+            <version>3.5</version>
         </dependency>
         <dependency>
             <groupId>findbugs</groupId>
@@ -118,23 +150,43 @@
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
             <version>3.0.0a</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/lwjgl.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.slick2d</groupId>
-            <artifactId>slick2d-core</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.lwjgl.lwjgl</groupId>
+            <groupId>org.lwjgl.util</groupId>
             <artifactId>lwjgl_util</artifactId>
-            <version>2.9.3</version>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/lwjgl_util.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.java.jinput</groupId>
+            <groupId>net.java.games</groupId>
             <artifactId>jinput</artifactId>
-            <version>2.0.6</version>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/jinput.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.newdawn.slick</groupId>
+            <artifactId>slick</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/slick.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
+
 
     <reporting>
         <plugins>
@@ -143,7 +195,9 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.16</version>
                 <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
+                    <propertyExpansion>samedir=${basedir}</propertyExpansion>
+                    <configLocation>${basedir}/checkstyle.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
                 </configuration>
                 <reportSets>
                     <reportSet>
@@ -153,6 +207,7 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
@@ -166,15 +221,22 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.5</version>
                 <configuration>
-                    <targetJdk>1.6</targetJdk>
+                    <targetJdk>1.8</targetJdk>
                     <rulesets>
-                        <ruleset>pmd_rules.xml</ruleset>
+                        <ruleset>${basedir}/pmd_rules.xml</ruleset>
                     </rulesets>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                </configuration>
+            </plugin>
         </plugins>
     </reporting>
 </project>
