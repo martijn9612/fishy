@@ -16,6 +16,7 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the Menu State of the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class MenuState extends BasicGameState {
     private String menu = "Menu";
@@ -46,8 +47,7 @@ public class MenuState extends BasicGameState {
 
     /**
      * Constructor for the MenuState.
-     * 
-     * @param state the number of the state
+     * @param state the number of the state.
      */
     public MenuState(int state) {
         // Blank
@@ -55,10 +55,9 @@ public class MenuState extends BasicGameState {
 
     /**
      * Initialize the game.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game.
+     * @param sbg - the game holding the state.
+     * @throws SlickException - indicates internal error.
      */
     public void init(GameContainer gc, StateBasedGame sbg)
             throws SlickException {
@@ -83,10 +82,9 @@ public class MenuState extends BasicGameState {
 
     /**
      * Notification that the game state has been entered.
-     * 
-     * @param gameContainer the container holding the game
-     * @param stateBasedGame the game holding the state
-     * @throws SlickException indicates internal error
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
      */
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame)
@@ -97,11 +95,10 @@ public class MenuState extends BasicGameState {
 
     /**
      * Renders the game's screen.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @param g the graphics content used to render
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game.
+     * @param sbg - the game holding the state.
+     * @param g - the graphics content used to render.
+     * @throws SlickException - indicates internal error.
      */
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
             throws SlickException {
@@ -118,12 +115,11 @@ public class MenuState extends BasicGameState {
 
     /**
      * Update the game logic.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @param delta the amount of time that has
-     * passed since last update in milliseconds
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game.
+     * @param sbg - the game holding the state.
+     * @param delta - the amount of time that has
+     * passed since last update in milliseconds.
+     * @throws SlickException - indicates internal error.
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
@@ -164,10 +160,9 @@ public class MenuState extends BasicGameState {
 
     /**
      * Notification that we're leaving this game state.
-     * 
-     * @param gameContainer the container holding the game
-     * @param stateBasedGame the game holding this state
-     * @throws SlickException indicates internal error
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
      */
     @Override
 	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame)
@@ -178,8 +173,7 @@ public class MenuState extends BasicGameState {
 
     /**
      * Get the ID of this state.
-     * 
-     * @return the unique ID of this state
+     * @return the unique ID of this state.
      */
     public int getID() {
         return Main.MENU_STATE;

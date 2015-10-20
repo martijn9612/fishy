@@ -8,12 +8,19 @@ import nl.github.martijn9612.fishy.models.Vector;
 import java.util.Random;
 
 /**
- * Created by martijn on 9-10-15.
+ * Implements the Shield powerup.
+ * Software Engineering Methods Project - Group 11.
  */
-public class Shield extends Powerup{
+public class Shield extends Powerup {
     private static final String SPRITE_PATH = "resources/shield.png";
     private int chance;
 
+    /**
+     * Creates a new Shield powerup.
+     * @param data - the moveable data of the new Shield.
+     * @param loadResources - true if OpenGL content should be loaded, false if not.
+     * @param chance - the chance its gets returned in powerupfactary, in promille.
+     */
     public Shield(Moveable data, boolean loadResources, int chance) {
         super(data, loadResources, chance);
         loadResources(SPRITE_PATH);
@@ -22,11 +29,12 @@ public class Shield extends Powerup{
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         }
     }
+
     /**
-     * Creates an instance of shield at a random screen side location.
-     *
+     * Creates an instance of Shield at a random screen side location.
      * @param random an instance to generate random numbers.
      * @param loadResources whether the sprite resources should be loaded.
+     * @return a new Shield powerup at a random screen side location.
      */
     public static Shield createPowerup(Random random, boolean loadResources) {
     	Moveable data = new Moveable();
@@ -38,11 +46,11 @@ public class Shield extends Powerup{
     }
 
     /**
-     * create a random position vector.
-     * @param random the randomizer.
-     * @param spawnsLeft whether it starts left or right.
-     * @param dimensions size of the instance.
-     * @return the position vector.
+     * Creates a random position vector for the Shield class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @param dimensions - Vector with the dimensions of the Shield.
+     * @return Vector with the Shield location.
      */
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {
         int min = Math.round(dimensions.x);
@@ -51,24 +59,30 @@ public class Shield extends Powerup{
         int xpos = (spawnsLeft ? 0 - min * 5 : 615 + min * 5);
         return new Vector(xpos, ypos);
     }
+
     /**
-     * create a random speed vector.
-     * @param random the randomizer.
-     * @param spawnsLeft whether the instance is starting left or right.
-     * @return a speed vector.
+     * Creates a random velocity vector for the Shield class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @return Vector with Shield velocity.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
         return new Vector((spawnsLeft ? speed : -speed), 0);
     }
+
     /**
-     * return the spawn chance.
+     * Gets the chance that Poison is chosen in the PowerupFactory.
+     * @return the chance of Poison.
      */
     public int getChance(){
         return chance;
     }
+
     /**
-     * start the effect on the player.
+     * Starts the effect of the Shield powerup 
+     * upon collision with a player.
+     * @param player - the current Player in the game.
      */
     @Override
     public void Effect(Player player){
