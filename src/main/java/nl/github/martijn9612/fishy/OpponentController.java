@@ -16,6 +16,7 @@ import nl.github.martijn9612.fishy.states.LevelState;
 
 /**
  * Implements the Opponent Handler of the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class OpponentController {
 

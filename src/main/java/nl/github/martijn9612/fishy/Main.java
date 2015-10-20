@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 /**
  * Implements the Main knowledge behind the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class Main extends StateBasedGame {
     public static final int MENU_STATE = 0;
