@@ -7,33 +7,34 @@ import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
-public class ExtraLife extends Powerup{
+/**
+ * Implements the ExtraLife powerup.
+ * Software Engineering Methods Project - Group 11.
+ */
+public class ExtraLife extends Powerup {
     private static final String SPRITE_PATH = "resources/ExtraLife-fish.png";
     private int chance;
+    
     /**
-     * the constructor of extra life.
-     * @param dimensions the size of the power up.
-     * @param position the starting position.
-     * @param velocity the speed it travels.
-     * @param acceleration the speed at which it speeds up.
-     * @param loadResources whether or not to load resources.
-     * @param chance the chance its gets returned in powerupfactary, in promille.
+     * Creates a new ExtraLife powerup.
+     * @param data - the moveable data of the new ExtraLife.
+     * @param loadResources - true if OpenGL content should be loaded, false if not.
+     * @param chance - the chance its gets returned in powerupfactary, in promille.
      */
     public ExtraLife(Moveable data, boolean loadResources, int chance) {
         super(data, loadResources, chance);
         loadResources(SPRITE_PATH);
         this.chance = chance;
-        if(loadResources && data.velocity.x > 0) {
+        if (loadResources && data.velocity.x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         }
     }
 
     /**
      * Creates an instance of ExtraLife at a random screen side location.
-     * 
-     * @param player an instance of the Player class.
      * @param random an instance to generate random numbers.
      * @param loadResources whether the sprite resources should be loaded.
+     * @return a new ExtraLife powerup at a random screen side location.
      */
     public static ExtraLife createPowerup(Random random, boolean loadResources) {
         Moveable data = new Moveable();
@@ -43,12 +44,13 @@ public class ExtraLife extends Powerup{
     	data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
         return new ExtraLife(data, loadResources, 30);
     }
+    
     /**
-     * creates a random position vector
-     * @param random the randomizer.
-     * @param spawnsLeft whether it spawns left or right.
-     * @param dimensions the size of the powerup.
-     * @return the start position of the power up.
+     * Creates a random position vector for the ExtraLife class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @param dimensions - Vector with the dimensions of the ExtraLife.
+     * @return Vector with the ExtraLife location.
      */
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {
         int min = Math.round(dimensions.x);
@@ -57,26 +59,32 @@ public class ExtraLife extends Powerup{
         int xpos = (spawnsLeft ? 0 - min * 5 : 615 + min * 5);
         return new Vector(xpos, ypos);
     }
+    
     /**
-     * create a random speed vector.
-     * @param random the randomizer
-     * @param spawnsLeft whether it spawns left or right.
-     * @return the speed vector.
+     * Creates a random velocity vector for the ExtraLife class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @return Vector with ExtraLife velocity.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
         return new Vector((spawnsLeft ? speed : -speed), 0);
     }
+    
     /**
-     * returns the chance that extralife gets chosen in the factory.
+     * Gets the chance that ExtraLife is chosen in the PowerupFactory.
+     * @return the chance of ExtraLife.
      */
-    public int getChance(){
+    public int getChance() {
         return chance;
     }
+    
     /**
-     * the effect of this powerup upon collision.
+     * Starts the effect of the ExtraLife powerup 
+     * upon collision with a player.
+     * @param player - the current Player in the game.
      */
-    public void Effect(Player player){
+    public void Effect(Player player) {
         player.Extralife();
     }
 }
