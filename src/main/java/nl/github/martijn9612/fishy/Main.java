@@ -38,9 +38,8 @@ public class Main extends StateBasedGame {
 
     /**
      * Constructor method.
-     * 
-     * @param gameName
-     *            - name of the new game
+     * Adds all the states to the game.
+     * @param gameName - name of the new game
      */
     public Main(String gameName) {
         super(gameName);
@@ -53,11 +52,9 @@ public class Main extends StateBasedGame {
 
     /**
      * Initialize the list of states making up the game.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @throws SlickException
-     *             - indicates a failure to initialize the resources
+     * Calls the init method in each state to initialize the game.
+     * @param gc - the container holding the game
+     * @throws SlickException - indicates a failure to initialize the resources
      */
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
@@ -71,9 +68,7 @@ public class Main extends StateBasedGame {
 
     /**
      * Main method.
-     * 
-     * @param args
-     *            - args
+     * @param args - args.
      */
     public static void main(String[] args) {
         try {
@@ -90,8 +85,7 @@ public class Main extends StateBasedGame {
 
     /**
      * Notification that the game close has been requested.
-     * 
-     * @return true if the game should close
+     * @return true if the game should close.
      */
     @Override
     public boolean closeRequested() {
@@ -101,9 +95,7 @@ public class Main extends StateBasedGame {
 
     /**
      * Set method for the ActionLogger.
-     * 
-     * @param ac
-     *            - the actionlogger to be set to
+     * @param ac - the actionlogger to be set to.
      */
     public static void setActionLogger(ActionLogger ac) {
         actionLogger = ac;
@@ -111,8 +103,7 @@ public class Main extends StateBasedGame {
 
     /**
      * Get method for the ActionLogger.
-     * 
-     * @return the current actionlogger
+     * @return the current actionlogger.
      */
     public static ActionLogger getActionLogger() {
         return actionLogger;
