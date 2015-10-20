@@ -5,7 +5,8 @@ import org.newdawn.slick.GameContainer;
 import nl.github.martijn9612.fishy.Main;
 
 /**
- * Created by martijn on 23-9-15.
+ * Implements the nonplayer objects in the game which are opponents and powerups.
+ * Software Engineering Methods Project - Group 11.
  */
 public abstract class NonPlayer extends Entity {
 
@@ -16,13 +17,9 @@ public abstract class NonPlayer extends Entity {
 	public static final int OPPONENT_FACTOR = 5;
 
 	/**
-	 * Creates a new opponent, based on the Entity class.
-	 * 
-	 * @param dimensions size of the opponent in vector notation.
-	 * @param position start location of the opponent.
-	 * @param velocity initial speed of the opponent.
-	 * @param acceleration initial acceleration of the opponent.
-	 * @param hasOpenGL whether OpenGL context is available.
+	 * Creates a new NonPlayer, based on the Entity class.
+	 * @param data - the moveable data of the new NonPlayer.
+	 * @param hasOpenGL - true if OpenGL context should be loaded, false if not.
 	 */
 	public NonPlayer(Moveable data, boolean hasOpenGL) {
 		super(data, hasOpenGL);
@@ -30,7 +27,6 @@ public abstract class NonPlayer extends Entity {
 
 	/**
 	 * Checks whether the opponent is visible on the screen.
-	 * 
 	 * @return returns true if the opponent is not visible on the screen.
 	 */
 	public boolean isOffScreen() {
