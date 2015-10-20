@@ -16,6 +16,7 @@ import nl.github.martijn9612.fishy.position.MouseRectangle;
 
 /**
  * Implements the Lose State of the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class LoseState extends BasicGameState {
     private Image play;
@@ -37,9 +38,7 @@ public class LoseState extends BasicGameState {
 
     /**
      * Constructor for the Lose State.
-     * 
-     * @param state
-     *            - the number of the state
+     * @param state - the number of the state.
      */
     public LoseState(int state) {
         // Blank
@@ -47,13 +46,9 @@ public class LoseState extends BasicGameState {
 
     /**
      * Initialize the game.
-     * 
-     * @param container
-     *            - the container holding the game
-     * @param game
-     *            - the game holding the state
-     * @throws SlickException
-     *             - indicates internal error
+     * @param container - the container holding the game.
+     * @param game - the game holding the state.
+     * @throws SlickException - indicates internal error.
      */
     public void init(GameContainer container, StateBasedGame game)
             throws SlickException {
@@ -67,15 +62,10 @@ public class LoseState extends BasicGameState {
 
     /**
      * Renders the game's screen.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @param game
-     *            - the game holding the state
-     * @param g
-     *            - the graphics content used to render
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc - the container holding the game.
+     * @param game - the game holding the state.
+     * @param g - the graphics content used to render.
+     * @throws SlickException - indicates internal error.
      */
     public void render(GameContainer gc, StateBasedGame game, Graphics g)
             throws SlickException {
@@ -90,16 +80,11 @@ public class LoseState extends BasicGameState {
 
     /**
      * Update the game logic.
-     * 
-     * @param gc
-     *            - the container holding the game
-     * @param game
-     *            - the game holding the state
-     * @param delta
-     *            - the amount of time that has passed since last update in
-     *            milliseconds
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc - the container holding the game.
+     * @param game - the game holding the state.
+     * @param delta - the amount of time that has passed since last update in
+     * milliseconds.
+     * @throws SlickException - indicates internal error.
      */
     public void update(GameContainer gc, StateBasedGame game, int delta)
             throws SlickException {
@@ -119,8 +104,7 @@ public class LoseState extends BasicGameState {
 
     /**
      * Get the ID of this state.
-     * 
-     * @return the unique ID of this state
+     * @return the unique ID of this state.
      */
     @Override
     public int getID() {
