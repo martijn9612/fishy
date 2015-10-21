@@ -30,6 +30,9 @@ target/
 .classpath
 .project
 
-#Ignore log files
+# Ignore log files
 log*.txt
+
+# Ignore highscore file
+highscores.ser
 
