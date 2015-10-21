@@ -4,6 +4,7 @@ import nl.github.martijn9612.fishy.states.HelpState;
 import nl.github.martijn9612.fishy.states.LevelState;
 import nl.github.martijn9612.fishy.states.LoseState;
 import nl.github.martijn9612.fishy.states.MenuState;
+import nl.github.martijn9612.fishy.states.ScoreState;
 import nl.github.martijn9612.fishy.states.WinState;
 
 
@@ -49,6 +50,7 @@ public class Main extends StateBasedGame {
         this.addState(new WinState(GAME_WIN_STATE));
         this.addState(new LoseState(GAME_LOSE_STATE));
         this.addState(new HelpState(HELP_STATE));
+        this.addState(new ScoreState(ScoreState.STATE_ID));
     }
 
     /**
@@ -59,12 +61,7 @@ public class Main extends StateBasedGame {
      */
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
-        this.getState(MENU_STATE).init(gc, this);
-        this.getState(LEVEL_STATE).init(gc, this);
-        this.getState(GAME_LOSE_STATE).init(gc, this);
-        this.getState(GAME_WIN_STATE).init(gc, this);
-        this.getState(HELP_STATE).init(gc, this);
-        this.enterState(MENU_STATE);
+    	// Blank
     }
 
     /**
