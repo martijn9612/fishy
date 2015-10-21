@@ -8,13 +8,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import nl.github.martijn9612.fishy.models.Score;
 
 public class ScoreController {
 	private static final String SCORE_FILE_PATH = "highscores.ser";
 
-	private ArrayList<Score> scoreList = new ArrayList<Score>();
+	private List<Score> scoreList = new ArrayList<Score>();
 	
 	public ScoreController() {
 		File savedScores = new File(SCORE_FILE_PATH);
@@ -25,6 +27,7 @@ public class ScoreController {
 
 	public void addScore(Score score) {
 		scoreList.add(score);
+		Collections.sort(scoreList);
 		serialize();
 	}
 
@@ -36,7 +39,7 @@ public class ScoreController {
 		}
 	}
 
-	public ArrayList<Score> getScoreList() {
+	public List<Score> getScoreList() {
 		return scoreList;
 	}
 	
