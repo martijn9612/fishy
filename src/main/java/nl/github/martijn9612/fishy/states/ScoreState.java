@@ -13,10 +13,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.ScoreController;
+import nl.github.martijn9612.fishy.models.Button;
 import nl.github.martijn9612.fishy.models.Score;
-import nl.github.martijn9612.fishy.position.DrawRectangle;
 import nl.github.martijn9612.fishy.position.MousePosition;
-import nl.github.martijn9612.fishy.position.MouseRectangle;
 
 /**
  * Implements the Lose State of the game.
@@ -44,10 +43,9 @@ public class ScoreState extends BasicGameState {
 	private static final float LINE_HEIGHT = 20;
 	
 	private Image background;
-	private Image backButton;
+	private Button backButton;
 	private TrueTypeFont textFont;
 	private TrueTypeFont titleFont;
-	private DrawRectangle backButtonDR;
 	private ScoreController scoreController;
 	private MousePosition mouse = new MousePosition();
 	private Color backButtonTextColor = new Color(70, 175, 230);
@@ -68,9 +66,8 @@ public class ScoreState extends BasicGameState {
      */
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
     	scoreController = new ScoreController();
-    	backButton = new Image(BACK_BUTTON_RESOURCE);
     	background = new Image(BACKGROUND_RESOURCE);
-    	backButtonDR = new DrawRectangle(BACK_BUTTON_DRAW_X, BACK_BUTTON_DRAW_Y, backButton.getWidth(), backButton.getHeight());
+    	backButton = new Button(BACK_BUTTON_DRAW_X, BACK_BUTTON_DRAW_Y, BACK_BUTTON_RESOURCE);
     	textFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.PLAIN, 16), true);
         titleFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD, 24), true);
     }
@@ -85,18 +82,10 @@ public class ScoreState extends BasicGameState {
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.setColor(Color.white);
         g.drawImage(background, 0, 0);
-        renderBackButton(g);
+        backButton.draw(g);
+        titleFont.drawString(BACK_TEXT_DRAW_X, BACK_TEXT_DRAW_Y, BACK_TEXT, backButtonTextColor);
         titleFont.drawString(SCORE_TITLE_X, SCORE_TITLE_Y, SCORE_TITLE_TEXT);
         renderHighscores();
-    }
-    
-    /**
-     * Renders the back button which takes the user back to the main menu.
-     * @param g - the graphics content used to render.
-     */
-    private void renderBackButton(Graphics g) {
-    	g.drawImage(backButton, backButtonDR.getPositionX(), backButtonDR.getPositionY());
-        titleFont.drawString(BACK_TEXT_DRAW_X, BACK_TEXT_DRAW_Y, BACK_TEXT, backButtonTextColor);
     }
     
     /**
@@ -128,12 +117,8 @@ public class ScoreState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
     	mouse.updatePosition();
-    	MouseRectangle backButtonMR = backButtonDR.getMouseRectangle();
-    	
-        if (mouse.isInRectangle(backButtonMR)) {
-            if (mouse.isLeftButtonDown()) {
-                game.enterState(Main.MENU_STATE);
-            }
+        if (backButton.wasClickedBy(mouse)) {
+            game.enterState(Main.MENU_STATE);
         }
     }
 
