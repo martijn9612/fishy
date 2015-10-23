@@ -41,7 +41,6 @@ public class WinState extends BasicGameState {
     private MousePosition mouse;
     private SubmitScoreWidget submitScore;
     private TrueTypeFont textFont;
-    private double playerScore;
 
     /**
      * Constructor for the WinState.
@@ -62,7 +61,6 @@ public class WinState extends BasicGameState {
         eatingFish = new Image(EATING_FISH_RESOURCE);
         textFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.PLAIN, 18), true);
         submitScore = new SubmitScoreWidget(container, SUBMIT_SCORE_X, SUBMIT_SCORE_Y);
-        playerScore = ScoreController.getInstance().getPlayerScore();
         mouse = new MousePosition();
     }
 
@@ -77,6 +75,7 @@ public class WinState extends BasicGameState {
         g.setColor(Color.white);
         g.fillRect(0, 0, Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT);
         g.drawImage(eatingFish, EATING_FISH_DRAW_X, EATING_FISH_DRAW_Y);
+        int playerScore = (int) Math.round(ScoreController.getInstance().getPlayerScore());
         textFont.drawString(WIN_TEXT_DRAW_X, WIN_TEXT_DRAW_Y, WIN_TEXT_STRING, Color.black);
         textFont.drawString(SCORE_DRAW_X, SCORE_DRAW_Y, SCORE_TEXT + playerScore, Color.black);
         submitScore.render(gc, g);

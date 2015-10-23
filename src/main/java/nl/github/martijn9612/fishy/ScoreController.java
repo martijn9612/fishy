@@ -21,8 +21,9 @@ import nl.github.martijn9612.fishy.models.Score;
  */
 public class ScoreController {
 	private static final String SCORE_FILE_PATH = "highscores.ser";
-	private List<Score> scoreList = new ArrayList<Score>();
 	private static ScoreController instance = null;
+	
+	private List<Score> scoreList = new ArrayList<Score>();
 	private double temporaryPlayerScore = 0;
 	
 	/**

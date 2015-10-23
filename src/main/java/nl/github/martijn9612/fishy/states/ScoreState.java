@@ -34,7 +34,7 @@ public class ScoreState extends BasicGameState {
     private static final String SCORE_TITLE_TEXT = "List of submitted Fishy highscores";
     
 	public static final int STATE_ID = 5;
-	public static final int MAX_SCORE_ENTRIES = 30;
+	public static final int MAX_SCORE_ENTRIES = 22;
 	private static final float SCORE_TITLE_X = 200;
 	private static final float SCORE_TITLE_Y = 30;
 	private static final float SCORE_ENTRY_Y = 70;
@@ -99,9 +99,10 @@ public class ScoreState extends BasicGameState {
 		} else {
 			int loopIndex = 0;
 			for (Score score : scores) {
+				int playerScore = (int) Math.round(score.getScore());
 				float yAxis = SCORE_ENTRY_Y + LINE_HEIGHT * loopIndex++;
 				textFont.drawString(SCORE_NAME_X, yAxis, score.getName());
-				textFont.drawString(SCORE_SCORE_X, yAxis, String.valueOf(score.getScore()));
+				textFont.drawString(SCORE_SCORE_X, yAxis, String.valueOf(playerScore));
 			}
 		}
     }
