@@ -124,27 +124,27 @@ public class PlayerTest extends TestCase {
     @Test
     public void testSpeedup() {
         //NOT FINISHED!
-        player.speedUp(0);
+        player.Speedup(0);
 
     }
     
     @Test
     public void testPoison() {
         //NOT FINISHED!
-        player.poison(0);
+        player.Poison(0);
     }
     
     @Test
     public void testExtraLife() {
         int lives = player.getLives();
-        player.extraLife();
+        player.Extralife();
         assertEquals(player.getLives(), lives + 1);
     }
     
     @Test
     public void testLoseLife() {
         int lives = player.getLives();
-        player.loseLife();
+        player.Loselife();
         assertEquals(player.getLives(), lives - 1);
     }
 

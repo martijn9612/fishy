@@ -45,8 +45,8 @@ public class PowerupTest extends TestCase {
         Player player = mock(Player.class);
         Random random = new Random();
         Powerup power = Speedup.createPowerup(random, false);
-        power.effect(player);
-        verify(player).speedUp(5000);
+        power.Effect(player);
+        verify(player).Speedup(5000);
         
     }
     
@@ -55,8 +55,8 @@ public class PowerupTest extends TestCase {
         Player player = mock(Player.class);
         Random random = new Random();
         Powerup power = ExtraLife.createPowerup(random, false);
-        power.effect(player);
-        verify(player).extraLife();
+        power.Effect(player);
+        verify(player).Extralife();
         
     }
     
@@ -65,7 +65,7 @@ public class PowerupTest extends TestCase {
         Player player = mock(Player.class);
         Random random = new Random();
         Powerup power = Shield.createPowerup(random, false);
-        power.effect(player);
+        power.Effect(player);
         verify(player).addShield(5000,2000);
         
     }
@@ -75,8 +75,8 @@ public class PowerupTest extends TestCase {
         Player player = mock(Player.class);
         Random random = new Random();
         Powerup power = Poison.createPowerup(random, false);
-        power.effect(player);
-        verify(player).poison(10000);
+        power.Effect(player);
+        verify(player).Poison(10000);
         
     }
 

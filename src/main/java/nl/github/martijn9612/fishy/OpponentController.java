@@ -16,6 +16,7 @@ import nl.github.martijn9612.fishy.states.LevelState;
 
 /**
  * Implements the Opponent Handler of the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class OpponentController {
 	private boolean loadResources;
@@ -28,14 +29,16 @@ public class OpponentController {
 	
 	/**
 	 * Constructor to create a new OpponentController.
-	 * @param loadResources whether resources using OpenGL should be loaded.
+	 * @param loadResources - when true the OpenGL resources are loaded, when false not.
 	 */
 	public OpponentController(boolean loadResources) {
 		this.loadResources = loadResources;
 	}
 	  
+
 	/**
-	 * create a new fish.
+	 * Method that spawns all the opponents.
+	 * @param player - the current Player in the game.
 	 */
 	public void spawnOpponents(Player player) {
 		if (opponents.size() < MAX_OPPONENTS) {
@@ -51,8 +54,8 @@ public class OpponentController {
 	}
 
 	/**
-	 * render all Opponents.
-	 * @param graph the graphics.
+	 * Render all Opponents.
+	 * @param graph - the graphics content of the game.
 	 */
 	public void renderOpponents(Graphics graph) {
 		for (NonPlayer opponent : opponents) {
@@ -62,9 +65,8 @@ public class OpponentController {
 
 	/**
 	 * Update the opponents.
-	 *
-	 * @param gc the container holding the game
-	 * @param deltaTime the amount of time that has passed since last update in milliseconds
+	 * @param gc - the container holding the game.
+	 * @param deltaTime - the amount of time that has passed since last update in milliseconds.
 	 */
 	public void updateOpponents(GameContainer gc, int deltaTime) {
 		for (NonPlayer opponent : opponents) {
@@ -76,6 +78,9 @@ public class OpponentController {
 		updateRemoveOpponents();
 	}
 	
+	/**
+	 * Removes all opponents in the toRemove list.
+	 */
 	private void updateRemoveOpponents() {
 		for (NonPlayer opponent : toRemove) {
 			opponents.remove(opponent);
@@ -84,9 +89,8 @@ public class OpponentController {
 	}
 
 	/**
-	 * Destroy an opponent.
-	 *
-	 * @param opponent to destroy
+	 * Removes an opponent.
+	 * @param opponent - opponent to remove.
 	 */
 	public void remove(NonPlayer opponent) {
 		opponent.destroy();
@@ -94,7 +98,7 @@ public class OpponentController {
 	}
 
 	/**
-	 * Destroy all the opponents.
+	 * Removes all opponents in the opponents list.
 	 */
 	public void removeAllOpponents() {
 		for (NonPlayer opponent : opponents) {
@@ -105,9 +109,8 @@ public class OpponentController {
 
 	/**
 	 * Checking for collisions.
-	 *
-	 * @param player Player in the game.
-	 * @param sbg the game holding the state
+	 * @param player - the current Player in the game.
+	 * @param sbg - the game holding the state.
 	 */
 	public void collide(Player player, StateBasedGame sbg) {
 		for (NonPlayer opponent : opponents) {
@@ -123,29 +126,26 @@ public class OpponentController {
                         player.removeShield(2000);
                     } else if (player.getLives() > 0){
 				        remove(opponent);
-				        player.loseLife();
+				        player.Loselife();
 				    } else {
 						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
+						ScoreController.getInstance().storePlayerScore(player.getScore());
+						System.out.println(ScoreController.getInstance().getPlayerScore());
 						player.resetPlayerVariables();
 						LevelState.getOC().removeAllOpponents();
-						LevelState.getPC().remove();
+						LevelState.getPC().Remove();
+						System.out.println(ScoreController.getInstance().getPlayerScore());
 						sbg.enterState(Main.GAME_LOSE_STATE);
-
-					if (!player.hasShield()) {
-						if (player.getLives() > 0) {
-							player.addShield(1000, 1000);
-							player.loseLife();
-						} else {
-							Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
-							sbg.enterState(Main.GAME_LOSE_STATE);
-						}
 					}
 				}
 			}
 		}
-		}
 	}
 
+	/**
+	 * Starts a BigOpponentEvent.
+	 * @param player - the current Player in the game.
+	 */
 	private void startBigOpponentEvent(Player player) {
 		double rand = Math.random();
 		bigOpponentDelay -= 10;
@@ -155,23 +155,42 @@ public class OpponentController {
 		}
 	}
 
+	/**
+	 * Checks whether a BigOpponent already exists.
+	 * @return true if a BigOpponent already exists, false if not.
+	 */
 	private boolean bigOpponentInstanceExists() {
 		for (NonPlayer opponent : opponents) {
-			if(opponent instanceof BigOpponent) {
+			if (opponent instanceof BigOpponent) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	/**
+	 * Gets the toRemove list.
+	 * Method for testing purposes.
+	 * @return the toRemove list.
+	 */
 	public ArrayList<NonPlayer> getToRemove() {
 		return toRemove;
 	}
 	
+	/**
+	 * Gets the opponents list.
+	 * Method for testing purposes.
+	 * @return the opponents list.
+	 */
 	public ArrayList<NonPlayer> getOpponents() {
 		return opponents;
 	}
 
+	/**
+	 * Adds an opponent to the opponent list.
+	 * Method for testing purposes.
+	 * @param opponent - the opponent to be added to the opponent list.
+	 */
 	public void addOpponent(NonPlayer opponent) {
 		opponents.add(opponent);
 	}

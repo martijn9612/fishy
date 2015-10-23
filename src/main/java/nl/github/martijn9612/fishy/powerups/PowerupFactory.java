@@ -2,26 +2,29 @@ package nl.github.martijn9612.fishy.powerups;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 /**
- * used to create the powerups
- *
+ * Implements the PowerupFactory.
+ * Software Engineering Methods Project - Group 11.
  */
 public class PowerupFactory {
     private ArrayList<Powerup> powers = new ArrayList<Powerup>();
     private Random rand = new Random();
     private Powerup powerup;
     private boolean loadResources;
+
     /**
-     * constructor for the factory.
-     * @param loadResources a boolean wether to load resources or not.
+     * Creates a new PowerupFactory.
+     * @param loadResources - true if OpenGL context should be loaded, false if not.
      */
     public PowerupFactory(Boolean loadResources) {
         this.loadResources = loadResources;
     }
-/**
- * spawn a powerup or nothing at all.
- * @return either null if no powerup should be returned or an powerup.
- */
+
+    /**
+     * Spawns a Powerup.
+     * @return Either null if no Powerup should be returned or a new Powerup.
+     */
     public Powerup spawnPowerup() {
         setupFactory();
         int pow = rand.nextInt(powers.size());
@@ -33,14 +36,15 @@ public class PowerupFactory {
         } else {
             powerup = null;
         }
-      
+
         clearFactory();
         return powerup;
     }
+
     /**
-     * set up the factory so that everytime the powerups are random.
+     * Sets up the PowerupFactory so that every time the powerups are different.
      */
-    public void setupFactory(){
+    public void setupFactory() {
         Powerup extralife = ExtraLife.createPowerup(rand, loadResources);
         Powerup speedup = Speedup.createPowerup(rand, loadResources);
         Powerup poison = Poison.createPowerup(rand, loadResources);
@@ -50,37 +54,37 @@ public class PowerupFactory {
         powers.add(poison);
         powers.add(shield);
     }
+
     /**
-     * clear the factory so it doesn't get to big.
+     * Clears the PowerupFactory so it doesn't get too big.
      */
-    public void clearFactory(){
+    public void clearFactory() {
         powers.clear();
     }
+
     /**
-     * return the arraylist containing the powerups.
-     * @return
+     * Returns all the powerups in the list.
+     * @return powers containing all the powerups.
      */
-    public ArrayList<Powerup> getPowerups(){
+    public ArrayList<Powerup> getPowerups() {
         return powers;
     }
-    
-    
+
     /**
-     * Method to make testing easier.
-     * Sets the current random.
-     * @param random - random value to be set to.
+     * Sets the Random to a new value.
+     * Method for testing purposes.
+     * @param random - new random value.
      */
     public void setRandom(Random random) {
         rand = random;
     }
-    
+
     /**
-     * Method to make testing easier.
-     * Returns the current powerup.
-     * @return the current powerup.
+     * Gets the current Powerup.
+     * Method for testing purposes.
+     * @return the current Powerup.
      */
     public Powerup getPowerup() {
         return powerup;
     }
 }
-

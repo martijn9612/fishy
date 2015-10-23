@@ -7,17 +7,20 @@ import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
-public class Speedup extends Powerup{
+
+/**
+ * Implements the Speedup powerup.
+ * Software Engineering Methods Project - Group 11.
+ */
+public class Speedup extends Powerup {
     private static final String SPRITE_PATH = "resources/speedUp-fish.png" ;
     private int chance;
+
     /**
-     * the contstructor of speedup.
-     * @param dimensions the size of the power up.
-     * @param position the starting position.
-     * @param velocity the speedUp at which it travels.
-     * @param acceleration its acceleration.
-     * @param loadResources whether or not to load resources.
-     * @param chance the chance it gets returned in the factory.
+     * Creates a new Speedup powerup.
+     * @param data - the moveable data of the new Speedup.
+     * @param loadResources - true if OpenGL content should be loaded, false if not.
+     * @param chance - the chance its gets returned in powerupfactary, in promille.
      */
     public Speedup(Moveable data, boolean loadResources, int chance) {
         super(data, loadResources, chance);
@@ -27,12 +30,12 @@ public class Speedup extends Powerup{
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         }
     }
+
     /**
-     * Creates an instance of LinearOpponent at a random screen side location.
-     * 
-     * @param player an instance of the Player class.
+     * Creates an instance of Speedup at a random screen side location.
      * @param random an instance to generate random numbers.
      * @param loadResources whether the sprite resources should be loaded.
+     * @return a new Speedup powerup at a random screen side location.
      */
     public static Speedup createPowerup(Random random, boolean loadResources) {
     	Moveable data = new Moveable();
@@ -42,12 +45,13 @@ public class Speedup extends Powerup{
     	data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
         return new Speedup(data, loadResources, 100);
     }
+
     /**
-     * creates a random position vector.
-     * @param random the randomizer.
-     * @param spawnsLeft whether it spawns left or right.
-     * @param dimensions the size.
-     * @return a position vector.
+     * Creates a random position vector for the Speedup class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @param dimensions - Vector with the dimensions of the Speedup.
+     * @return Vector with the Speedup location.
      */
     private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {
         int min = Math.round(dimensions.x);
@@ -56,27 +60,33 @@ public class Speedup extends Powerup{
         int xpos = (spawnsLeft ? 0 - min * 5 : 615 + min * 5);
         return new Vector(xpos, ypos);
     }
+
     /**
-     * create a random speedUp vector.
-     * @param random the randomizer.
-     * @param spawnsLeft whether it spawns left or right.
-     * @return a speedUp vector.
+     * Creates a random velocity vector for the Speedup class.
+     * @param random - an instance to generate random numbers.
+     * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+     * @return Vector with Speedup velocity.
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;
         return new Vector((spawnsLeft ? speed : -speed), 0);
     }
+
     /**
-     * returns the chance it gets returned as powerup in the factory.
+     * Gets the chance that Speedup is chosen in the PowerupFactory.
+     * @return the chance of Speedup.
      */
     public int getChance(){
         return chance;
     }
+
     /**
-     * activate the speedup effect on the player on collision.
+     * Starts the effect of the Speedup powerup 
+     * upon collision with a player.
+     * @param player - the current Player in the game.
      */
     @Override
-    public void effect(Player player){
-        player.speedUp(5000);
+    public void Effect(Player player){
+        player.Speedup(5000);
     }
 }

@@ -13,6 +13,7 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the playable character of the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class Player extends Entity {
     private static final float PLAYER_WIDTH = 16;
@@ -47,11 +48,10 @@ public class Player extends Entity {
     private String prevkey = "none";
 
     /**
-     * Creates a new default Player instance.
-     * 
-     * @param loadResources
-     *            whether the player's resources should be loaded.
-     * @return Player instance.
+     * Creates a new default Player instance, based on the Entity class.
+     * @param data - the moveable data of the new Player.
+     * @param loadResources - true if OpenGL context should be loaded, false if not.
+     * @return Player - a new Player instance.
      */
     public Player(Moveable data, boolean loadResources) {
     	super(data, loadResources);
@@ -61,10 +61,9 @@ public class Player extends Entity {
     }
     
 	/**
-	 * Creates a new default Player instance.
-	 * 
-	 * @param loadResources whether the player's resources should be loaded.
-	 * @return Player instance.
+	 * Creates a new Player instance.
+	 * @param loadResources - true if OpenGL context should be loaded, false if not.
+	 * @return Player - a new Player instance
 	 */
 	public static Player createPlayer(boolean loadResources) {
 		Moveable data = new Moveable();
@@ -76,12 +75,10 @@ public class Player extends Entity {
     
 	/**
 	 * Updates the player movement logic and polls the keyboard.
-	 * 
 	 * The player will be moved realistically in an environment of
 	 * water. Also the user input on the keyboard is handled here.
-	 * 
-	 * @param gc the container holding the game.
-     * @param deltaTime time elapsed since method was called in milliseconds.
+	 * @param gc - the container holding the game.
+     * @param deltaTime - time elapsed since method was called in milliseconds.
 	 */
     public void objectLogic(GameContainer gc, int deltaTime) {
         Input keyboardInput = gc.getInput();
@@ -93,6 +90,10 @@ public class Player extends Entity {
         updateShieldImage(key);
     }
 
+    /**
+     * Fills the hashmap with the images for the Shield powerup
+     * with the full, half and none sprites.
+     */
     private void fillHashMap() {
         shieldImages.put("none", PLAYER_SPRITE);
         shieldImages.put("half", PLAYER_HALF_SHIELD_SPRITE);
@@ -101,9 +102,7 @@ public class Player extends Entity {
 
     /**
      * Handles the keyboard controls so the player is able to move around.
-     * 
-     * @param input
-     *            object to access keyboard button states.
+     * @param input - object to access keyboard button states.
      */
     private void movePlayer(Input input) {
         boolean moveL = (input.isKeyDown(Input.KEY_A) || input.isKeyDown(Input.KEY_LEFT));
@@ -141,10 +140,8 @@ public class Player extends Entity {
     }
 
     /**
-     * Consume a specific Opponent.
-     * 
-     * @param opponent
-     *            to eat
+     * Consume a specific Opponent. Player's score is updated.
+     * @param opponentSize - size of the consumed opponent.
      */
     public void eat(double opponentSize) {
         setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
@@ -182,23 +179,18 @@ public class Player extends Entity {
      * Validates whether the given number is within the given limits. If the
      * number is not within the given bounds, the closest limit value is
      * returned.
-     * 
-     * @param x
-     *            integer to test
-     * @param min
-     *            lower limit value
-     * @param f
-     *            upper limit value
-     * @return float
+     * @param x - integer to test.
+     * @param min - lower limit value.
+     * @param f - upper limit value.
+     * @return float - the closest limit value.
      */
     private float limit(float x, float min, float f) {
         return Math.max(Math.min(x, f), min);
     }
 
     /**
-     * Get the players score.
-     * 
-     * @return score
+     * Get the players score and returns it.
+     * @return score - the current score.
      */
     public double getScore() {
         return score;
@@ -206,16 +198,19 @@ public class Player extends Entity {
 
     /**
      * Set the players score.
-     * 
-     * @param score
-     *            new score value
+     * @param score - new score value.
      */
     public void setScore(double score) {
         LevelState.setScore(String.valueOf(Math.round(score)));
         this.score = score;
     }
 
-    public void speedUp(int time) {
+    /**
+     * Does the logic for the Speedup Powerup. Player's speed
+     * is set higher for a certain amount of time.
+     * @param time - how long the powerup has to be active.
+     */
+    public void Speedup(int time) {
         speedUpTimer.cancel();
         playerMaxSpeed = 40;
         playerMoveForce = 30;
@@ -232,7 +227,11 @@ public class Player extends Entity {
         speedUpTimer.schedule(action, time);
     }
 
-    public void poison(int time) {
+    /**
+     * Does the logic for the Poison powerup. 
+     * @param time - how long the poison has to be active.
+     */
+    public void Poison(int time) {
         poisonTimer.cancel();
         poisoned = true;
         poisonTimer = new Timer();
@@ -246,22 +245,40 @@ public class Player extends Entity {
         poisonTimer.schedule(action, time);
     }
 
-    public void extraLife() {
+    /**
+     * Adds an extra life.
+     */
+    public void Extralife() {
         lives++;
     }
 
+    /**
+     * Gets the number of lives the player has left.
+     * @return the number of lives.
+     */
     public int getLives() {
         return lives;
     }
-
-    public void loseLife() {
+    /** 
+     * Removes 1 life.
+     */
+    public void Loselife() {
         lives--;
     }
 
+    /**
+     * Gets the number of lives and represents them as a string.
+     * @return the number of lives in string representation.
+     */
     public String getLivesAsString() {
         return "lives: (" + lives + ")";
     }
 
+    /**
+     * Adds a shield to the player.
+     * @param activeTime - time the shield is active.
+     * @param fadeTime - time the shield takes to remove.
+     */
     public void addShield(int activeTime, int fadeTime) {
         key = "full";
         hasShield = true;
@@ -278,6 +295,10 @@ public class Player extends Entity {
         shieldTimer.schedule(action, activeTime);
     }
 
+    /**
+     * Removes the shield from the player.
+     * @param fadeTime - time the shield takes to remove.
+     */
     public void removeShield(int fadeTime) {
         key = "half";
         shieldRemover.cancel();
@@ -292,6 +313,10 @@ public class Player extends Entity {
         shieldRemover.schedule(action, fadeTime);
     }
 
+    /**
+     * Updates the image of the shield.
+     * @param key - the key of the shield image to be loaded.
+     */
     public void updateShieldImage(String key) {
         if (!key.equals(prevkey)) {
             String image = shieldImages.get(key);
@@ -300,14 +325,27 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Checks if the player has a shield.
+     * @return boolean, true if the player has a shield, false if not.
+     */
 	public boolean hasShield() {
 		return hasShield;
 	}
 	
+	/**
+	 * Sets the key for the shield image.
+	 * @param newKey - new key for the shield image.
+	 */
 	public void setKey(String newKey) {
 	    key = newKey;
 	}
 	
+	/**
+	 * Gets the current key.
+	 * Method for testing purposes.
+	 * @return the current key.
+	 */
 	public String getKey() {
 	    return key;
 	}

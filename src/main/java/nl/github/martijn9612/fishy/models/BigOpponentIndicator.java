@@ -6,8 +6,8 @@ import java.util.List;
 import org.newdawn.slick.GameContainer;
 
 /**
- * A sprite that indicates a big opponent will be spawned soon.
- * Created by Skullyhoofd on 25/09/2015.
+ * Implements the indicator for the BigOpponent.
+ * Software Engineering Methods Project - Group 11.
  */
 public class BigOpponentIndicator extends Entity {
 
@@ -21,6 +21,7 @@ public class BigOpponentIndicator extends Entity {
     
     /**
 	 * Constructor an instance of BigOpponentIndicator that responds to player movement.
+<<<<<<< HEAD
 	 * 
 	 * @param dimensions size of the new opponent.
 	 * @param position vector with the start position of the opponent.
@@ -28,6 +29,11 @@ public class BigOpponentIndicator extends Entity {
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 * @param player an instance of the Player class.
+=======
+	 * @param data - the Moveable data of the new indicator.
+	 * @param loadResources - true when OpenGL context should be loaded, false if not.
+	 * @param playerData - the Moveable data of the current Player in the game.
+>>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
 	 */
     public BigOpponentIndicator(Moveable data, boolean loadResources, Moveable playerData) {
     	super(data, loadResources);
@@ -37,9 +43,9 @@ public class BigOpponentIndicator extends Entity {
     
     /**
 	 * Creates an instance of BigOpponentIndicator at the right side of the screen.
-	 * 
-	 * @param player an instance of the Player class.
-	 * @param loadResources whether the sprite resources should be loaded.
+	 * @param playerData - the Moveable data of the current Player in the game.
+	 * @param loadResources - true when OpenGL context should be loaded, false if not.
+	 * @return a BigOpponentIndicator at the right side of the screen at side the player is on.
 	 */
     public static BigOpponentIndicator createIndicator(Moveable playerData, boolean loadResources) {
     	Moveable data = new Moveable();
@@ -51,9 +57,8 @@ public class BigOpponentIndicator extends Entity {
     /**
      * Moves the indicator towards the player's y-axis location. Also moves
      * the indicator on the screen when acceleration is set to a value.
-     * 
-     * @param gc the container holding the game.
-     * @param deltaTime time elapsed since method was called in milliseconds.
+     * @param gc -  the container holding the game.
+     * @param deltaTime - time elapsed since method was called in milliseconds.
      */
 	@Override
 	public void objectLogic(GameContainer gc, int deltaTime) {

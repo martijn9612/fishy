@@ -46,7 +46,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testSpawnPowerup1() {
-        powercontroller.spawnPowerup();
+        powercontroller.SpawnPowerup();
         assertEquals(powerup, powercontroller.getPower());
     }
     
@@ -56,8 +56,8 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testSpawnPowerup2() {
-        powercontroller.spawnPowerup();
-        powercontroller.spawnPowerup();
+        powercontroller.SpawnPowerup();
+        powercontroller.SpawnPowerup();
         assertFalse(powercontroller.getPower().equals(null));
     }
     
@@ -77,7 +77,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testUpdatePowerup2() {
-        powercontroller.spawnPowerup();
+        powercontroller.SpawnPowerup();
         powercontroller.updatePowerup(gc, 0);
     }
     
@@ -87,7 +87,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test 
     public void testUpdatePowerup3() {
-        powercontroller.spawnPowerup();
+        powercontroller.SpawnPowerup();
         powercontroller.getPower().data.dimensions.x = 0;
         powercontroller.getPower().data.position.x = 700;
         powercontroller.updatePowerup(gc, 0); 
@@ -109,7 +109,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testRenderOpponents2() {
-        powercontroller.spawnPowerup();
+        powercontroller.SpawnPowerup();
         powercontroller.renderOpponents(g);
         assertFalse(powercontroller.getPower().equals(null));    
     }
@@ -155,7 +155,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testRemove() {
-        powercontroller.remove();
+        powercontroller.Remove();
         assertEquals(powercontroller.getPower(), null);
     }
 

@@ -12,34 +12,47 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 /**
+<<<<<<< HEAD
  * An opponent that moves horizontally with a constant speedUp.
+=======
+ * Implementation of the LinearOpponent class. 
+ * A LinearOpponent is a small opponent that moves
+ * horizontally with a constant speed.
+ * Software Engineering Methods Project - Group 11.
+>>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
  */
 public class LinearOpponent extends NonPlayer {
-	private static final String SPRITE_PATH = "resources/opponent-" + Main.OPPONENT_CHARACTER + ".png";
+	private static final String SPRITE_PATH = "resources/opponent-" 
+	            + Main.OPPONENT_CHARACTER + ".png";
 
 	/**
 	 * Constructor for an opponent that moves in a linear motion.
+<<<<<<< HEAD
 	 * 
 	 * @param dimensions size of the new opponent.
 	 * @param position vector with the start position of the opponent.
 	 * @param velocity initial speedUp of the opponent.
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
+=======
+	 * @param data - the moveable data the LinearOpponent will have.
+	 * @param loadResources - true when OpenGL context should be loaded, false if not.
+>>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
 	 */
 	public LinearOpponent(Moveable data, boolean loadResources) {
 		super(data, loadResources);
 		loadResources(SPRITE_PATH);
-		if(loadResources && data.velocity.x > 0) {
+		if (loadResources && data.velocity.x > 0) {
 			setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
 		}
 	}
 	
 	/**
 	 * Creates an instance of LinearOpponent at a random screen side location.
-	 * 
-	 * @param player an instance of the Player class.
-	 * @param random an instance to generate random numbers.
-	 * @param loadResources whether the sprite resources should be loaded.
+	 * @param player - the current Player in the game.
+	 * @param random - an instance to generate random numbers.
+	 * @param loadResources - true when OpenGL context should be loaded, false if not.
+	 * @return new LinearOpponent
 	 */
 	public static LinearOpponent createRandom(Player player, Random random, boolean loadResources) {
 		Moveable data = new Moveable();
@@ -52,9 +65,8 @@ public class LinearOpponent extends NonPlayer {
 	
 	/**
 	 * Creates a random dimension vector for the LineairOpponent class.
-	 * 
-	 * @param player an instance of the Player class.
-	 * @param random an instance to generate random numbers.
+	 * @param player - the current Player in the game.
+	 * @param random - an instance to generate random numbers.
 	 * @return Vector with opponent size.
 	 */
 	private static Vector getRandomDimensions(Player player, Random random) {
@@ -66,9 +78,9 @@ public class LinearOpponent extends NonPlayer {
 	
 	/**
 	 * Creates a random position vector for the LineairOpponent class.
-	 * 
-	 * @param player an instance of the Player class.
-	 * @param random an instance to generate random numbers.
+	 * @param random - an instance to generate random numbers.
+	 * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
+	 * @param dimensions - Vector with the dimensions of the LinearOpponent.
 	 * @return Vector with opponent location.
 	 */
 	private static Vector getRandomPosition(Random random, boolean spawnsLeft, Vector dimensions) {
@@ -81,9 +93,8 @@ public class LinearOpponent extends NonPlayer {
 	
 	/**
 	 * Creates a random velocity vector for the LineairOpponent class.
-	 * 
-	 * @param player an instance of the Player class.
-	 * @param random an instance to generate random numbers.
+	 * @param random - an instance to generate random numbers.
+	 * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
 	 * @return Vector with opponent velocity.
 	 */
 	private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
@@ -93,9 +104,8 @@ public class LinearOpponent extends NonPlayer {
 
 	/**
 	 * Moves the fish towards the left or right side of the screen.
-	 * 
-	 * @param gc the container holding the game.
-	 * @param deltaTime time elapsed since method was called in milliseconds.
+	 * @param gc - the container holding the game.
+	 * @param deltaTime - time elapsed since method was called in milliseconds.
 	 */
 	@Override
 	public void objectLogic(GameContainer gc, int deltaTime) {

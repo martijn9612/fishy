@@ -10,9 +10,10 @@ import nl.github.martijn9612.fishy.models.Vector;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
- * The BigOpponent class. A BigOpponent is a special opponent that has a small
+ * Implementation of the BigOpponent class. 
+ * A BigOpponent is a special opponent that has a small
  * chance of spawning and fills a large part of the screen.
- * Created by Skullyhoofd on 25/09/2015.
+ * Software Engineering Methods Project - Group 11.
  */
 public class BigOpponent extends NonPlayer {
     private static final float BIG_OPPONENT_SIZE = 350;
@@ -27,6 +28,7 @@ public class BigOpponent extends NonPlayer {
     
     /**
 	 * Creates an instance of BigOpponent at the given location.
+<<<<<<< HEAD
 	 * 
 	 * @param dimensions size of the new opponent.
      * @param position vector with the start position of the opponent.
@@ -34,6 +36,11 @@ public class BigOpponent extends NonPlayer {
 	 * @param acceleration initial acceleration of the opponent.
 	 * @param loadResources whether the sprite resources should be loaded.
 	 * @param player instance of the Player class.
+=======
+	 * @param data - the Moveable data the BigOpponent will have.
+	 * @param loadResources - true if OpenGL context should be loaded, false if not.
+	 * @param playerData - the Moveable data of the current player.
+>>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
 	 */
     public BigOpponent(Moveable data, boolean loadResources, Moveable playerData) {
     	super(data, loadResources);
@@ -43,22 +50,25 @@ public class BigOpponent extends NonPlayer {
     }
     
     /**
-	 * Creates an instance of BigOpponent at the payer's y-axis location.
-	 * 
-	 * @param player an instance of the Player class.
-	 * @param loadResources whether the sprite resources should be loaded.
+	 * Creates an instance of BigOpponent at the player's y-axis location.
+	 * @param playerData - the Moveable data of the current player.
+	 * @param loadResources - true if OpenGL context should be loaded, false if not.
+	 * @return new BigOpponent at the player's y-axis position.
 	 */
 	public static BigOpponent createBigOpponent(Moveable playerData, boolean loadResources) {
 		Moveable data = new Moveable();
 		data.velocity = new Vector(-BIG_OPPONENT_SPEED, 0);
 		data.dimensions = new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE);
-		data.position = new Vector(BIG_OPPONENT_START_X, playerData.position.y - BIG_OPPONENT_SIZE / 2);
+		data.position = new Vector(BIG_OPPONENT_START_X, 
+		        playerData.position.y - BIG_OPPONENT_SIZE / 2);
 		return new BigOpponent(data, loadResources, playerData);
     }
 	
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * Execute the logic calculations associated with this BigOpponent.
+     * @param gc - the container holding the game.
+     * @param deltaTime - milliseconds passed since last call.
+     */
 	@Override
     public void objectLogic(GameContainer gc, int deltaTime) {
     	indicator.objectLogic(gc, deltaTime);
@@ -67,6 +77,10 @@ public class BigOpponent extends NonPlayer {
         updateBoundingbox();
     }
 
+	/**
+	 * Check the progress of the BigOpponent.
+	 * @param deltaTime - milliseconds passed since last call.
+	 */
 	private void checkProgress(int deltaTime) {
 		if (timeToLive > 0) {
 			timeToLive -= deltaTime;
@@ -79,9 +93,10 @@ public class BigOpponent extends NonPlayer {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * Renders the object and the boundary box when enabled.
+     * @param g - the graphics content used to render.
+     */
     @Override
     public void renderObject(Graphics g) {
     	super.renderObject(g);
@@ -91,7 +106,8 @@ public class BigOpponent extends NonPlayer {
     }
     
     /**
-	 * Stops playing the background music.
+	 * Stops playing the background music 
+	 * and sets timeToLive to 0.
 	 */
     @Override
 	public void destroy() {
@@ -101,14 +117,19 @@ public class BigOpponent extends NonPlayer {
 		timeToLive = 0;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * Checks whether the opponent is visible on the screen.
+     * @return returns true if the opponent is not visible on the screen.
+     */
     @Override
     public boolean isOffScreen() {
     	return (timeToLive <= 0);
     }
 	
+    /**
+     * Loads the resources associated with BigOpponent.
+     * Only if the OpenGL context should be loaded.
+     */
 	private void loadBigOpponentResources() {
     	if (hasOpenGL) {
     		this.loadResources(SPRITE_PATH);
@@ -116,10 +137,19 @@ public class BigOpponent extends NonPlayer {
     	}
     }
 	
+	/**
+	 * Change the timeToLive.
+	 * Method for testing purposes.
+	 * @param newtime - new timeToLive.
+	 */
 	public void changeTimeToLive(int newtime) {
 	    timeToLive = newtime;
 	}
 	
+	/**
+	 * Gets the timeToLive.
+	 * @return the current time to live.
+	 */
 	public int getTimeToLive() {
 	    return timeToLive;
 	}

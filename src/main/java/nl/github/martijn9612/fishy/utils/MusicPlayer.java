@@ -7,7 +7,7 @@ import org.newdawn.slick.Sound;
 
 /**
  * MusicPlayer class, responsible for loading and playing sound files.
- * @author Leon Noordam
+ * Software Engineering Methods Project - Group 11.
  */
 public class MusicPlayer {
 	
@@ -23,8 +23,9 @@ public class MusicPlayer {
 	public static final String BIG_OPPONENT_EVENT = "resources/sounds/whale.ogg";
 
 	/**
-	 * The MusicPlayer class is a singleton class, so it will always return the same instance.
-	 * @return MusicPlayer instance
+	 * The MusicPlayer class is a singleton class, 
+	 * so it will always return the same instance.
+	 * @return MusicPlayer instance.
 	 */
 	public static MusicPlayer getInstance() {
 		if(musicPlayerInstance == null) {
@@ -47,7 +48,7 @@ public class MusicPlayer {
 	
 	/**
 	 * Loading sounds is only done internally.
-	 * @param resource string that defines the path to the sound file.
+	 * @param resource - string that defines the path to the sound file.
 	 */
 	private void loadSound(String resource) {
 		try {
@@ -61,8 +62,8 @@ public class MusicPlayer {
 	/**
 	 * Get the sound file from the HashMap with loaded sounds.
 	 * Throws a NullPointerException when the sound wasn't loaded.
-	 * @param resource string that defines the path to the sound file.
-	 * @return Sound instance
+	 * @param resource - string that defines the path to the sound file.
+	 * @return Sound instance.
 	 */
 	private Sound getSound(String resource) {
 		Sound sound = soundResources.get(resource);
@@ -74,7 +75,7 @@ public class MusicPlayer {
 	
 	/**
 	 * Plays the sound that is referred by resource.
-	 * @param resource string that defines the path to the sound file.
+	 * @param resource - string that defines the path to the sound file.
 	 */
 	public void playSound(String resource) {
 		getSound(resource).play();
@@ -82,7 +83,7 @@ public class MusicPlayer {
 	
 	/**
 	 * Loops the sound that is referred by resource.
-	 * @param resource string that defines the path to the sound file.
+	 * @param resource - string that defines the path to the sound file.
 	 */
 	public void loopSound(String resource) {
 		getSound(resource).loop();
@@ -90,7 +91,7 @@ public class MusicPlayer {
 	
 	/**
 	 * Stops playing the sound that is referred by resource.
-	 * @param resource string that defines the path to the sound file.
+	 * @param resource - string that defines the path to the sound file.
 	 */
 	public void stopSound(String resource) {
 		getSound(resource).stop();

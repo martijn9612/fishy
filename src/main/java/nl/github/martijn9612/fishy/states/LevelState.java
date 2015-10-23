@@ -11,12 +11,14 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.OpponentController;
+import nl.github.martijn9612.fishy.ScoreController;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.powerups.PowerupController;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the Level State of the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class LevelState extends BasicGameState {
 	private Player player;
@@ -36,23 +38,25 @@ public class LevelState extends BasicGameState {
 
     /**
      * Constructor for the LevelState.
-     * 
-     * @param state the number of the state
+     * @param state - the number of the state.
      */
     public LevelState(int state) {
         // Blank
     }
 
+    /**
+     * Sets the score.
+     * @param s - new score.
+     */
 	public static void setScore(String s) {
 		score = s;
 	}
 
 	/**
      * Initialization of the play screen.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game.
+     * @param sbg - the game holding the state.
+     * @throws SlickException - indicates internal error.
      */
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
@@ -63,9 +67,9 @@ public class LevelState extends BasicGameState {
 
 	/**
 	 * Triggers when the state is entered.
-	 * @param gameContainer the container of the game
-	 * @param stateBasedGame the game holding the state
-	 * @throws SlickException
+	 * @param gameContainer - the container of the game.
+	 * @param stateBasedGame - the game holding the state.
+	 * @throws SlickException - indicates internal error.
 	 */
     @Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
@@ -76,9 +80,9 @@ public class LevelState extends BasicGameState {
 
 	/**
 	 * Triggers when the state is left.
-	 * @param gc the container of the game
-	 * @param sbg the game holding the state
-	 * @throws SlickException
+	 * @param gc - the container of the game.
+	 * @param sbg - the game holding the state.
+	 * @throws SlickException - indicates internal error.
 	 */
 	@Override
 	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -88,11 +92,10 @@ public class LevelState extends BasicGameState {
 
     /**
      * Renders the game's screen.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @param g the graphics content used to render
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game
+     * @param sbg - the game holding the state
+     * @param g - the graphics content used to render
+     * @throws SlickException - indicates internal error
      */
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		g.setColor(Color.black);
@@ -108,34 +111,33 @@ public class LevelState extends BasicGameState {
 
     /**
      * Update the game logic and check if the win condition should be triggered.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @param delta time that has passed since last update in milliseconds
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game
+     * @param sbg - the game holding the state
+     * @param delta - time that has passed since last update in milliseconds
+     * @throws SlickException - indicates internal error
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput();
+		
 		if (input.isKeyPressed(Input.KEY_P)) {
-
 			gc.setPaused(!gc.isPaused());
-
 			sbg.enterState(Main.HELP_STATE);
 			HelpState.setPrevious(Main.LEVEL_STATE);
 		}
+		
 		player.objectLogic(gc, delta);
         opponentController.updateOpponents(gc, delta);
         opponentController.spawnOpponents(player);
 		opponentController.collide(player, sbg);
 		powerupController.updatePowerup(gc, delta);
-		powerupController.spawnPowerup();
+		powerupController.SpawnPowerup();
 		powerupController.collide(player, sbg);
 		fishPosition = player.data.position.toString();
 		lives = player.getLivesAsString();
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
-            Main.actionLogger.logLine("Player won the game", getClass()
-					.getSimpleName());
+            Main.actionLogger.logLine("Player won the game", getClass().getSimpleName());
+            ScoreController.getInstance().storePlayerScore(player.getScore());
             player.resetPlayerVariables();
             sbg.enterState(Main.GAME_WIN_STATE);
         }
@@ -145,13 +147,16 @@ public class LevelState extends BasicGameState {
 
     /**
      * Get the ID of this state.
-     * 
-     * @return the unique ID of this state
+     * @return the unique ID of this state.
      */
     public int getID() {
         return Main.LEVEL_STATE;
     }
 
+    /**
+     * Gets the current score.
+     * @return current score.
+     */
 	public static String getScore() {
 		return score;
 	}
@@ -166,7 +171,7 @@ public class LevelState extends BasicGameState {
 
 	/**
 	 * Get the PowerupController.
-	 * @return the Powerupcontroller
+	 * @return the PowerupController.
 	 */
 	public static PowerupController getPC() {
 		return powerupController;

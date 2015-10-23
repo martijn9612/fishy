@@ -16,6 +16,7 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the Menu State of the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class MenuState extends BasicGameState {
     private String menu = "Menu";
@@ -23,14 +24,17 @@ public class MenuState extends BasicGameState {
     private Image exit;
     private Image help;
     private Image title;
+    private Image highscore;
     private Image background;
     private MousePosition mouse;
     private DrawRectangle playButtonDR;
     private DrawRectangle exitButtonDR;
     private DrawRectangle helpButtonDR;
+    private DrawRectangle scoreButtonDR;
     private MouseRectangle playButtonMR;
     private MouseRectangle exitButtonMR;
     private MouseRectangle helpButtonMR;
+    private MouseRectangle scoreButtonMR;
     private MusicPlayer musicPlayer = MusicPlayer.getInstance();
 
     private static final int MENU_TEXT_DRAW_X = 280;
@@ -43,11 +47,12 @@ public class MenuState extends BasicGameState {
     private static final int EXIT_BUTTON_DRAW_Y = 375;
     private static final int HELP_BUTTON_DRAW_X = 580;
     private static final int HELP_BUTTON_DRAW_Y = 10;
+	private static final int SCORE_BUTTON_DRAW_X = 580;
+	private static final int SCORE_BUTTON_DRAW_Y = 90;
 
     /**
      * Constructor for the MenuState.
-     * 
-     * @param state the number of the state
+     * @param state the number of the state.
      */
     public MenuState(int state) {
         // Blank
@@ -55,10 +60,9 @@ public class MenuState extends BasicGameState {
 
     /**
      * Initialize the game.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game.
+     * @param sbg - the game holding the state.
+     * @throws SlickException - indicates internal error.
      */
     public void init(GameContainer gc, StateBasedGame sbg)
             throws SlickException {
@@ -69,24 +73,27 @@ public class MenuState extends BasicGameState {
         help = new Image("resources/gears.png");
         title = new Image("resources/something-fishy.png");
         background = new Image("resources/bg-menu.jpg");
+        highscore = new Image("resources/trophy.png");
         playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X,
                 PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
         exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X,
                 EXIT_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
         helpButtonDR = new DrawRectangle(HELP_BUTTON_DRAW_X,
                 HELP_BUTTON_DRAW_Y, help.getWidth(), help.getHeight());
+        scoreButtonDR = new DrawRectangle(SCORE_BUTTON_DRAW_X,
+        		SCORE_BUTTON_DRAW_Y, highscore.getWidth(), highscore.getHeight());
         playButtonMR = playButtonDR.getMouseRectangle();
         exitButtonMR = exitButtonDR.getMouseRectangle();
         helpButtonMR = helpButtonDR.getMouseRectangle();
+        scoreButtonMR = scoreButtonDR.getMouseRectangle();
         mouse = new MousePosition();
     }
 
     /**
      * Notification that the game state has been entered.
-     * 
-     * @param gameContainer the container holding the game
-     * @param stateBasedGame the game holding the state
-     * @throws SlickException indicates internal error
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
      */
     @Override
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame)
@@ -97,11 +104,10 @@ public class MenuState extends BasicGameState {
 
     /**
      * Renders the game's screen.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @param g the graphics content used to render
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game.
+     * @param sbg - the game holding the state.
+     * @param g - the graphics content used to render.
+     * @throws SlickException - indicates internal error.
      */
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
             throws SlickException {
@@ -112,18 +118,19 @@ public class MenuState extends BasicGameState {
         g.drawImage(exit, exitButtonDR.getPositionX(),
                 exitButtonDR.getPositionY());
         g.drawImage(help, helpButtonDR.getPositionX(),
-                helpButtonDR.getPositionY());
+        		helpButtonDR.getPositionY());
+        g.drawImage(highscore, scoreButtonDR.getPositionX(),
+                scoreButtonDR.getPositionY());
         g.drawImage(title.getScaledCopy(0.5f), TITLE_IMAGE_DRAW_X, TITLE_IMAGE_DRAW_Y);
     }
 
     /**
      * Update the game logic.
-     * 
-     * @param gc the container holding the game
-     * @param sbg the game holding the state
-     * @param delta the amount of time that has
-     * passed since last update in milliseconds
-     * @throws SlickException indicates internal error
+     * @param gc - the container holding the game.
+     * @param sbg - the game holding the state.
+     * @param delta - the amount of time that has
+     * passed since last update in milliseconds.
+     * @throws SlickException - indicates internal error.
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta)
             throws SlickException {
@@ -151,6 +158,13 @@ public class MenuState extends BasicGameState {
                 HelpState.setPrevious(Main.MENU_STATE);
             }
         }
+        
+        if (mouse.isInRectangle(scoreButtonMR)) {
+            if (mouse.isLeftButtonDown()) {
+                Main.actionLogger.logLine("ScoreState opened.", getClass().getSimpleName());
+                sbg.enterState(ScoreState.STATE_ID);
+            }
+        }
 
         Input input = gc.getInput();
         if (input.isKeyDown(Input.KEY_ENTER)) {
@@ -164,10 +178,9 @@ public class MenuState extends BasicGameState {
 
     /**
      * Notification that we're leaving this game state.
-     * 
-     * @param gameContainer the container holding the game
-     * @param stateBasedGame the game holding this state
-     * @throws SlickException indicates internal error
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
      */
     @Override
 	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame)
@@ -178,8 +191,7 @@ public class MenuState extends BasicGameState {
 
     /**
      * Get the ID of this state.
-     * 
-     * @return the unique ID of this state
+     * @return the unique ID of this state.
      */
     public int getID() {
         return Main.MENU_STATE;

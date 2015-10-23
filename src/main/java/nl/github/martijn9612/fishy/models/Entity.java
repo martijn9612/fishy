@@ -11,9 +11,9 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
  * Implements the basic object in the game on which players and opponents are
- * based. The entity object has a defined position, velocity, acceleration and
- * dimension. It provides methods for updating the bounding box and rendering (a
+ * based. It provides methods for updating the bounding box and rendering (a
  * scaled copy of) itself.
+ * Software Engineering Methods Project - Group 11.
  */
 public abstract class Entity {
 	public Moveable data;
@@ -29,12 +29,8 @@ public abstract class Entity {
 
 	/**
 	 * Setup a new Entity object.
-	 * 
-	 * @param dimensions size of the entity. 
-	 * @param position start position of the entity.
-	 * @param velocity initial velocity of the entity.
-	 * @param acceleration initial acceleration of the entity.
-	 * @param hasOpenGL whether openGL context should be invoked.
+	 * @param data - the Moveable data of the new entity.
+	 * @param hasOpenGL - true if OpenGL context should be loaded, false if not.
 	 */
 	public Entity(Moveable data, boolean hasOpenGL) {
 		this.data = data;
@@ -47,8 +43,7 @@ public abstract class Entity {
 	 * Loads the resources associated with this entity. These are
 	 * the given sprite location and the musicPlayer instance. Also,
 	 * a scaled copy of the sprite is made related to the dimensions.
-	 * 
-	 * @param imagePath resource path to filesystem location of the sprite.
+	 * @param imagePath - resource path to filesystem location of the sprite.
 	 */
 	public void loadResources(String imagePath) {
 		if (hasOpenGL) {
@@ -62,6 +57,10 @@ public abstract class Entity {
 		}
 	}
 
+	/**
+	 * Loads the image associated with this entity. 
+	 * @param imagePath - resource path to filesystem location of the sprite.
+	 */
 	public void loadImage(String imagePath) {
 		try {
 			originalImage = new Image(imagePath);
@@ -78,8 +77,7 @@ public abstract class Entity {
 	/**
 	 * Set the orientation of the sprite. When the orientation changes,
 	 * a new copy is made by flipping the y axis and will be stored.
-	 * 
-	 * @param newOrientation integer defining the orientation.
+	 * @param newOrientation - integer defining the orientation.
 	 */
 	public void setImageOrientation(int newOrientation) {
 		if (orientation != newOrientation) {
@@ -91,8 +89,7 @@ public abstract class Entity {
 
 	/**
 	 * Renders the object and the boundary box when enabled.
-	 * 
-	 * @param g the graphics content used to render.
+	 * @param g - the graphics content used to render.
 	 */
 	public void renderObject(Graphics g) {
         if (hasOpenGL) {
@@ -106,8 +103,7 @@ public abstract class Entity {
 
 	/**
 	 * Returns the size of the opponent.
-	 * 
-	 * @return size value
+	 * @return size value.
 	 */
 	public float getSize() {
 		return ((data.dimensions.x + data.dimensions.y) / 2);
@@ -115,9 +111,8 @@ public abstract class Entity {
 
 	/**
 	 * Checks whether the bounding boxes of two entities collide.
-	 * 
-	 * @param entity the instance to check for.
-	 * @return boolean wether they collide.
+	 * @param entity - the instance to check for.
+	 * @return boolean, true if they collide, false if not.
 	 */
 	public boolean intersects(Entity entity) {
 		return boundingBox.intersects(entity.getEllipse());
@@ -125,15 +120,14 @@ public abstract class Entity {
 
 	/**
 	 * Get the bounding box ellipse instance and returns it.
-	 * 
-	 * @return Ellipse the bounding box.
+	 * @return Ellipse - the bounding box.
 	 */
 	public Ellipse getEllipse() {
 		return boundingBox;
 	}
 
 	/**
-	 * Updates the boundary box around the entity according to the dimensions.
+	 * Updates the bounding box around the entity according to the dimensions.
 	 * When the bounding box wasn't calculated before, a new Ellipse instance is
 	 * created to act as bounding box.
 	 */
@@ -153,8 +147,7 @@ public abstract class Entity {
 	 * Get a scaled version of the image sprite. When the dimensions of an
 	 * entity changes, a new copy from the original sprite is created and
 	 * returned.
-	 * 
-	 * @return Image a scaled version of the entity image.
+	 * @return Image - a scaled version of the entity image.
 	 */
 	private Image getScaledImage() {
 		if (!oldDimensions.equals(data.dimensions)) {
@@ -168,12 +161,16 @@ public abstract class Entity {
 
 	/**
 	 * Execute the logic calculations associated with this entity.
-	 * 
-	 * @param gc the container holding the game.
-	 * @param deltaTime milliseconds passed since last call.
+	 * @param gc - the container holding the game.
+	 * @param deltaTime - milliseconds passed since last call.
 	 */
 	public abstract void objectLogic(GameContainer gc, int deltaTime);
 
+	/**
+	 * Gets the bounding box of the given entity.
+	 * Method for testing purposes.
+	 * @return Ellipse - the bounding box.
+	 */
 	public Ellipse getBoundingBox() {
 	    return boundingBox;
 	}

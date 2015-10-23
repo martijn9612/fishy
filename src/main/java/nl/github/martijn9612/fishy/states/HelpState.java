@@ -4,7 +4,15 @@ import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.position.DrawRectangle;
 import nl.github.martijn9612.fishy.position.MousePosition;
 import nl.github.martijn9612.fishy.position.MouseRectangle;
-import org.newdawn.slick.*;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -12,8 +20,8 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 /**
- * Created by Skullyhoofd on 13/10/2015.
  * Implements the HelpState which shows instructions to the game.
+ * Software Engineering Methods Project - Group 11.
  */
 public class HelpState extends BasicGameState {
 
@@ -96,8 +104,7 @@ public class HelpState extends BasicGameState {
 
     /**
      * Constructor for the Help State.
-     *
-     * @param state - the number of the state
+     * @param state - the number of the state.
      */
     public HelpState(int state) {
         // Blank
@@ -105,13 +112,9 @@ public class HelpState extends BasicGameState {
 
     /**
      * Initialize the game.
-     *
-     * @param gc
-     *            - the container holding the game
-     * @param game
-     *            - the game holding the state
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc - the container holding the game.
+     * @param game - the game holding the state.
+     * @throws SlickException - indicates internal error.
      */
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
@@ -128,22 +131,17 @@ public class HelpState extends BasicGameState {
                 BACK_BUTTON_DRAW_Y, back.getWidth(), back.getHeight());
         backButtonMR = backButtonDR.getMouseRectangle();
         mouse = new MousePosition();
-        textFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.PLAIN , 16), true);
-        titleFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.BOLD , 24), true);
-        introFont = new TrueTypeFont(new java.awt.Font("Calibri",java.awt.Font.BOLD , 16), true);
+        textFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.PLAIN , 16), true);
+        titleFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 24), true);
+        introFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 16), true);
     }
 
     /**
      * Renders the game's screen.
-     *
-     * @param gc
-     *            - the container holding the game
-     * @param game
-     *            - the game holding the state
-     * @param g
-     *            - the graphics content used to render
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc - the container holding the game.
+     * @param game - the game holding the state.
+     * @param g - the graphics content used to render.
+     * @throws SlickException - indicates internal error.
      */
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
         g.setColor(Color.black);
@@ -158,16 +156,11 @@ public class HelpState extends BasicGameState {
 
     /**
      * Update the game logic.
-     *
-     * @param gc
-     *            - the container holding the game
-     * @param game
-     *            - the game holding the state
-     * @param delta
-     *            - the amount of time that has passed since last update in
-     *            milliseconds
-     * @throws SlickException
-     *             - indicates internal error
+     * @param gc - the container holding the game.
+     * @param game - the game holding the state.
+     * @param delta - the amount of time that has passed since last update in
+     * milliseconds.
+     * @throws SlickException - indicates internal error.
      */
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
         mouse.updatePosition();
@@ -186,9 +179,9 @@ public class HelpState extends BasicGameState {
 
     /**
      * Make sure text overflow works properly.
-     * @param text the text to be wrapped
-     * @param len max length of the text in characters
-     * @return Array of individual lines
+     * @param text - the text to be wrapped.
+     * @param len - max length of the text in characters.
+     * @return Array of individual lines.
      */
     static String[] wrapText(String text, int len) {
         // return empty array for null text
@@ -248,7 +241,7 @@ public class HelpState extends BasicGameState {
 
     /**
      * Getter for the previous state the game was in.
-     * @return - The previous state
+     * @return The previous state.
      */
     public static int getPrevious() {
         return PREVIOUS_STATE;
@@ -264,8 +257,7 @@ public class HelpState extends BasicGameState {
 
     /**
      * Get the ID of this state.
-     *
-     * @return the unique ID of this state
+     * @return the unique ID of this state.
      */
     @Override
     public int getID() {
@@ -274,7 +266,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the back button in the HelpState screen.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderBackButton(Graphics g) {
         g.drawImage(back, backButtonDR.getPositionX(), backButtonDR.getPositionY());
@@ -283,7 +275,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the game's instructions in the screen.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderInstructions(Graphics g) {
         String [] instructions = wrapText(INSTRUCTIONS_TEXT, WRAP_LENGTH);
@@ -294,7 +286,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the different enemies.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderEnemies(Graphics g) {
         titleFont.drawString(INSTRUCTIONS_DRAW_X, SHIELD_DRAW_Y, ENEMIES_TEXT, myBlue);
@@ -304,7 +296,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the different powerups.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderPowerups(Graphics g) {
         titleFont.drawString(POWERUP_DRAW_X, POWERUP_DRAW_Y, POWERUP_TEXT, myBlue);
@@ -316,7 +308,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the powerup poison.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderPowerupPoison(Graphics g) {
         g.drawImage(poison, POWERUP_DRAW_X, POISON_DRAW_Y);
@@ -328,7 +320,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the powerup shield.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderPowerupShield(Graphics g) {
         g.drawImage(shield, POWERUP_DRAW_X, SHIELD_DRAW_Y);
@@ -340,7 +332,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the powerup speedup.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderPowerupSpeedup(Graphics g) {
         g.drawImage(speedup, POWERUP_DRAW_X, SPEEDUP_DRAW_Y);
@@ -352,7 +344,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the powerup extralife.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderPowerupExtraLife(Graphics g) {
         g.drawImage(extralife, POWERUP_DRAW_X, EXTRALIFE_DRAW_Y);
@@ -364,7 +356,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the fish and squid enemies.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderEnemiesFishSquid(Graphics g) {
         g.drawImage(fish, INSTRUCTIONS_DRAW_X, SQUID_DRAW_Y);
@@ -377,7 +369,7 @@ public class HelpState extends BasicGameState {
     
     /**
      * Renders the information about the whale enemy.
-     * @param g - the graphics content to render
+     * @param g - the graphics content to render.
      */
     private void renderEnemiesWhale(Graphics g) {
         g.drawImage(whale, INSTRUCTIONS_DRAW_X, SPEEDUP_TEXT_DRAW_Y);
