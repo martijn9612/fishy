@@ -46,7 +46,6 @@ public class ScoreState extends BasicGameState {
 	private Button backButton;
 	private TrueTypeFont textFont;
 	private TrueTypeFont titleFont;
-	private ScoreController scoreController;
 	private MousePosition mouse = new MousePosition();
 	private Color backButtonTextColor = new Color(70, 175, 230);
 
@@ -65,7 +64,6 @@ public class ScoreState extends BasicGameState {
      * @throws SlickException - indicates internal error.
      */
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-    	scoreController = new ScoreController();
     	background = new Image(BACKGROUND_RESOURCE);
     	backButton = new Button(BACK_BUTTON_DRAW_X, BACK_BUTTON_DRAW_Y, BACK_BUTTON_RESOURCE);
     	textFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.PLAIN, 16), true);
@@ -92,7 +90,7 @@ public class ScoreState extends BasicGameState {
      * Render the list of known scores by displaying name and score value. 
      */
     private void renderHighscores() {
-		List<Score> scores = scoreController.getScoreList();
+		List<Score> scores = ScoreController.getInstance().getScoreList();
 		if (scores.size() > MAX_SCORE_ENTRIES) {
 			scores = scores.subList(0, MAX_SCORE_ENTRIES);
 		}

@@ -16,21 +16,35 @@ import nl.github.martijn9612.fishy.models.Score;
 /**
  * The ScoreController handles the logic for maintaining a list of high
  * scores and ensuring this list is persistently stored into a file.
+ * 
  * @author Leon Noordam
  */
 public class ScoreController {
 	private static final String SCORE_FILE_PATH = "highscores.ser";
 	private List<Score> scoreList = new ArrayList<Score>();
+	private static ScoreController instance = null;
+	private double temporaryPlayerScore = 0;
 	
 	/**
 	 * Create a new instance of the ScoreController. The constructor
 	 * searches for the saved scores and will load them when found.
 	 */
-	public ScoreController() {
+	private ScoreController() {
 		File savedScores = new File(SCORE_FILE_PATH);
 		if(savedScores.isFile()) {
 			unserialize();
 		}
+	}
+	
+	/**
+	 * Get an instance of the ScoreController singleton.
+	 * @return ScoreController instance.
+	 */
+	public static ScoreController getInstance() {
+		if (instance == null) {
+			instance = new ScoreController();
+		}
+		return instance;
 	}
 	
 	/**
@@ -58,6 +72,16 @@ public class ScoreController {
 	}
 	
 	/**
+	 * Saves the stored score of last game in the high score records.
+	 * @param playerName name of the player.
+	 */
+	public void savedStoredScore(String playerName) {
+		Score newScore = new Score(playerName, temporaryPlayerScore);
+		temporaryPlayerScore = 0;
+		addScore(newScore);
+	}
+	
+	/**
 	 * Get the list of scores.
 	 * @return List<Score> object with scores.
 	 */
@@ -65,6 +89,22 @@ public class ScoreController {
 		return scoreList;
 	}
 	
+	/**
+	 * Store the player score for access in other states.
+	 * @param score high score of the last game.
+	 */
+	public void storePlayerScore(double score) {
+		temporaryPlayerScore = score;
+	}
+	
+	/**
+	 * Get the stored player score in other states.
+	 * @return double high score of the last game.
+	 */
+	public double getPlayerScore() {
+		return temporaryPlayerScore;
+	}
+
 	/**
 	 * Writes the arrayList defined as field in this class to a file.
 	 */
@@ -100,4 +140,6 @@ public class ScoreController {
 			e.printStackTrace();
 		}
 	}
+
+
 }

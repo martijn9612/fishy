@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import nl.github.martijn9612.fishy.Main;
 import nl.github.martijn9612.fishy.OpponentController;
+import nl.github.martijn9612.fishy.ScoreController;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.powerups.PowerupController;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
@@ -117,13 +118,13 @@ public class LevelState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		Input input = gc.getInput();
+		
 		if (input.isKeyPressed(Input.KEY_P)) {
-
 			gc.setPaused(!gc.isPaused());
-
 			sbg.enterState(Main.HELP_STATE);
 			HelpState.setPrevious(Main.LEVEL_STATE);
 		}
+		
 		player.objectLogic(gc, delta);
         opponentController.updateOpponents(gc, delta);
         opponentController.spawnOpponents(player);
@@ -135,8 +136,8 @@ public class LevelState extends BasicGameState {
 		lives = player.getLivesAsString();
 
         if (player.getScore() >= PLAYER_WIN_AT_SCORE) {
-            Main.actionLogger.logLine("Player won the game", getClass()
-					.getSimpleName());
+            Main.actionLogger.logLine("Player won the game", getClass().getSimpleName());
+            ScoreController.getInstance().storePlayerScore(player.getScore());
             player.resetPlayerVariables();
             sbg.enterState(Main.GAME_WIN_STATE);
         }
