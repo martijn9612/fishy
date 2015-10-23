@@ -130,23 +130,16 @@ public class OpponentController {
 				        player.Loselife();
 				    } else {
 						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
+						ScoreController.getInstance().storePlayerScore(player.getScore());
+						System.out.println(ScoreController.getInstance().getPlayerScore());
 						player.resetPlayerVariables();
 						LevelState.getOC().removeAllOpponents();
 						LevelState.getPC().Remove();
+						System.out.println(ScoreController.getInstance().getPlayerScore());
 						sbg.enterState(Main.GAME_LOSE_STATE);
-
-					if (!player.hasShield()) {
-						if (player.getLives() > 0) {
-							player.addShield(1000, 1000);
-							player.Loselife();
-						} else {
-							Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
-							sbg.enterState(Main.GAME_LOSE_STATE);
-						}
 					}
 				}
 			}
-		}
 		}
 	}
 
