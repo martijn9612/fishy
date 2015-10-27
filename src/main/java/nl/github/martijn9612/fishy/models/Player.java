@@ -20,8 +20,8 @@ public class Player extends Entity {
     private static final float PLAYER_HEIGHT = 16;
     private static final float WATER_DRAG = 0.3f;
     private static float playerMass = 5;
-    private static float playerMaxSpeed = 8;
-    private static float playerMoveForce = 4;
+    private float playerMaxSpeed = 8;
+    private float playerMoveForce = 4;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
     private static final String PLAYER_SPRITE = "resources/player-"
@@ -161,7 +161,6 @@ public class Player extends Entity {
         data.dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
         playerMaxSpeed = 8;
         playerMoveForce = 4;
-        playerMass = 5;
         poisoned = false;
         setScore(0);
     }
@@ -215,7 +214,7 @@ public class Player extends Entity {
         speedUpTimer.cancel();
         playerMaxSpeed = 40;
         playerMoveForce = 30;
-        playerMass = 3;
+        data.mass = 3;
         speedUpTimer = new Timer();
 
         TimerTask action = new TimerTask() {
@@ -260,7 +259,6 @@ public class Player extends Entity {
     public int getLives() {
         return lives;
     }
-
     /** 
      * Removes 1 life.
      */

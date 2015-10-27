@@ -1,9 +1,7 @@
 package nl.github.martijn9612.fishy.states;
 
-import nl.github.martijn9612.fishy.Main;
-import nl.github.martijn9612.fishy.position.DrawRectangle;
-import nl.github.martijn9612.fishy.position.MousePosition;
-import nl.github.martijn9612.fishy.position.MouseRectangle;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -16,8 +14,9 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.models.Button;
+import nl.github.martijn9612.fishy.position.MousePosition;
 
 /**
  * Implements the HelpState which shows instructions to the game.
@@ -25,7 +24,6 @@ import java.util.Vector;
  */
 public class HelpState extends BasicGameState {
 
-    private Image back;
     private Image background;
     private Image poison;
     private Image shield;
@@ -35,14 +33,14 @@ public class HelpState extends BasicGameState {
     private Image squid;
     private Image whale;
     private MousePosition mouse;
-    private DrawRectangle backButtonDR;
-    private MouseRectangle backButtonMR;
+    private Button backButton;
     private Font textFont;
     private Font titleFont;
     private Font introFont;
     private Color myBlue = new Color(70, 175, 230);
 
     public static int PREVIOUS_STATE = 0;
+    public static final int STATE_ID = 4;
 
     private static final int LINE_HEIGHT = 20;
     private static final int WRAP_LENGTH = 40;
@@ -74,8 +72,8 @@ public class HelpState extends BasicGameState {
             "Definitely try to get these! ";
     private static final int SPEEDUP_DRAW_Y = 300;
     private static final int SPEEDUP_TEXT_DRAW_Y = 347;
-    private static final String SPEEDUP_TEXT = "This is a speed-up! " +
-            "Eating this will increase your speed significantly. " +
+    private static final String SPEEDUP_TEXT = "This is a speedUp-up! " +
+            "Eating this will increase your speedUp significantly. " +
             "Avoid these if possible. ";
     private static final int EXTRALIFE_DRAW_Y = 415;
     private static final int EXTRALIFE_TEXT_DRAW_Y = 457;
@@ -97,18 +95,10 @@ public class HelpState extends BasicGameState {
     private static final String POISON_RESOURCE = "resources/poison.png";
     private static final String EXTRALIFE_RESOURCE = "resources/ExtraLife-fish.png";
     private static final String SHIELD_RESOURCE = "resources/shield.png";
-    private static final String SPEEDUP_RESOURCE = "resources/Speedup-fish.png";
+    private static final String SPEEDUP_RESOURCE = "resources/speedUp-fish.png";
     private static final String FISH_RESOURCE = "resources/opponent-fish.png";
     private static final String SQUID_RESOURCE = "resources/squid.png";
     private static final String WHALE_RESOURCE = "resources/whale.png";
-
-    /**
-     * Constructor for the Help State.
-     * @param state - the number of the state.
-     */
-    public HelpState(int state) {
-        // Blank
-    }
 
     /**
      * Initialize the game.
@@ -119,7 +109,7 @@ public class HelpState extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
         background.setAlpha(0.1f);
-        back = new Image(BACK_BUTTON_RESOURCE);
+        backButton = new Button(BACK_BUTTON_DRAW_X, BACK_BUTTON_DRAW_Y, BACK_BUTTON_RESOURCE);
         poison = new Image(POISON_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         shield = new Image(SHIELD_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         speedup = new Image(SPEEDUP_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
@@ -127,14 +117,23 @@ public class HelpState extends BasicGameState {
         fish = new Image(FISH_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         squid = new Image(SQUID_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         whale = new Image(WHALE_RESOURCE).getScaledCopy(POWERUP_SIZE * 2, POWERUP_SIZE * 2);
-        backButtonDR = new DrawRectangle(BACK_BUTTON_DRAW_X,
-                BACK_BUTTON_DRAW_Y, back.getWidth(), back.getHeight());
-        backButtonMR = backButtonDR.getMouseRectangle();
-        mouse = new MousePosition();
         textFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.PLAIN , 16), true);
         titleFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 24), true);
         introFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 16), true);
+        mouse = new MousePosition();
     }
+    
+    /**
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Entering HelpState", getClass().getSimpleName());
+	}
 
     /**
      * Renders the game's screen.
@@ -164,18 +163,24 @@ public class HelpState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
         mouse.updatePosition();
-
-        if (mouse.isInRectangle(backButtonMR)) {
-            if (mouse.isLeftButtonDown()) {
-                game.enterState(getPrevious());
-            }
-        }
-
         Input input = gc.getInput();
-        if (input.isKeyPressed(Input.KEY_P)) {
+
+        if (backButton.wasClickedBy(mouse) || input.isKeyPressed(Input.KEY_P)) {
             game.enterState(getPrevious());
         }
     }
+    
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Leaving HelpState", getClass().getSimpleName());
+	}
 
     /**
      * Make sure text overflow works properly.
@@ -261,7 +266,7 @@ public class HelpState extends BasicGameState {
      */
     @Override
     public int getID() {
-        return Main.HELP_STATE;
+        return STATE_ID;
     }
     
     /**
@@ -269,7 +274,7 @@ public class HelpState extends BasicGameState {
      * @param g - the graphics content to render.
      */
     private void renderBackButton(Graphics g) {
-        g.drawImage(back, backButtonDR.getPositionX(), backButtonDR.getPositionY());
+        backButton.draw(g);
         titleFont.drawString(BACK_DRAW_X, BACK_DRAW_Y, BACK_TEXT, myBlue);
     }
     

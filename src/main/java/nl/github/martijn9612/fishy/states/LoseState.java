@@ -35,20 +35,13 @@ public class LoseState extends BasicGameState {
     private static final String PLAY_BUTTON_RESOURCE = "resources/play-button.gif";
     private static final String DEAD_FISH_RESOURCE = "resources/dead-fish.png";
     private static final String SCORE_TEXT = "Score: ";
+    public static final int STATE_ID = 2;
     
     private Image deadFish;
     private MousePosition mouse;
     private Button playButton;
     private SubmitScoreWidget submitScore;
     private TrueTypeFont textFont;
-
-    /**
-     * Constructor for the Lose State.
-     * @param state - the number of the state.
-     */
-    public LoseState(int state) {
-        // Blank
-    }
 
     /**
      * Initialize the game.
@@ -63,6 +56,18 @@ public class LoseState extends BasicGameState {
         playButton = new Button(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, PLAY_BUTTON_RESOURCE);
         mouse = new MousePosition();
     }
+    
+    /**
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Entering LoseState", getClass().getSimpleName());
+	}
 
     /**
      * Renders the game's screen.
@@ -91,17 +96,25 @@ public class LoseState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
         mouse.updatePosition();
+        Input input = gc.getInput();
         submitScore.update(gc, game, mouse);
 
-        if (playButton.wasClickedBy(mouse)) {
-            game.enterState(Main.LEVEL_STATE);
-        }
-
-        Input input = gc.getInput();
-        if (input.isKeyDown(Input.KEY_ENTER)) {
-            game.enterState(Main.LEVEL_STATE);
+        if (playButton.wasClickedBy(mouse) || input.isKeyDown(Input.KEY_ENTER)) {
+            game.enterState(LevelState.STATE_ID);
         }
     }
+    
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+	@Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Leaving LoseState", getClass().getSimpleName());
+	}
 
     /**
      * Get the ID of this state.
@@ -109,7 +122,7 @@ public class LoseState extends BasicGameState {
      */
     @Override
     public int getID() {
-        return Main.GAME_LOSE_STATE;
+        return STATE_ID;
     }
 
 }

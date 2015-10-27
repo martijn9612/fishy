@@ -8,7 +8,6 @@ import nl.github.martijn9612.fishy.Main;
  * Software Engineering Methods Project - Group 11.
  */
 public abstract class Position {
-	
 	protected int positionX = 0;
 	protected int positionY = 0;
 	

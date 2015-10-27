@@ -35,14 +35,7 @@ public class LevelState extends BasicGameState {
     private static final int YPOS_STATE_STRING = 10;
     private static final int XPOS_SCORE_STRING = 450;
     private static final int XPOS_LIVES_STRING = 500;
-
-    /**
-     * Constructor for the LevelState.
-     * @param state - the number of the state.
-     */
-    public LevelState(int state) {
-        // Blank
-    }
+    public static final int STATE_ID = 1;
 
     /**
      * Sets the score.
@@ -66,28 +59,16 @@ public class LevelState extends BasicGameState {
 	}
 
 	/**
-	 * Triggers when the state is entered.
-	 * @param gameContainer - the container of the game.
-	 * @param stateBasedGame - the game holding the state.
-	 * @throws SlickException - indicates internal error.
-	 */
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
     @Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
-		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
-	}
-
-	/**
-	 * Triggers when the state is left.
-	 * @param gc - the container of the game.
-	 * @param sbg - the game holding the state.
-	 * @throws SlickException - indicates internal error.
-	 */
-	@Override
-	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		super.leave(gc, sbg);
-		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		Main.actionLogger.logLine("Entering LevelState", getClass().getSimpleName());
 	}
 
     /**
@@ -121,8 +102,8 @@ public class LevelState extends BasicGameState {
 		
 		if (input.isKeyPressed(Input.KEY_P)) {
 			gc.setPaused(!gc.isPaused());
-			sbg.enterState(Main.HELP_STATE);
-			HelpState.setPrevious(Main.LEVEL_STATE);
+			HelpState.setPrevious(LevelState.STATE_ID);
+			sbg.enterState(HelpState.STATE_ID);
 		}
 		
 		player.objectLogic(gc, delta);
@@ -139,18 +120,29 @@ public class LevelState extends BasicGameState {
             Main.actionLogger.logLine("Player won the game", getClass().getSimpleName());
             ScoreController.getInstance().storePlayerScore(player.getScore());
             player.resetPlayerVariables();
-            sbg.enterState(Main.GAME_WIN_STATE);
+            sbg.enterState(WinState.STATE_ID);
         }
     }
 
-
-
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+	@Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		Main.actionLogger.logLine("Leaving LevelState", getClass().getSimpleName());
+	}
+    
     /**
      * Get the ID of this state.
      * @return the unique ID of this state.
      */
     public int getID() {
-        return Main.LEVEL_STATE;
+        return STATE_ID;
     }
 
     /**

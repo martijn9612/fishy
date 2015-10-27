@@ -15,7 +15,6 @@ import nl.github.martijn9612.fishy.models.Vector;
  * Implementation of the LinearOpponent class. 
  * A LinearOpponent is a small opponent that moves
  * horizontally with a constant speed.
- * Software Engineering Methods Project - Group 11.
  */
 public class LinearOpponent extends NonPlayer {
 	private static final String SPRITE_PATH = "resources/opponent-" 

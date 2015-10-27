@@ -1,5 +1,6 @@
 package nl.github.martijn9612.fishy.states;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,9 +10,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.github.martijn9612.fishy.Main;
-import nl.github.martijn9612.fishy.position.DrawRectangle;
+import nl.github.martijn9612.fishy.models.Button;
 import nl.github.martijn9612.fishy.position.MousePosition;
-import nl.github.martijn9612.fishy.position.MouseRectangle;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
 /**
@@ -19,23 +19,15 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
  * Software Engineering Methods Project - Group 11.
  */
 public class MenuState extends BasicGameState {
+	private Image background;
     private String menu = "Menu";
-    private Image play;
-    private Image exit;
-    private Image help;
-    private Image title;
-    private Image highscore;
-    private Image background;
     private MousePosition mouse;
-    private DrawRectangle playButtonDR;
-    private DrawRectangle exitButtonDR;
-    private DrawRectangle helpButtonDR;
-    private DrawRectangle scoreButtonDR;
-    private MouseRectangle playButtonMR;
-    private MouseRectangle exitButtonMR;
-    private MouseRectangle helpButtonMR;
-    private MouseRectangle scoreButtonMR;
     private MusicPlayer musicPlayer = MusicPlayer.getInstance();
+	private Button playButton;
+	private Button exitButton;
+	private Button helpButton;
+	private Button scoreButton;
+	private Image title;
 
     private static final int MENU_TEXT_DRAW_X = 280;
     private static final int MENU_TEXT_DRAW_Y = 10;
@@ -49,14 +41,7 @@ public class MenuState extends BasicGameState {
     private static final int HELP_BUTTON_DRAW_Y = 10;
 	private static final int SCORE_BUTTON_DRAW_X = 580;
 	private static final int SCORE_BUTTON_DRAW_Y = 90;
-
-    /**
-     * Constructor for the MenuState.
-     * @param state the number of the state.
-     */
-    public MenuState(int state) {
-        // Blank
-    }
+	public static final int STATE_ID = 0;
 
     /**
      * Initialize the game.
@@ -64,28 +49,13 @@ public class MenuState extends BasicGameState {
      * @param sbg - the game holding the state.
      * @throws SlickException - indicates internal error.
      */
-    public void init(GameContainer gc, StateBasedGame sbg)
-            throws SlickException {
-        Main.actionLogger.logLine("Entered main menu", getClass()
-                .getSimpleName());
-        play = new Image("resources/play-button.gif");
-        exit = new Image("resources/exit-button.gif");
-        help = new Image("resources/gears.png");
-        title = new Image("resources/something-fishy.png");
+    public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+        playButton = new Button(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, "resources/play-button.gif");
+        exitButton = new Button(EXIT_BUTTON_DRAW_X, EXIT_BUTTON_DRAW_Y, "resources/exit-button.gif");
+        helpButton = new Button(HELP_BUTTON_DRAW_X, HELP_BUTTON_DRAW_Y, "resources/gears.png");
+        scoreButton = new Button(SCORE_BUTTON_DRAW_X, SCORE_BUTTON_DRAW_Y, "resources/trophy.png");
         background = new Image("resources/bg-menu.jpg");
-        highscore = new Image("resources/trophy.png");
-        playButtonDR = new DrawRectangle(PLAY_BUTTON_DRAW_X,
-                PLAY_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
-        exitButtonDR = new DrawRectangle(EXIT_BUTTON_DRAW_X,
-                EXIT_BUTTON_DRAW_Y, play.getWidth(), play.getHeight());
-        helpButtonDR = new DrawRectangle(HELP_BUTTON_DRAW_X,
-                HELP_BUTTON_DRAW_Y, help.getWidth(), help.getHeight());
-        scoreButtonDR = new DrawRectangle(SCORE_BUTTON_DRAW_X,
-        		SCORE_BUTTON_DRAW_Y, highscore.getWidth(), highscore.getHeight());
-        playButtonMR = playButtonDR.getMouseRectangle();
-        exitButtonMR = exitButtonDR.getMouseRectangle();
-        helpButtonMR = helpButtonDR.getMouseRectangle();
-        scoreButtonMR = scoreButtonDR.getMouseRectangle();
+        title = new Image("resources/something-fishy.png");
         mouse = new MousePosition();
     }
 
@@ -96,10 +66,10 @@ public class MenuState extends BasicGameState {
      * @throws SlickException - indicates internal error.
      */
     @Override
-    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame)
-            throws SlickException {
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_MENU);
+		Main.actionLogger.logLine("Entering MenuState", getClass().getSimpleName());
 	}
 
     /**
@@ -109,19 +79,15 @@ public class MenuState extends BasicGameState {
      * @param g - the graphics content used to render.
      * @throws SlickException - indicates internal error.
      */
-    public void render(GameContainer gc, StateBasedGame sbg, Graphics g)
-            throws SlickException {
+    public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
     	g.drawImage(background, 0, 0); 
+    	g.setColor(Color.white);
     	g.drawString(menu, MENU_TEXT_DRAW_X, MENU_TEXT_DRAW_Y);
-        g.drawImage(play, playButtonDR.getPositionX(),
-                playButtonDR.getPositionY());
-        g.drawImage(exit, exitButtonDR.getPositionX(),
-                exitButtonDR.getPositionY());
-        g.drawImage(help, helpButtonDR.getPositionX(),
-        		helpButtonDR.getPositionY());
-        g.drawImage(highscore, scoreButtonDR.getPositionX(),
-                scoreButtonDR.getPositionY());
-        g.drawImage(title.getScaledCopy(0.5f), TITLE_IMAGE_DRAW_X, TITLE_IMAGE_DRAW_Y);
+    	g.drawImage(title.getScaledCopy(0.5f), TITLE_IMAGE_DRAW_X, TITLE_IMAGE_DRAW_Y);
+    	scoreButton.draw(g);
+    	playButton.draw(g);
+    	exitButton.draw(g);
+    	helpButton.draw(g);
     }
 
     /**
@@ -132,46 +98,29 @@ public class MenuState extends BasicGameState {
      * passed since last update in milliseconds.
      * @throws SlickException - indicates internal error.
      */
-    public void update(GameContainer gc, StateBasedGame sbg, int delta)
-            throws SlickException {
+    public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         mouse.updatePosition();
+        Input input = gc.getInput();
         menu = "(" + mouse.getPositionX() + "," + mouse.getPositionY() + ")";
 
-        if (mouse.isInRectangle(playButtonMR)) {
-            if (mouse.isLeftButtonDown()) {
-                sbg.enterState(Main.LEVEL_STATE);
-            }
+        if (playButton.wasClickedBy(mouse)) {
+            sbg.enterState(LevelState.STATE_ID);
         }
 
-        if (mouse.isInRectangle(exitButtonMR)) {
-            if (mouse.isLeftButtonDown()) {
-                Main.actionLogger.logLine("Game Closed!", getClass()
-                        .getSimpleName());
-                gc.exit();
-            }
-        }
-
-        if (mouse.isInRectangle(helpButtonMR)) {
-            if (mouse.isLeftButtonDown()) {
-                Main.actionLogger.logLine("HelpState opened.", getClass().getSimpleName());
-                sbg.enterState(Main.HELP_STATE);
-                HelpState.setPrevious(Main.MENU_STATE);
-            }
+        if (helpButton.wasClickedBy(mouse)) {
+            sbg.enterState(HelpState.STATE_ID);
+            HelpState.setPrevious(MenuState.STATE_ID);
         }
         
-        if (mouse.isInRectangle(scoreButtonMR)) {
-            if (mouse.isLeftButtonDown()) {
-                Main.actionLogger.logLine("ScoreState opened.", getClass().getSimpleName());
-                sbg.enterState(ScoreState.STATE_ID);
-            }
+        if (scoreButton.wasClickedBy(mouse)) {
+	        sbg.enterState(ScoreState.STATE_ID);
         }
 
-        Input input = gc.getInput();
         if (input.isKeyDown(Input.KEY_ENTER)) {
-            sbg.enterState(Main.LEVEL_STATE);
+            sbg.enterState(LevelState.STATE_ID);
         }
 
-        if (input.isKeyDown(Input.KEY_ESCAPE)) {
+        if (exitButton.wasClickedBy(mouse) || input.isKeyDown(Input.KEY_ESCAPE)) {
         	gc.exit();
         }
     }
@@ -183,10 +132,10 @@ public class MenuState extends BasicGameState {
      * @throws SlickException - indicates internal error.
      */
     @Override
-	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame)
-            throws SlickException {
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.leave(gameContainer, stateBasedGame);
 		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_MENU);
+		Main.actionLogger.logLine("Leaving MenuState", getClass().getSimpleName());
 	}
 
     /**
@@ -194,6 +143,6 @@ public class MenuState extends BasicGameState {
      * @return the unique ID of this state.
      */
     public int getID() {
-        return Main.MENU_STATE;
+        return STATE_ID;
     }
 }
