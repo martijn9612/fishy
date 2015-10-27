@@ -74,8 +74,8 @@ public class HelpState extends BasicGameState {
             "Definitely try to get these! ";
     private static final int SPEEDUP_DRAW_Y = 300;
     private static final int SPEEDUP_TEXT_DRAW_Y = 347;
-    private static final String SPEEDUP_TEXT = "This is a speed-up! " +
-            "Eating this will increase your speed significantly. " +
+    private static final String SPEEDUP_TEXT = "This is a speedUp-up! " +
+            "Eating this will increase your speedUp significantly. " +
             "Avoid these if possible. ";
     private static final int EXTRALIFE_DRAW_Y = 415;
     private static final int EXTRALIFE_TEXT_DRAW_Y = 457;
@@ -97,7 +97,7 @@ public class HelpState extends BasicGameState {
     private static final String POISON_RESOURCE = "resources/poison.png";
     private static final String EXTRALIFE_RESOURCE = "resources/ExtraLife-fish.png";
     private static final String SHIELD_RESOURCE = "resources/shield.png";
-    private static final String SPEEDUP_RESOURCE = "resources/Speedup-fish.png";
+    private static final String SPEEDUP_RESOURCE = "resources/speedUp-fish.png";
     private static final String FISH_RESOURCE = "resources/opponent-fish.png";
     private static final String SQUID_RESOURCE = "resources/squid.png";
     private static final String WHALE_RESOURCE = "resources/whale.png";

@@ -16,7 +16,6 @@ import org.newdawn.slick.Image;
  * Software Engineering Methods Project - Group 11;
  */
 public class DrawPosition extends Position {
-	
     /**
      * Creates a new DrawPosition, based on Position class.
      * @param positionX - x coordinate of the new DrawPosition.
@@ -45,14 +44,13 @@ public class DrawPosition extends Position {
 		position.flipYAxis();
 		return position;
 	}
-	
+
 	/**
 	 * Debug method which formats the contents of 
 	 * the DrawPosition object into a single String.
 	 * @return string representation of the DrawPosition.
 	 */
 	public String toString() {
-		return "Draw position X: " + positionX + ", Y: " + positionY;
+		return new StringBuilder().append("Draw position X: ").append(positionX).append(", Y: ").append(positionY).toString();
 	}
-	
 }

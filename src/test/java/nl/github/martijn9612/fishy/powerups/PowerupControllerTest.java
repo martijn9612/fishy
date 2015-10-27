@@ -6,9 +6,6 @@ import junit.framework.TestCase;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import nl.github.martijn9612.fishy.models.Player;
-import nl.github.martijn9612.fishy.powerups.Powerup;
-import nl.github.martijn9612.fishy.powerups.PowerupController;
-import nl.github.martijn9612.fishy.powerups.PowerupFactory;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -153,7 +150,7 @@ public class PowerupControllerTest extends TestCase {
     }
     
     /**
-     * Test for Remove.
+     * Test for remove.
      * Case where power == null.
      */
     @Test

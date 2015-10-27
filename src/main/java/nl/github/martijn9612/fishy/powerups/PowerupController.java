@@ -35,7 +35,6 @@ public class PowerupController {
             power.objectLogic(gc, deltaTime);
             if (power.isOffScreen()) {
                 Remove();
-
             }
         }
     }

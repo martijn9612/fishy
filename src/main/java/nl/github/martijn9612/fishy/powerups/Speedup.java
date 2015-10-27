@@ -7,12 +7,13 @@ import nl.github.martijn9612.fishy.models.Moveable;
 import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
+
 /**
  * Implements the Speedup powerup.
  * Software Engineering Methods Project - Group 11.
  */
 public class Speedup extends Powerup {
-    private static final String SPRITE_PATH = "resources/Speedup-fish.png" ;
+    private static final String SPRITE_PATH = "resources/speedUp-fish.png" ;
     private int chance;
 
     /**

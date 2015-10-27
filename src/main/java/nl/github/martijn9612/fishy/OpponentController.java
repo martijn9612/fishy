@@ -19,7 +19,6 @@ import nl.github.martijn9612.fishy.states.LevelState;
  * Software Engineering Methods Project - Group 11.
  */
 public class OpponentController {
-
 	private boolean loadResources;
 	private final Random random = new Random();
 	private ArrayList<NonPlayer> opponents = new ArrayList<NonPlayer>();
