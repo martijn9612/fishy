@@ -19,7 +19,7 @@ public class TestEntity extends TestCase {
 	
 	@Test
 	public void testSetPosition() {
-		Entity entity = mock(Entity.class);
+		Entity entity = mock(Entity.class, Mockito.CALLS_REAL_METHODS);
 		entity.setData(new Moveable());
 		entity.getData().setPosition(new Vector(X_VALUE, Y_VALUE));
 		assertEquals(X_VALUE, entity.getData().getPosition().x, 0.1);
@@ -28,7 +28,7 @@ public class TestEntity extends TestCase {
 	
 	@Test
 	public void testSetDimensions() {
-		Entity entity = mock(Entity.class);
+		Entity entity = mock(Entity.class, Mockito.CALLS_REAL_METHODS);
 		entity.setData(new Moveable());
 		entity.getData().setDimensions(new Vector(WIDTH, HEIGHT));
 		assertEquals(WIDTH, entity.getData().getDimensions().x, 0.1);
