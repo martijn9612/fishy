@@ -60,11 +60,15 @@ public class SubmitScoreWidget {
 		mouseOver = mouse.isInRectangle(submitMR);
 		
 		if (mouseOver && mouse.isLeftButtonDown()) {
-			String playerName = scoreInput.getText();
-			if(!hasSubmitted && playerName.length() > 0) {
-				ScoreController.getInstance().savedStoredScore(playerName);
-				hasSubmitted = true;
-			}
+			submitScore();
 		}
     }
+	
+	public void submitScore() {
+		String playerName = scoreInput.getText();
+		if(!hasSubmitted && playerName.length() > 0) {
+			ScoreController.getInstance().savedStoredScore(playerName);
+			hasSubmitted = true;
+		}
+	}
 }
