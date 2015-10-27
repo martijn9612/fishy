@@ -5,7 +5,11 @@ import org.lwjgl.input.Mouse;
 /**
  * Mouse coordinate system, which has the bottom left corner defined as (0,0)
  * 
- * (0,y) ------ (x,y) | . | | . | | . | (0,0) ------ (x,0)
+ * (0,y) ------ (x,y) 
+ *   |  .         | 
+ *   |     .      | 
+ *   |        .   | 
+ * (0,0) ------ (x,0)
  * 
  * Implements the MousePosition class. Software Engineering Methods Project -
  * Group 11.
