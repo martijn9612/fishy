@@ -131,11 +131,9 @@ public class OpponentController {
 				    } else {
 						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 						ScoreController.getInstance().storePlayerScore(player.getScore());
-						System.out.println(ScoreController.getInstance().getPlayerScore());
 						player.resetPlayerVariables();
 						LevelState.getOC().removeAllOpponents();
 						LevelState.getPC().Remove();
-						System.out.println(ScoreController.getInstance().getPlayerScore());
 						sbg.enterState(Main.GAME_LOSE_STATE);
 					}
 				}
