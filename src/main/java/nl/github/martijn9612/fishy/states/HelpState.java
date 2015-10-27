@@ -43,6 +43,7 @@ public class HelpState extends BasicGameState {
     private Color myBlue = new Color(70, 175, 230);
 
     public static int PREVIOUS_STATE = 0;
+    public static final int STATE_ID = 4;
 
     private static final int LINE_HEIGHT = 20;
     private static final int WRAP_LENGTH = 40;
@@ -101,14 +102,6 @@ public class HelpState extends BasicGameState {
     private static final String FISH_RESOURCE = "resources/opponent-fish.png";
     private static final String SQUID_RESOURCE = "resources/squid.png";
     private static final String WHALE_RESOURCE = "resources/whale.png";
-
-    /**
-     * Constructor for the Help State.
-     * @param state - the number of the state.
-     */
-    public HelpState(int state) {
-        // Blank
-    }
 
     /**
      * Initialize the game.
@@ -285,7 +278,7 @@ public class HelpState extends BasicGameState {
      */
     @Override
     public int getID() {
-        return Main.HELP_STATE;
+        return STATE_ID;
     }
     
     /**

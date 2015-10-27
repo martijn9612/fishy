@@ -50,14 +50,6 @@ public class ScoreState extends BasicGameState {
 	private Color backButtonTextColor = new Color(70, 175, 230);
 
     /**
-     * Constructor for the Lose State.
-     * @param state - the number of the state.
-     */
-    public ScoreState(int state) {
-        // Blank
-    }
-
-    /**
      * Initialize the game.
      * @param container - the container holding the game.
      * @param game - the game holding the state.
@@ -108,7 +100,7 @@ public class ScoreState extends BasicGameState {
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
     	mouse.updatePosition();
         if (backButton.wasClickedBy(mouse)) {
-            game.enterState(Main.MENU_STATE);
+            game.enterState(MenuState.STATE_ID);
         }
     }
     

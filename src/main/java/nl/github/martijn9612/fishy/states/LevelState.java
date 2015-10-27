@@ -35,14 +35,7 @@ public class LevelState extends BasicGameState {
     private static final int YPOS_STATE_STRING = 10;
     private static final int XPOS_SCORE_STRING = 450;
     private static final int XPOS_LIVES_STRING = 500;
-
-    /**
-     * Constructor for the LevelState.
-     * @param state - the number of the state.
-     */
-    public LevelState(int state) {
-        // Blank
-    }
+    public static final int STATE_ID = 1;
 
     /**
      * Sets the score.
@@ -109,8 +102,8 @@ public class LevelState extends BasicGameState {
 		
 		if (input.isKeyPressed(Input.KEY_P)) {
 			gc.setPaused(!gc.isPaused());
-			sbg.enterState(Main.HELP_STATE);
-			HelpState.setPrevious(Main.LEVEL_STATE);
+			HelpState.setPrevious(LevelState.STATE_ID);
+			sbg.enterState(HelpState.STATE_ID);
 		}
 		
 		player.objectLogic(gc, delta);
@@ -127,7 +120,7 @@ public class LevelState extends BasicGameState {
             Main.actionLogger.logLine("Player won the game", getClass().getSimpleName());
             ScoreController.getInstance().storePlayerScore(player.getScore());
             player.resetPlayerVariables();
-            sbg.enterState(Main.GAME_WIN_STATE);
+            sbg.enterState(WinState.STATE_ID);
         }
     }
 
@@ -149,7 +142,7 @@ public class LevelState extends BasicGameState {
      * @return the unique ID of this state.
      */
     public int getID() {
-        return Main.LEVEL_STATE;
+        return STATE_ID;
     }
 
     /**

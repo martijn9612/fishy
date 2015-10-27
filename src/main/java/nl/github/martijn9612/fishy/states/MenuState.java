@@ -1,5 +1,6 @@
 package nl.github.martijn9612.fishy.states;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -40,14 +41,7 @@ public class MenuState extends BasicGameState {
     private static final int HELP_BUTTON_DRAW_Y = 10;
 	private static final int SCORE_BUTTON_DRAW_X = 580;
 	private static final int SCORE_BUTTON_DRAW_Y = 90;
-
-    /**
-     * Constructor for the MenuState.
-     * @param state the number of the state.
-     */
-    public MenuState(int state) {
-        // Blank
-    }
+	public static final int STATE_ID = 0;
 
     /**
      * Initialize the game.
@@ -87,6 +81,7 @@ public class MenuState extends BasicGameState {
      */
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
     	g.drawImage(background, 0, 0); 
+    	g.setColor(Color.white);
     	g.drawString(menu, MENU_TEXT_DRAW_X, MENU_TEXT_DRAW_Y);
     	g.drawImage(title.getScaledCopy(0.5f), TITLE_IMAGE_DRAW_X, TITLE_IMAGE_DRAW_Y);
     	scoreButton.draw(g);
@@ -109,12 +104,12 @@ public class MenuState extends BasicGameState {
         menu = "(" + mouse.getPositionX() + "," + mouse.getPositionY() + ")";
 
         if (playButton.wasClickedBy(mouse)) {
-            sbg.enterState(Main.LEVEL_STATE);
+            sbg.enterState(LevelState.STATE_ID);
         }
 
         if (helpButton.wasClickedBy(mouse)) {
-            sbg.enterState(Main.HELP_STATE);
-            HelpState.setPrevious(Main.MENU_STATE);
+            sbg.enterState(HelpState.STATE_ID);
+            HelpState.setPrevious(MenuState.STATE_ID);
         }
         
         if (scoreButton.wasClickedBy(mouse)) {
@@ -122,7 +117,7 @@ public class MenuState extends BasicGameState {
         }
 
         if (input.isKeyDown(Input.KEY_ENTER)) {
-            sbg.enterState(Main.LEVEL_STATE);
+            sbg.enterState(LevelState.STATE_ID);
         }
 
         if (exitButton.wasClickedBy(mouse) || input.isKeyDown(Input.KEY_ESCAPE)) {
@@ -148,6 +143,6 @@ public class MenuState extends BasicGameState {
      * @return the unique ID of this state.
      */
     public int getID() {
-        return Main.MENU_STATE;
+        return STATE_ID;
     }
 }
