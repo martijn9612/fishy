@@ -13,6 +13,7 @@ import nl.github.martijn9612.fishy.opponents.BigOpponent;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
 import nl.github.martijn9612.fishy.states.LevelState;
+import nl.github.martijn9612.fishy.states.LoseState;
 
 /**
  * Implements the Opponent Handler of the game.
@@ -35,7 +36,6 @@ public class OpponentController {
 		this.loadResources = loadResources;
 	}
 	  
-
 	/**
 	 * Method that spawns all the opponents.
 	 * @param player - the current Player in the game.
@@ -130,12 +130,10 @@ public class OpponentController {
 				    } else {
 						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 						ScoreController.getInstance().storePlayerScore(player.getScore());
-						System.out.println(ScoreController.getInstance().getPlayerScore());
 						player.resetPlayerVariables();
 						LevelState.getOC().removeAllOpponents();
 						LevelState.getPC().Remove();
-						System.out.println(ScoreController.getInstance().getPlayerScore());
-						sbg.enterState(Main.GAME_LOSE_STATE);
+						sbg.enterState(LoseState.STATE_ID);
 					}
 				}
 			}

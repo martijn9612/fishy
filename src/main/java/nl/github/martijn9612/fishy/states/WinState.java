@@ -35,20 +35,13 @@ public class WinState extends BasicGameState {
     private static final String PLAY_BUTTON_RESOURCE = "resources/play-button.gif";
     private static final String EATING_FISH_RESOURCE = "resources/eating-fish.png";
     private static final String SCORE_TEXT = "Score: ";
+    public static final int STATE_ID = 3;
     
     private Image eatingFish;
     private Button playButton;
     private MousePosition mouse;
     private SubmitScoreWidget submitScore;
     private TrueTypeFont textFont;
-
-    /**
-     * Constructor for the WinState.
-     * @param state - the number of the state.
-     */
-    public WinState(int state) {
-        // Blank
-    }
 
     /**
      * Initialize the game.
@@ -63,6 +56,18 @@ public class WinState extends BasicGameState {
         submitScore = new SubmitScoreWidget(container, SUBMIT_SCORE_X, SUBMIT_SCORE_Y);
         mouse = new MousePosition();
     }
+    
+    /**
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Entering WinState", getClass().getSimpleName());
+	}
 
     /**
      * Renders the game's screen.
@@ -92,17 +97,25 @@ public class WinState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
         mouse.updatePosition();
+        Input input = gc.getInput();
         submitScore.update(gc, game, mouse);
         
-        if (playButton.wasClickedBy(mouse)) {
-            game.enterState(Main.LEVEL_STATE);
-        }
-
-        Input input = gc.getInput();
-        if (input.isKeyDown(Input.KEY_ENTER)) {
-            game.enterState(Main.LEVEL_STATE);
+        if (playButton.wasClickedBy(mouse) || input.isKeyDown(Input.KEY_ENTER)) {
+            game.enterState(LevelState.STATE_ID);
         }
     }
+    
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+	@Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Leaving WinState", getClass().getSimpleName());
+	}
 
     /**
      * Get the ID of this state.
@@ -110,7 +123,7 @@ public class WinState extends BasicGameState {
      */
     @Override
     public int getID() {
-        return Main.GAME_WIN_STATE;
+        return STATE_ID;
     }
 
 }

@@ -22,12 +22,6 @@ import java.util.logging.Logger;
  * Software Engineering Methods Project - Group 11.
  */
 public class Main extends StateBasedGame {
-    public static final int MENU_STATE = 0;
-    public static final int LEVEL_STATE = 1;
-    public static final int GAME_LOSE_STATE = 2;
-    public static final int GAME_WIN_STATE = 3;
-    public static final int HELP_STATE = 4;
-
     private static final String GAME_NAME = "Fishy";
     public static final int WINDOW_WIDTH = 650;
     public static final int WINDOW_HEIGHT = 550;
@@ -45,12 +39,12 @@ public class Main extends StateBasedGame {
      */
     public Main(String gameName) {
         super(gameName);
-        this.addState(new MenuState(MENU_STATE));
-        this.addState(new LevelState(LEVEL_STATE));
-        this.addState(new WinState(GAME_WIN_STATE));
-        this.addState(new LoseState(GAME_LOSE_STATE));
-        this.addState(new HelpState(HELP_STATE));
-        this.addState(new ScoreState(ScoreState.STATE_ID));
+        this.addState(new MenuState());
+        this.addState(new LevelState());
+        this.addState(new WinState());
+        this.addState(new LoseState());
+        this.addState(new HelpState());
+        this.addState(new ScoreState());
     }
 
     /**
@@ -87,7 +81,7 @@ public class Main extends StateBasedGame {
      */
     @Override
     public boolean closeRequested() {
-        Main.actionLogger.logLine("Game Closed!", getClass().getSimpleName());
+        Main.actionLogger.logLine("Game will close!", getClass().getSimpleName());
         return true;
     }
 
