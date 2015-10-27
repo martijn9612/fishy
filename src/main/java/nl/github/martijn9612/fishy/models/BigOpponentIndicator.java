@@ -39,8 +39,8 @@ public class BigOpponentIndicator extends Entity {
 	 */
     public static BigOpponentIndicator createIndicator(Moveable playerData, boolean loadResources) {
     	Moveable data = new Moveable();
-    	data.dimensions = new Vector(WHALE_SIZE_X, WHALE_SIZE_Y);
-    	data.position = new Vector(WHALE_START_X, playerData.position.y - (WHALE_SIZE_Y / 2));
+    	data.setDimensions(new Vector(WHALE_SIZE_X, WHALE_SIZE_Y));
+    	data.setPosition(new Vector(WHALE_START_X, playerData.getPosition().y - (WHALE_SIZE_Y / 2)));
         return new BigOpponentIndicator(data, loadResources, playerData);
     }
     
@@ -52,10 +52,10 @@ public class BigOpponentIndicator extends Entity {
      */
 	@Override
 	public void objectLogic(GameContainer gc, int deltaTime) {
-		float newIndicatorPosition = playerData.position.y - (WHALE_SIZE_Y / 2);
+		float newIndicatorPosition = playerData.getPosition().y - (WHALE_SIZE_Y / 2);
 		positionHistory.add(newIndicatorPosition);
 		updateIndicatorY();
-		data.updatePosition(100);
+		getData().updatePosition(100);
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class BigOpponentIndicator extends Entity {
 	 */
 	private void updateIndicatorY() {
 		if(positionHistory.size() > LAG_BY_FRAMES) {
-			data.position.y = positionHistory.get(0);
+			getData().getPosition().y = positionHistory.get(0);
 			positionHistory.remove(0);
 		}
 	}

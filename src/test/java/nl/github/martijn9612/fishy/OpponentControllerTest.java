@@ -36,8 +36,8 @@ public class OpponentControllerTest extends TestCase {
         player = Player.createPlayer(false);
         opponentController = new OpponentController(false);
         opponentData = new Moveable();
-        opponentData.position = new Vector(1, 1);
-        opponentData.velocity = new Vector(5, 0);
+        opponentData.setPosition(new Vector(1, 1));
+        opponentData.setVelocity(new Vector(5, 0));
     };
 
     /**
@@ -56,7 +56,7 @@ public class OpponentControllerTest extends TestCase {
      */
     @Test
     public void testUpdateOpponents1() {
-        opponentData.velocity.x = -5;
+        opponentData.getVelocity().x = -5;
         NonPlayer testopp = new LinearOpponent(opponentData, false);
         opponentController.addOpponent(testopp);
         assertEquals(opponentController.getOpponents().size(), 1);

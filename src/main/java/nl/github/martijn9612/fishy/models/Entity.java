@@ -16,11 +16,11 @@ import nl.github.martijn9612.fishy.utils.MusicPlayer;
  * Software Engineering Methods Project - Group 11.
  */
 public abstract class Entity {
-	public Moveable data;
 	public static final int IMAGE_ORIENTATE_LEFT = 0;
 	public static final int IMAGE_ORIENTATE_RIGHT = 1;
 	protected MusicPlayer musicPlayer;
 	protected boolean hasOpenGL;
+	private Moveable data;
 	private int orientation = IMAGE_ORIENTATE_LEFT;
 	private Vector oldDimensions;
 	private Image originalImage;
@@ -33,7 +33,7 @@ public abstract class Entity {
 	 * @param hasOpenGL - true if OpenGL context should be loaded, false if not.
 	 */
 	public Entity(Moveable data, boolean hasOpenGL) {
-		this.data = data;
+		this.setData(data);
 		this.oldDimensions = new Vector(-1,-1);
 		this.hasOpenGL = hasOpenGL;
 		updateBoundingbox();
@@ -94,7 +94,7 @@ public abstract class Entity {
 	public void renderObject(Graphics g) {
         if (hasOpenGL) {
 			Image image = getScaledImage();
-			g.drawImage(image, data.position.x, data.position.y);
+			g.drawImage(image, getData().getPosition().x, getData().getPosition().y);
 			if (Main.DEBUG_MODE) {
 				g.drawOval(boundingBox.getX(), boundingBox.getY(), boundingBox.getWidth(), boundingBox.getHeight());
 			}
@@ -106,7 +106,7 @@ public abstract class Entity {
 	 * @return size value.
 	 */
 	public float getSize() {
-		return ((data.dimensions.x + data.dimensions.y) / 2);
+		return ((getData().getDimensions().x + getData().getDimensions().y) / 2);
 	}
 
 	/**
@@ -132,13 +132,13 @@ public abstract class Entity {
 	 * created to act as bounding box.
 	 */
 	public void updateBoundingbox() {
-		float radiiX = (data.dimensions.x / 2);
-		float radiiY = (data.dimensions.y / 2);
+		float radiiX = (getData().getDimensions().x / 2);
+		float radiiY = (getData().getDimensions().y / 2);
 
 		if (boundingBox == null) {
-			boundingBox = new Ellipse(data.position.x, data.position.y, radiiX, radiiY);
+			boundingBox = new Ellipse(getData().getPosition().x, getData().getPosition().y, radiiX, radiiY);
 		} else {
-			boundingBox.setLocation(data.position);
+			boundingBox.setLocation(getData().getPosition());
 			boundingBox.setRadii(radiiX, radiiY);
 		}
     }
@@ -150,11 +150,11 @@ public abstract class Entity {
 	 * @return Image - a scaled version of the entity image.
 	 */
 	private Image getScaledImage() {
-		if (!oldDimensions.equals(data.dimensions)) {
-			int width = Math.round(data.dimensions.x);
-			int height = Math.round(data.dimensions.y);
+		if (!oldDimensions.equals(getData().getDimensions())) {
+			int width = Math.round(getData().getDimensions().x);
+			int height = Math.round(getData().getDimensions().y);
             scaledImage = originalImage.getScaledCopy(width, height);
-			oldDimensions = data.dimensions;
+			oldDimensions = getData().getDimensions();
 		}
         return scaledImage;
 	}
@@ -173,5 +173,13 @@ public abstract class Entity {
 	 */
 	public Ellipse getBoundingBox() {
 	    return boundingBox;
+	}
+
+	public Moveable getData() {
+		return data;
+	}
+
+	public void setData(Moveable data) {
+		this.data = data;
 	}
 }

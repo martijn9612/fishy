@@ -19,28 +19,28 @@ public class TestEntity extends TestCase {
 	
 	@Test
 	public void testSetPosition() {
-		Entity entity = mock(Entity.class);
-		entity.data = new Moveable();
-		entity.data.position = new Vector(X_VALUE, Y_VALUE);
-		assertEquals(X_VALUE, entity.data.position.x, 0.1);
-		assertEquals(Y_VALUE, entity.data.position.y, 0.1);
+		Entity entity = mock(Entity.class, Mockito.CALLS_REAL_METHODS);
+		entity.setData(new Moveable());
+		entity.getData().setPosition(new Vector(X_VALUE, Y_VALUE));
+		assertEquals(X_VALUE, entity.getData().getPosition().x, 0.1);
+		assertEquals(Y_VALUE, entity.getData().getPosition().y, 0.1);
 	}
 	
 	@Test
 	public void testSetDimensions() {
-		Entity entity = mock(Entity.class);
-		entity.data = new Moveable();
-		entity.data.dimensions = new Vector(WIDTH, HEIGHT);
-		assertEquals(WIDTH, entity.data.dimensions.x, 0.1);
-		assertEquals(HEIGHT, entity.data.dimensions.y, 0.1);
+		Entity entity = mock(Entity.class, Mockito.CALLS_REAL_METHODS);
+		entity.setData(new Moveable());
+		entity.getData().setDimensions(new Vector(WIDTH, HEIGHT));
+		assertEquals(WIDTH, entity.getData().getDimensions().x, 0.1);
+		assertEquals(HEIGHT, entity.getData().getDimensions().y, 0.1);
 	}
 	
 	@Test
 	public void testCreateEllipse() {
 		Entity entity = mock(Entity.class, Mockito.CALLS_REAL_METHODS);
-		entity.data = new Moveable();
-		entity.data.position = new Vector(X_VALUE, Y_VALUE);
-		entity.data.dimensions = new Vector(WIDTH, HEIGHT);
+		entity.setData(new Moveable());
+		entity.getData().setPosition(new Vector(X_VALUE, Y_VALUE));
+		entity.getData().setDimensions(new Vector(WIDTH, HEIGHT));
 		entity.updateBoundingbox();
 		assertTrue(entity.getEllipse() instanceof Ellipse);
 		float width = entity.getEllipse().getWidth();

@@ -28,7 +28,7 @@ public class LinearOpponent extends NonPlayer {
 	public LinearOpponent(Moveable data, boolean loadResources) {
 		super(data, loadResources);
 		loadResources(SPRITE_PATH);
-		if (loadResources && data.velocity.x > 0) {
+		if (loadResources && data.getVelocity().x > 0) {
 			setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
 		}
 	}
@@ -43,9 +43,9 @@ public class LinearOpponent extends NonPlayer {
 	public static LinearOpponent createRandom(Player player, Random random, boolean loadResources) {
 		Moveable data = new Moveable();
 		boolean spawnsLeft = random.nextBoolean();
-		data.dimensions = getRandomDimensions(player, random);
-		data.velocity = getRandomVelocity(random, spawnsLeft);
-		data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
+		data.setDimensions(getRandomDimensions(player, random));
+		data.setVelocity(getRandomVelocity(random, spawnsLeft));
+		data.setPosition(getRandomPosition(random, spawnsLeft, data.getDimensions()));
 		return new LinearOpponent(data, loadResources);
 	}
 	
@@ -95,7 +95,7 @@ public class LinearOpponent extends NonPlayer {
 	 */
 	@Override
 	public void objectLogic(GameContainer gc, int deltaTime) {
-	    data.updatePosition(100);
+	    getData().updatePosition(100);
 	    updateBoundingbox();
 	}
 }

@@ -101,6 +101,7 @@ public class WinState extends BasicGameState {
         submitScore.update(gc, game, mouse);
         
         if (playButton.wasClickedBy(mouse) || input.isKeyDown(Input.KEY_ENTER)) {
+        	submitScore.submitScore();
             game.enterState(LevelState.STATE_ID);
         }
     }

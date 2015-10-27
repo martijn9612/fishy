@@ -100,7 +100,8 @@ public class LoseState extends BasicGameState {
         submitScore.update(gc, game, mouse);
 
         if (playButton.wasClickedBy(mouse) || input.isKeyDown(Input.KEY_ENTER)) {
-            game.enterState(LevelState.STATE_ID);
+            submitScore.submitScore();
+        	game.enterState(LevelState.STATE_ID);
         }
     }
     
