@@ -42,8 +42,8 @@ public class SinusOpponent extends NonPlayer {
 	 */
 	public static SinusOpponent createRandom(Player player, Random random, boolean loadResources) {
 		Moveable data = new Moveable();
-		data.dimensions = getRandomDimensions(player, random);
-		data.position = getRandomPosition(random, data.dimensions);
+		data.setDimensions(getRandomDimensions(player, random));
+		data.setPosition(getRandomPosition(random, data.getDimensions()));
 		return new SinusOpponent(data, loadResources);
 	}
 	
@@ -80,12 +80,12 @@ public class SinusOpponent extends NonPlayer {
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
-        if (data.position.y <= 0) {
-        	data.velocity = new Vector(0, -1);
+        if (getData().getPosition().y <= 0) {
+        	getData().setVelocity(new Vector(0, -1));
         } else {
-        	data.velocity = new Vector(0, -((data.position.y % PIXELS_TO_HALT) / DIVIDER + 1));
+        	getData().setVelocity(new Vector(0, -((getData().getPosition().y % PIXELS_TO_HALT) / DIVIDER + 1)));
         }
-        data.updatePosition(100);
+        getData().updatePosition(100);
         updateBoundingbox();
     }
 }

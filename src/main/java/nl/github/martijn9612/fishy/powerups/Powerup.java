@@ -30,7 +30,7 @@ public abstract class Powerup extends NonPlayer {
      */
     @Override
     public void objectLogic(GameContainer gc, int deltaTime) {
-    	data.position.add(data.velocity);
+    	getData().getPosition().add(getData().getVelocity());
         updateBoundingbox();
     }
 

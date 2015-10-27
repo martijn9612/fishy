@@ -20,16 +20,16 @@ public class PlayerTest extends TestCase {
     protected void setUp() {
         player = Player.createPlayer(false);
         opponentData = new Moveable();
-        opponentData.position = new Vector(650 / 2, 550 / 2);
-        opponentData.velocity = new Vector(0, 0);
-        opponentData.dimensions = new Vector(16, 16);
+        opponentData.setPosition(new Vector(650 / 2, 550 / 2));
+        opponentData.setVelocity(new Vector(0, 0));
+        opponentData.setDimensions(new Vector(16, 16));
         when(gc.getInput()).thenReturn(input);
     };
 
     @Test
     public void testCreatePlayer() {
         Player test = new Player(opponentData, false);
-        assertEquals(test.data.position, player.data.position);
+        assertEquals(test.getData().getPosition(), player.getData().getPosition());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(-4, 0);
         force.scale(1 / 5);
-        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+        assertEquals(opponentData.getAcceleration().add(force), player.getData().getAcceleration());
     }
     
     @Test
@@ -47,7 +47,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(-4, 0);
         force.scale(1 / 5);
-        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+        assertEquals(opponentData.getAcceleration().add(force), player.getData().getAcceleration());
     }
     
 
@@ -57,7 +57,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, -4);
         force.scale(1 / 5);
-        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+        assertEquals(opponentData.getAcceleration().add(force), player.getData().getAcceleration());
     }
     
     @Test
@@ -66,7 +66,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, -4);
         force.scale(1 / 5);
-        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+        assertEquals(opponentData.getAcceleration().add(force), player.getData().getAcceleration());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, 4);
         force.scale(1 / 5);
-        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+        assertEquals(opponentData.getAcceleration().add(force), player.getData().getAcceleration());
     }
     
     @Test
@@ -84,7 +84,7 @@ public class PlayerTest extends TestCase {
         player.objectLogic(gc, 0);
         Vector force = new Vector(0, 4);
         force.scale(1 / 5);
-        assertEquals(opponentData.acceleration.add(force), player.data.acceleration);
+        assertEquals(opponentData.getAcceleration().add(force), player.getData().getAcceleration());
     }
 
 
@@ -98,14 +98,14 @@ public class PlayerTest extends TestCase {
     public void testResetPlayerVariablesDimensions() {
         Vector dimensions = new Vector(16, 16);
         player.resetPlayerVariables();
-        assertEquals(dimensions, player.data.dimensions);
+        assertEquals(dimensions, player.getData().getDimensions());
     }
     
     @Test
     public void testResetPlayerVariablesPosition() {
         Vector position = new Vector(650 / 2, 550 / 2);
         player.resetPlayerVariables();
-        assertEquals(position, player.data.position);
+        assertEquals(position, player.getData().getPosition());
     }
 
     @Test

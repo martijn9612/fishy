@@ -22,60 +22,60 @@ public class BigOpponentIndicatorTest extends TestCase {
     protected void setUp() {
         player = Player.createPlayer(false);
         opponentData = new Moveable();
-        opponentData.dimensions = new Vector(115, 100);
-        opponentData.position = new Vector(580, player.data.position.y - (100 / 2));
-        testIndicator = new BigOpponentIndicator(opponentData, false, player.data);
+        opponentData.setDimensions(new Vector(115, 100));
+        opponentData.setPosition(new Vector(580, player.getData().getPosition().y - (100 / 2)));
+        testIndicator = new BigOpponentIndicator(opponentData, false, player.getData());
     }
 
     @Test
     public void testIndicatortPosition() {
-    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
-        assertEquals(indicator.data.position, opponentData.position);
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.getData(), false);
+        assertEquals(indicator.getData().getPosition(), opponentData.getPosition());
     }
     
     @Test
     public void testIndicatorVelocity() {
-    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
-        assertEquals(indicator.data.velocity, opponentData.velocity);
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.getData(), false);
+        assertEquals(indicator.getData().getVelocity(), opponentData.getVelocity());
     }
     
     @Test
     public void testIndicatorAcceleration() {
-    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
-        assertEquals(indicator.data.acceleration, opponentData.acceleration);
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.getData(), false);
+        assertEquals(indicator.getData().getAcceleration(), opponentData.getAcceleration());
     }
     
     @Test
     public void testIndicatorDimensions() {
-    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.data, false);
-        assertEquals(indicator.data.dimensions, opponentData.dimensions);
+    	BigOpponentIndicator indicator = BigOpponentIndicator.createIndicator(player.getData(), false);
+        assertEquals(indicator.getData().getDimensions(), opponentData.getDimensions());
     }
     
     @Test
     public void testObjectLogicVelocity() {
-        float newIndicatorPosition = player.data.position.y - (100 / 2);
+        float newIndicatorPosition = player.getData().getPosition().y - (100 / 2);
         posHistory.add(newIndicatorPosition);
-        opponentData.velocity.add(opponentData.acceleration);
+        opponentData.getVelocity().add(opponentData.getAcceleration());
         testIndicator.objectLogic(gc, 0);
-        assertEquals(testIndicator.data.velocity, opponentData.velocity);
+        assertEquals(testIndicator.getData().getVelocity(), opponentData.getVelocity());
     }
     
     @Test
     public void testObjectLogicAcceleration() {
-        float newIndicatorPosition = player.data.position.y - (100 / 2);
+        float newIndicatorPosition = player.getData().getPosition().y - (100 / 2);
         posHistory.add(newIndicatorPosition);
-        opponentData.acceleration.scale(0);
+        opponentData.getAcceleration().scale(0);
         testIndicator.objectLogic(gc, 0);
-        assertEquals(testIndicator.data.acceleration, opponentData.acceleration);
+        assertEquals(testIndicator.getData().getAcceleration(), opponentData.getAcceleration());
     }
     
     @Test
     public void testObjectLogicPosition() {
-        float newIndicatorPosition = player.data.position.y - (100 / 2);
+        float newIndicatorPosition = player.getData().getPosition().y - (100 / 2);
         posHistory.add(newIndicatorPosition);
-        opponentData.position.add(opponentData.velocity);
+        opponentData.getPosition().add(opponentData.getVelocity());
         testIndicator.objectLogic(gc, 0);
-        assertEquals(testIndicator.data.position, opponentData.position);
+        assertEquals(testIndicator.getData().getPosition(), opponentData.getPosition());
     }
 
 }

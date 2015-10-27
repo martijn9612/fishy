@@ -6,20 +6,20 @@ package nl.github.martijn9612.fishy.models;
  * Software Engineering Methods Project - Group 11.
  */
 public class Moveable {
-	public Vector position = new Vector(0, 0);
-	public Vector velocity = new Vector(0, 0);
-	public Vector acceleration = new Vector(0, 0);
-	public Vector dimensions = new Vector(0, 0);
-	public float mass = 1;
+	private Vector position = new Vector(0, 0);
+	private Vector velocity = new Vector(0, 0);
+	private Vector dimensions = new Vector(0, 0);
+	private Vector acceleration = new Vector(0, 0);
+	private float mass = 1;
 
     /**
      * Updates the position of the player according to Newton standards.
      */
     public void updatePosition(float maxSpeed) {
-    	velocity.add(acceleration);
-    	velocity.limit(maxSpeed);
-    	position.add(velocity);
-    	acceleration.scale(0);
+    	getVelocity().add(getAcceleration());
+    	getVelocity().limit(maxSpeed);
+    	getPosition().add(getVelocity());
+    	getAcceleration().scale(0);
     }
     
     /**
@@ -27,9 +27,9 @@ public class Moveable {
      * @param waterDragCoefficient - the amount of drag foce the water applies.
      */
     public void applyWaterDrag(float waterDragCoefficient) {
-		float speed = velocity.length();
+		float speed = getVelocity().length();
 		float dragMagnitude = waterDragCoefficient * speed * speed;
-		Vector drag = velocity.copy();
+		Vector drag = getVelocity().copy();
 		drag.negateLocal();
 		drag.normalise();
 		drag.scale(dragMagnitude);
@@ -42,7 +42,47 @@ public class Moveable {
      */
     public void applyForce(Vector force) {
 		Vector newForce = force.copy();
-		newForce.scale(1 / mass);
-		acceleration.add(newForce);
+		newForce.scale(1 / getMass());
+		getAcceleration().add(newForce);
+	}
+
+	public Vector getPosition() {
+		return position;
+	}
+
+	public void setPosition(Vector position) {
+		this.position = position;
+	}
+
+	public Vector getDimensions() {
+		return dimensions;
+	}
+
+	public void setDimensions(Vector dimensions) {
+		this.dimensions = dimensions;
+	}
+
+	public float getMass() {
+		return mass;
+	}
+
+	public void setMass(float mass) {
+		this.mass = mass;
+	}
+
+	public Vector getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(Vector velocity) {
+		this.velocity = velocity;
+	}
+
+	public Vector getAcceleration() {
+		return acceleration;
+	}
+
+	public void setAcceleration(Vector acceleration) {
+		this.acceleration = acceleration;
 	}
 }

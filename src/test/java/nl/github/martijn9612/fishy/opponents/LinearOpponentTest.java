@@ -26,11 +26,11 @@ public class LinearOpponentTest extends TestCase {
     @Test
     public void testLinearOpponentMoveRight() {
         Moveable opponentData = new Moveable();
-        opponentData.dimensions = new Vector(10, 10);
-        opponentData.velocity = new Vector(1, 0);
+        opponentData.setDimensions(new Vector(10, 10));
+        opponentData.setVelocity(new Vector(1, 0));
         NonPlayer opp = new LinearOpponent(opponentData, false);
         opp.objectLogic(gc, 0);
-        assertEquals(1.0, opp.data.position.x, 0.1);
+        assertEquals(1.0, opp.getData().getPosition().x, 0.1);
     }
 
     /**
@@ -40,12 +40,12 @@ public class LinearOpponentTest extends TestCase {
     @Test
     public void testLinearOpponentMoveLeft() {
         Moveable opponentData = new Moveable();
-        opponentData.position = new Vector(10, 10);
-        opponentData.dimensions = new Vector(10, 10);
-        opponentData.velocity = new Vector(-1, 0);
+        opponentData.setPosition(new Vector(10, 10));
+        opponentData.setDimensions(new Vector(10, 10));
+        opponentData.setVelocity(new Vector(-1, 0));
         NonPlayer opp = new LinearOpponent(opponentData, false);
         opp.objectLogic(gc, 0);
-        assertEquals(9.0, opp.data.position.x, 0.1);
+        assertEquals(9.0, opp.getData().getPosition().x, 0.1);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class LinearOpponentTest extends TestCase {
         LinearOpponent test = LinearOpponent
                 .createRandom(player, random, false);
         Vector testVector = new Vector(1, 1);
-        assertTrue(test.data.dimensions.equals(testVector));
+        assertTrue(test.getData().getDimensions().equals(testVector));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class LinearOpponentTest extends TestCase {
         Vector testVector = new Vector(2, 0);
         LinearOpponent test = LinearOpponent.createRandom(player, random, false);
         
-        assertTrue(test.data.velocity.equals(testVector));
+        assertTrue(test.getData().getVelocity().equals(testVector));
     }
     
     @Test
@@ -77,6 +77,6 @@ public class LinearOpponentTest extends TestCase {
         Vector testVector = new Vector(-2, 0);
         LinearOpponent test = LinearOpponent.createRandom(player, random, false);
         
-        assertTrue(test.data.velocity.equals(testVector));
+        assertTrue(test.getData().getVelocity().equals(testVector));
     }
 }

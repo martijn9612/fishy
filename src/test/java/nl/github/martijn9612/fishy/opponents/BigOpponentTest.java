@@ -30,10 +30,10 @@ public class BigOpponentTest extends TestCase {
     protected void setUp() {
         player = Player.createPlayer(false);
         opponentData = new Moveable();
-        opponentData.position = new Vector(930, player.data.position.y - 350 / 2);
-        opponentData.velocity = new Vector(-1, 0);
-        opponentData.dimensions = new Vector(350 * 1.15f, 350);
-        test = new BigOpponent(opponentData, false, player.data);
+        opponentData.setPosition(new Vector(930, player.getData().getPosition().y - 350 / 2));
+        opponentData.setVelocity(new Vector(-1, 0));
+        opponentData.setDimensions(new Vector(350 * 1.15f, 350));
+        test = new BigOpponent(opponentData, false, player.getData());
     }
     
     /**
@@ -42,8 +42,8 @@ public class BigOpponentTest extends TestCase {
      */
     @Test
     public void testCreateBigOpponentPosition() {
-        BigOpponent bigopp = BigOpponent.createBigOpponent(player.data, false);
-        assertEquals(bigopp.data.position, opponentData.position);
+        BigOpponent bigopp = BigOpponent.createBigOpponent(player.getData(), false);
+        assertEquals(bigopp.getData().getPosition(), opponentData.getPosition());
     }
     
     /**
@@ -52,8 +52,8 @@ public class BigOpponentTest extends TestCase {
      */
     @Test
     public void testCreateBigOpponentVelocity() {
-    	BigOpponent bigopp = BigOpponent.createBigOpponent(player.data, false);
-        assertEquals(bigopp.data.velocity, opponentData.velocity);
+    	BigOpponent bigopp = BigOpponent.createBigOpponent(player.getData(), false);
+        assertEquals(bigopp.getData().getVelocity(), opponentData.getVelocity());
     }
     
     /**
@@ -62,8 +62,8 @@ public class BigOpponentTest extends TestCase {
      */
     @Test
     public void testCreateBigOpponentAcceleration() {
-    	BigOpponent bigopp = BigOpponent.createBigOpponent(player.data, false);
-        assertEquals(bigopp.data.acceleration, opponentData.acceleration);
+    	BigOpponent bigopp = BigOpponent.createBigOpponent(player.getData(), false);
+        assertEquals(bigopp.getData().getAcceleration(), opponentData.getAcceleration());
     }
     
     /**
@@ -72,8 +72,8 @@ public class BigOpponentTest extends TestCase {
      */
     @Test
     public void testCreateBigOpponentDimensions() {
-    	BigOpponent bigopp = BigOpponent.createBigOpponent(player.data, false);
-        assertEquals(bigopp.data.dimensions, opponentData.dimensions);
+    	BigOpponent bigopp = BigOpponent.createBigOpponent(player.getData(), false);
+        assertEquals(bigopp.getData().getDimensions(), opponentData.getDimensions());
     }
     
     /**
@@ -84,7 +84,7 @@ public class BigOpponentTest extends TestCase {
     public void testObjectLogic1() {
         test.changeTimeToLive(1);
         test.objectLogic(gc, 1);
-        opponentData.position.add(opponentData.velocity);
+        opponentData.getPosition().add(opponentData.getVelocity());
         assertEquals(test.getTimeToLive(), 0);
     }
     
@@ -96,7 +96,7 @@ public class BigOpponentTest extends TestCase {
     public void testObjectLogic2() {
         test.changeTimeToLive(20501);
         test.objectLogic(gc, 0);
-        assertEquals(test.data.position.y, player.data.position.y - 350 / 2);
+        assertEquals(test.getData().getPosition().y, player.getData().getPosition().y - 350 / 2);
     }
     
     /**
@@ -107,7 +107,7 @@ public class BigOpponentTest extends TestCase {
     public void testObjectLogic3() {
         test.changeTimeToLive(0);
         test.objectLogic(gc, 0);
-        assertEquals(test.data.position, opponentData.position);
+        assertEquals(test.getData().getPosition(), opponentData.getPosition());
     }
     
     /**

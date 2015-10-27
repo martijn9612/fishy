@@ -85,10 +85,10 @@ public class PowerupTest extends TestCase {
         GameContainer gc = mock(GameContainer.class);
         Random random = new Random();
         Powerup powerup = ExtraLife.createPowerup(random, false);
-        Vector pos = powerup.data.position;
-        pos.add(powerup.data.velocity);
+        Vector pos = powerup.getData().getPosition();
+        pos.add(powerup.getData().getVelocity());
         powerup.objectLogic(gc, 0);
-        assertEquals(powerup.data.position, pos);
+        assertEquals(powerup.getData().getPosition(), pos);
     }
     
 }

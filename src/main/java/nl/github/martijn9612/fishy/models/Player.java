@@ -67,9 +67,9 @@ public class Player extends Entity {
 	 */
 	public static Player createPlayer(boolean loadResources) {
 		Moveable data = new Moveable();
-		data.dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
-		data.position = Vector.centerOfScreen();
-		data.mass = playerMass;
+		data.setDimensions(new Vector(PLAYER_WIDTH, PLAYER_HEIGHT));
+		data.setPosition(Vector.centerOfScreen());
+		data.setMass(playerMass);
 		return new Player(data, loadResources);
 	}
     
@@ -83,8 +83,8 @@ public class Player extends Entity {
     public void objectLogic(GameContainer gc, int deltaTime) {
         Input keyboardInput = gc.getInput();
     	movePlayer(keyboardInput);
-        data.applyWaterDrag(WATER_DRAG);
-        data.updatePosition(playerMaxSpeed);
+        getData().applyWaterDrag(WATER_DRAG);
+        getData().updatePosition(playerMaxSpeed);
         checkGameEdges();
         updateBoundingbox();
         updateShieldImage(key);
@@ -113,20 +113,20 @@ public class Player extends Entity {
         
         if(moveR) {
         	setImageOrientation(poisoned ? Entity.IMAGE_ORIENTATE_LEFT : Entity.IMAGE_ORIENTATE_RIGHT);
-        	data.applyForce(new Vector(moveForce, 0));
+        	getData().applyForce(new Vector(moveForce, 0));
         }
         
         if(moveL) {
         	setImageOrientation(poisoned ? Entity.IMAGE_ORIENTATE_RIGHT : Entity.IMAGE_ORIENTATE_LEFT);
-        	data.applyForce(new Vector(-moveForce, 0));
+        	getData().applyForce(new Vector(-moveForce, 0));
         }
         
         if(moveU) {
-        	data.applyForce(new Vector(0, -moveForce));
+        	getData().applyForce(new Vector(0, -moveForce));
         }
         
         if(moveD) {
-        	data.applyForce(new Vector(0, moveForce));
+        	getData().applyForce(new Vector(0, moveForce));
         }
     }
     
@@ -135,8 +135,8 @@ public class Player extends Entity {
      * if necessary.
      */
     private void checkGameEdges() {
-    	data.position.x = limit(data.position.x, 0, Main.WINDOW_WIDTH - data.dimensions.x);
-    	data.position.y = limit(data.position.y, 0, Main.WINDOW_HEIGHT - data.dimensions.y);
+    	getData().getPosition().x = limit(getData().getPosition().x, 0, Main.WINDOW_WIDTH - getData().getDimensions().x);
+    	getData().getPosition().y = limit(getData().getPosition().y, 0, Main.WINDOW_HEIGHT - getData().getDimensions().y);
     }
 
     /**
@@ -146,7 +146,7 @@ public class Player extends Entity {
     public void eat(double opponentSize) {
         setScore(score + opponentSize * PLAYER_EAT_SCORE_FACTOR);
         float newDimension = PLAYER_WIDTH + Math.round(score * PLAYER_EAT_GROW_FACTOR);
-        data.dimensions = new Vector(newDimension, newDimension);
+        getData().setDimensions(new Vector(newDimension, newDimension));
         Main.actionLogger.logLine("Player ate opponent", getClass().getSimpleName());
         Main.actionLogger.logLine("Player score is " + Math.floor(score), getClass().getSimpleName());
     }
@@ -157,8 +157,8 @@ public class Player extends Entity {
     public void resetPlayerVariables() {
         Main.actionLogger.logLine("Player resetted", getClass().getSimpleName());
 		Main.actionLogger.logLine("Score was " + LevelState.getScore(), getClass().getSimpleName());
-        data.position = Vector.centerOfScreen();
-        data.dimensions = new Vector(PLAYER_WIDTH, PLAYER_HEIGHT);
+        getData().setPosition(Vector.centerOfScreen());
+        getData().setDimensions(new Vector(PLAYER_WIDTH, PLAYER_HEIGHT));
         playerMaxSpeed = 8;
         playerMoveForce = 4;
         poisoned = false;
@@ -214,7 +214,7 @@ public class Player extends Entity {
         speedUpTimer.cancel();
         playerMaxSpeed = 40;
         playerMoveForce = 30;
-        data.mass = 3;
+        getData().setMass(3);
         speedUpTimer = new Timer();
 
         TimerTask action = new TimerTask() {

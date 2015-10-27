@@ -88,8 +88,8 @@ public class PowerupControllerTest extends TestCase {
     @Test 
     public void testUpdatePowerup3() {
         powercontroller.SpawnPowerup();
-        powercontroller.getPower().data.dimensions.x = 0;
-        powercontroller.getPower().data.position.x = 700;
+        powercontroller.getPower().getData().getDimensions().x = 0;
+        powercontroller.getPower().getData().getPosition().x = 700;
         powercontroller.updatePowerup(gc, 0); 
     }
     

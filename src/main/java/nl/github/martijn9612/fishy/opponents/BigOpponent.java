@@ -47,10 +47,9 @@ public class BigOpponent extends NonPlayer {
 	 */
 	public static BigOpponent createBigOpponent(Moveable playerData, boolean loadResources) {
 		Moveable data = new Moveable();
-		data.velocity = new Vector(-BIG_OPPONENT_SPEED, 0);
-		data.dimensions = new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE);
-		data.position = new Vector(BIG_OPPONENT_START_X, 
-		        playerData.position.y - BIG_OPPONENT_SIZE / 2);
+		data.setVelocity(new Vector(-BIG_OPPONENT_SPEED, 0));
+		data.setDimensions(new Vector(BIG_OPPONENT_SIZE * 1.15f, BIG_OPPONENT_SIZE));
+		data.setPosition(new Vector(BIG_OPPONENT_START_X, playerData.getPosition().y - BIG_OPPONENT_SIZE / 2));
 		return new BigOpponent(data, loadResources, playerData);
     }
 	
@@ -63,7 +62,7 @@ public class BigOpponent extends NonPlayer {
     public void objectLogic(GameContainer gc, int deltaTime) {
     	indicator.objectLogic(gc, deltaTime);
     	checkProgress(deltaTime);
-    	data.updatePosition(100);
+    	getData().updatePosition(100);
         updateBoundingbox();
     }
 
@@ -76,10 +75,10 @@ public class BigOpponent extends NonPlayer {
 			timeToLive -= deltaTime;
 		}
 		if (timeToLive > INDICATOR_REMOVED_AT) {
-			data.position.y = playerData.position.y - BIG_OPPONENT_SIZE / 2;
+			getData().getPosition().y = playerData.getPosition().y - BIG_OPPONENT_SIZE / 2;
 		}
 		if (timeToLive < INDICATOR_MOVES_AT) {
-			indicator.data.acceleration.x = 2;
+			indicator.getData().getAcceleration().x = 2;
 		}
 	}
 

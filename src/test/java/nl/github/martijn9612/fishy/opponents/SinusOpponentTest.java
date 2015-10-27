@@ -47,10 +47,10 @@ public class SinusOpponentTest extends TestCase {
     @Test
     public void testObjectLogic() {
         Moveable opponentData = new Moveable();
-        opponentData.dimensions = new Vector(10, 1);
+        opponentData.setDimensions(new Vector(10, 1));
         NonPlayer testopp = new SinusOpponent(opponentData, false);
         testopp.objectLogic(gc, 0);
-        assertEquals(-1.0, testopp.data.velocity.y, 0.1);
+        assertEquals(-1.0, testopp.getData().getVelocity().y, 0.1);
     }
 
     /**
@@ -60,12 +60,12 @@ public class SinusOpponentTest extends TestCase {
     @Test
     public void testObjectLogic2() {
         Moveable opponentData = new Moveable();
-        opponentData.dimensions = new Vector(10, 1);
-        opponentData.position = new Vector(1, 1);
+        opponentData.setDimensions(new Vector(10, 1));
+        opponentData.setPosition(new Vector(1, 1));
         NonPlayer testopp = new SinusOpponent(opponentData, false);
-        testopp.data.position = new Vector(1, 1);
+        testopp.getData().setPosition(new Vector(1, 1));
         testopp.objectLogic(gc, 0);
-        assertEquals(-((1 % 80) / 20 + 1), testopp.data.velocity.y, 0.1);
+        assertEquals(-((1 % 80) / 20 + 1), testopp.getData().getVelocity().y, 0.1);
     }
 
     /**
@@ -76,7 +76,7 @@ public class SinusOpponentTest extends TestCase {
     public void testCreateRandomDimensions() {
         SinusOpponent test = SinusOpponent.createRandom(player, random, false);
         Vector testVector = new Vector(1, 1);
-        assertTrue(test.data.dimensions.equals(testVector));
+        assertTrue(test.getData().getDimensions().equals(testVector));
     }
 
     /**
@@ -87,6 +87,6 @@ public class SinusOpponentTest extends TestCase {
     public void testCreateRandomPosition() {
         SinusOpponent test = SinusOpponent.createRandom(player, random, false);
         Vector testVector = new Vector(1, 550);
-        assertTrue(test.data.position.equals(testVector));
+        assertTrue(test.getData().getPosition().equals(testVector));
     }
 }

@@ -30,12 +30,12 @@ public abstract class NonPlayer extends Entity {
 	 * @return returns true if the opponent is not visible on the screen.
 	 */
 	public boolean isOffScreen() {
-		if (data.position.x < 0 - data.dimensions.x * OPPONENT_FACTOR - 1
-				|| data.position.x > Main.WINDOW_WIDTH + data.dimensions.x * OPPONENT_FACTOR + 1) {
+		if (getData().getPosition().x < 0 - getData().getDimensions().x * OPPONENT_FACTOR - 1
+				|| getData().getPosition().x > Main.WINDOW_WIDTH + getData().getDimensions().x * OPPONENT_FACTOR + 1) {
 			return true;
 		}
-		if (data.position.y < 0 - data.dimensions.y * OPPONENT_FACTOR - 1
-				|| data.position.y > Main.WINDOW_HEIGHT + data.dimensions.y * OPPONENT_FACTOR + 1) {
+		if (getData().getPosition().y < 0 - getData().getDimensions().y * OPPONENT_FACTOR - 1
+				|| getData().getPosition().y > Main.WINDOW_HEIGHT + getData().getDimensions().y * OPPONENT_FACTOR + 1) {
 			return true;
 		}
 		return false;

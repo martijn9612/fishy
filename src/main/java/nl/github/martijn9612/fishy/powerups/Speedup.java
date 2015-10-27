@@ -26,7 +26,7 @@ public class Speedup extends Powerup {
         super(data, loadResources, chance);
         loadResources(SPRITE_PATH);
         this.chance = chance;
-        if(loadResources && data.velocity.x > 0) {
+        if(loadResources && data.getVelocity().x > 0) {
             setImageOrientation(Entity.IMAGE_ORIENTATE_RIGHT);
         }
     }
@@ -40,9 +40,9 @@ public class Speedup extends Powerup {
     public static Speedup createPowerup(Random random, boolean loadResources) {
     	Moveable data = new Moveable();
     	boolean spawnsLeft = random.nextBoolean();
-    	data.dimensions = new Vector(16,16);
-    	data.velocity = getRandomVelocity(random, spawnsLeft);
-    	data.position = getRandomPosition(random, spawnsLeft, data.dimensions);
+    	data.setDimensions(new Vector(16,16));
+    	data.setVelocity(getRandomVelocity(random, spawnsLeft));
+    	data.setPosition(getRandomPosition(random, spawnsLeft, data.getDimensions()));
         return new Speedup(data, loadResources, 100);
     }
 

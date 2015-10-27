@@ -13,9 +13,9 @@ public class EntityTest extends TestCase {
     @Override
     protected void setUp() {
         opponentData = new Moveable();
-        opponentData.position = new Vector(1, 1);
-        opponentData.velocity = new Vector(5, 0);
-        opponentData.dimensions = new Vector(1, 1);
+        opponentData.setPosition(new Vector(1, 1));
+        opponentData.setVelocity(new Vector(5, 0));
+        opponentData.setDimensions(new Vector(1, 1));
         test = new LinearOpponent(opponentData, false);
     };
     
@@ -27,7 +27,7 @@ public class EntityTest extends TestCase {
 
     @Test
     public void testGetSize() {
-        float size = (opponentData.dimensions.x + opponentData.dimensions.y) / 2;
+        float size = (opponentData.getDimensions().x + opponentData.getDimensions().y) / 2;
         assertEquals(size, test.getSize(), 0.1);
     }
 
@@ -38,14 +38,14 @@ public class EntityTest extends TestCase {
     
     @Test
     public void testUpdateBoundingboxRadiiX() {
-        float radiiX = (opponentData.dimensions.x / 2);
+        float radiiX = (opponentData.getDimensions().x / 2);
         test.updateBoundingbox();
         assertEquals(test.getBoundingBox().getRadius1(), radiiX);
     }
     
     @Test
     public void testUpdateBoundingboxRadiiY() {
-        float radiiY = (opponentData.dimensions.y / 2);
+        float radiiY = (opponentData.getDimensions().y / 2);
         test.updateBoundingbox();
         assertEquals(test.getBoundingBox().getRadius2(), radiiY);
     }
@@ -53,6 +53,6 @@ public class EntityTest extends TestCase {
     @Test
     public void testUpdateBoundingBoxPosition() {
         test.updateBoundingbox();
-        assertEquals(test.getBoundingBox().getLocation(), opponentData.position);
+        assertEquals(test.getBoundingBox().getLocation(), opponentData.getPosition());
     }
 }
