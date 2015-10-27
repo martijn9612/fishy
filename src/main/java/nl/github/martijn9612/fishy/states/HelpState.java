@@ -1,9 +1,7 @@
 package nl.github.martijn9612.fishy.states;
 
-import nl.github.martijn9612.fishy.Main;
-import nl.github.martijn9612.fishy.position.DrawRectangle;
-import nl.github.martijn9612.fishy.position.MousePosition;
-import nl.github.martijn9612.fishy.position.MouseRectangle;
+import java.util.Enumeration;
+import java.util.Vector;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -16,8 +14,10 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.position.DrawRectangle;
+import nl.github.martijn9612.fishy.position.MousePosition;
+import nl.github.martijn9612.fishy.position.MouseRectangle;
 
 /**
  * Implements the HelpState which shows instructions to the game.
@@ -135,6 +135,18 @@ public class HelpState extends BasicGameState {
         titleFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 24), true);
         introFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 16), true);
     }
+    
+    /**
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+    public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Entering HelpState", getClass().getSimpleName());
+	}
 
     /**
      * Renders the game's screen.
@@ -176,6 +188,18 @@ public class HelpState extends BasicGameState {
             game.enterState(getPrevious());
         }
     }
+    
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Leaving HelpState", getClass().getSimpleName());
+	}
 
     /**
      * Make sure text overflow works properly.

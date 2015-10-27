@@ -66,28 +66,16 @@ public class LevelState extends BasicGameState {
 	}
 
 	/**
-	 * Triggers when the state is entered.
-	 * @param gameContainer - the container of the game.
-	 * @param stateBasedGame - the game holding the state.
-	 * @throws SlickException - indicates internal error.
-	 */
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
     @Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
-		Main.actionLogger.logLine("Entered level", getClass().getSimpleName());
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
-	}
-
-	/**
-	 * Triggers when the state is left.
-	 * @param gc - the container of the game.
-	 * @param sbg - the game holding the state.
-	 * @throws SlickException - indicates internal error.
-	 */
-	@Override
-	public void leave(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		super.leave(gc, sbg);
-		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		Main.actionLogger.logLine("Entering LevelState", getClass().getSimpleName());
 	}
 
     /**
@@ -143,8 +131,19 @@ public class LevelState extends BasicGameState {
         }
     }
 
-
-
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+	@Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		Main.actionLogger.logLine("Leaving LevelState", getClass().getSimpleName());
+	}
+    
     /**
      * Get the ID of this state.
      * @return the unique ID of this state.

@@ -56,7 +56,6 @@ public class MenuState extends BasicGameState {
      * @throws SlickException - indicates internal error.
      */
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-        Main.actionLogger.logLine("Entered main menu", getClass().getSimpleName());
         playButton = new Button(PLAY_BUTTON_DRAW_X, PLAY_BUTTON_DRAW_Y, "resources/play-button.gif");
         exitButton = new Button(EXIT_BUTTON_DRAW_X, EXIT_BUTTON_DRAW_Y, "resources/exit-button.gif");
         helpButton = new Button(HELP_BUTTON_DRAW_X, HELP_BUTTON_DRAW_Y, "resources/gears.png");
@@ -76,6 +75,7 @@ public class MenuState extends BasicGameState {
     public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
 		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_MENU);
+		Main.actionLogger.logLine("Entering MenuState", getClass().getSimpleName());
 	}
 
     /**
@@ -105,34 +105,27 @@ public class MenuState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
         mouse.updatePosition();
+        Input input = gc.getInput();
         menu = "(" + mouse.getPositionX() + "," + mouse.getPositionY() + ")";
 
         if (playButton.wasClickedBy(mouse)) {
             sbg.enterState(Main.LEVEL_STATE);
         }
 
-        if (exitButton.wasClickedBy(mouse)) {
-            Main.actionLogger.logLine("Game Closed!", getClass().getSimpleName());
-            gc.exit();
-        }
-
         if (helpButton.wasClickedBy(mouse)) {
-            Main.actionLogger.logLine("HelpState opened.", getClass().getSimpleName());
             sbg.enterState(Main.HELP_STATE);
             HelpState.setPrevious(Main.MENU_STATE);
         }
         
         if (scoreButton.wasClickedBy(mouse)) {
-	        Main.actionLogger.logLine("ScoreState opened.", getClass().getSimpleName());
 	        sbg.enterState(ScoreState.STATE_ID);
         }
 
-        Input input = gc.getInput();
         if (input.isKeyDown(Input.KEY_ENTER)) {
             sbg.enterState(Main.LEVEL_STATE);
         }
 
-        if (input.isKeyDown(Input.KEY_ESCAPE)) {
+        if (exitButton.wasClickedBy(mouse) || input.isKeyDown(Input.KEY_ESCAPE)) {
         	gc.exit();
         }
     }
@@ -147,6 +140,7 @@ public class MenuState extends BasicGameState {
 	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.leave(gameContainer, stateBasedGame);
 		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_MENU);
+		Main.actionLogger.logLine("Leaving MenuState", getClass().getSimpleName());
 	}
 
     /**

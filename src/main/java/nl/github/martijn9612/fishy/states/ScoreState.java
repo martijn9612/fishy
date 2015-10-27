@@ -69,6 +69,18 @@ public class ScoreState extends BasicGameState {
     	textFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.PLAIN, 16), true);
         titleFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD, 24), true);
     }
+    
+    /**
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Entering ScoreState", getClass().getSimpleName());
+	}
 
     /**
      * Renders the game's screen.
@@ -84,6 +96,41 @@ public class ScoreState extends BasicGameState {
         titleFont.drawString(BACK_TEXT_DRAW_X, BACK_TEXT_DRAW_Y, BACK_TEXT, backButtonTextColor);
         titleFont.drawString(SCORE_TITLE_X, SCORE_TITLE_Y, SCORE_TITLE_TEXT);
         renderHighscores();
+    }
+
+    /**
+     * Update the game logic.
+     * @param gc - the container holding the game.
+     * @param game - the game holding the state.
+     * @param delta - time that has passed since last update in milliseconds.
+     * @throws SlickException - indicates internal error.
+     */
+    public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+    	mouse.updatePosition();
+        if (backButton.wasClickedBy(mouse)) {
+            game.enterState(Main.MENU_STATE);
+        }
+    }
+    
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+	@Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Leaving ScoreState", getClass().getSimpleName());
+	}
+
+    /**
+     * Get the ID of this state.
+     * @return the unique ID of this state.
+     */
+    @Override
+    public int getID() {
+        return STATE_ID;
     }
     
     /**
@@ -106,28 +153,4 @@ public class ScoreState extends BasicGameState {
 			}
 		}
     }
-
-    /**
-     * Update the game logic.
-     * @param gc - the container holding the game.
-     * @param game - the game holding the state.
-     * @param delta - time that has passed since last update in milliseconds.
-     * @throws SlickException - indicates internal error.
-     */
-    public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-    	mouse.updatePosition();
-        if (backButton.wasClickedBy(mouse)) {
-            game.enterState(Main.MENU_STATE);
-        }
-    }
-
-    /**
-     * Get the ID of this state.
-     * @return the unique ID of this state.
-     */
-    @Override
-    public int getID() {
-        return STATE_ID;
-    }
-
 }

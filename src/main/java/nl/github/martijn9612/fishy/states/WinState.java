@@ -63,6 +63,18 @@ public class WinState extends BasicGameState {
         submitScore = new SubmitScoreWidget(container, SUBMIT_SCORE_X, SUBMIT_SCORE_Y);
         mouse = new MousePosition();
     }
+    
+    /**
+     * Method executed when entering this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding the state.
+     * @throws SlickException - indicates internal error.
+     */
+    @Override
+	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.enter(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Entering WinState", getClass().getSimpleName());
+	}
 
     /**
      * Renders the game's screen.
@@ -103,6 +115,18 @@ public class WinState extends BasicGameState {
             game.enterState(Main.LEVEL_STATE);
         }
     }
+    
+    /**
+     * Method executed when leaving this game state.
+     * @param gameContainer - the container holding the game.
+     * @param stateBasedGame - the game holding this state.
+     * @throws SlickException - indicates internal error.
+     */
+	@Override
+	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+		super.leave(gameContainer, stateBasedGame);
+		Main.actionLogger.logLine("Leaving WinState", getClass().getSimpleName());
+	}
 
     /**
      * Get the ID of this state.
