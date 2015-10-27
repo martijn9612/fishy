@@ -15,9 +15,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.github.martijn9612.fishy.Main;
-import nl.github.martijn9612.fishy.position.DrawRectangle;
+import nl.github.martijn9612.fishy.models.Button;
 import nl.github.martijn9612.fishy.position.MousePosition;
-import nl.github.martijn9612.fishy.position.MouseRectangle;
 
 /**
  * Implements the HelpState which shows instructions to the game.
@@ -25,7 +24,6 @@ import nl.github.martijn9612.fishy.position.MouseRectangle;
  */
 public class HelpState extends BasicGameState {
 
-    private Image back;
     private Image background;
     private Image poison;
     private Image shield;
@@ -35,8 +33,7 @@ public class HelpState extends BasicGameState {
     private Image squid;
     private Image whale;
     private MousePosition mouse;
-    private DrawRectangle backButtonDR;
-    private MouseRectangle backButtonMR;
+    private Button backButton;
     private Font textFont;
     private Font titleFont;
     private Font introFont;
@@ -112,7 +109,7 @@ public class HelpState extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame game) throws SlickException {
         background = new Image("resources/" + Main.LEVEL_BACKGROUND + ".jpg");
         background.setAlpha(0.1f);
-        back = new Image(BACK_BUTTON_RESOURCE);
+        backButton = new Button(BACK_BUTTON_DRAW_X, BACK_BUTTON_DRAW_Y, BACK_BUTTON_RESOURCE);
         poison = new Image(POISON_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         shield = new Image(SHIELD_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         speedup = new Image(SPEEDUP_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
@@ -120,13 +117,10 @@ public class HelpState extends BasicGameState {
         fish = new Image(FISH_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         squid = new Image(SQUID_RESOURCE).getScaledCopy(POWERUP_SIZE, POWERUP_SIZE);
         whale = new Image(WHALE_RESOURCE).getScaledCopy(POWERUP_SIZE * 2, POWERUP_SIZE * 2);
-        backButtonDR = new DrawRectangle(BACK_BUTTON_DRAW_X,
-                BACK_BUTTON_DRAW_Y, back.getWidth(), back.getHeight());
-        backButtonMR = backButtonDR.getMouseRectangle();
-        mouse = new MousePosition();
         textFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.PLAIN , 16), true);
         titleFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 24), true);
         introFont = new TrueTypeFont(new java.awt.Font("Calibri", java.awt.Font.BOLD , 16), true);
+        mouse = new MousePosition();
     }
     
     /**
@@ -169,15 +163,9 @@ public class HelpState extends BasicGameState {
      */
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
         mouse.updatePosition();
-
-        if (mouse.isInRectangle(backButtonMR)) {
-            if (mouse.isLeftButtonDown()) {
-                game.enterState(getPrevious());
-            }
-        }
-
         Input input = gc.getInput();
-        if (input.isKeyPressed(Input.KEY_P)) {
+
+        if (backButton.wasClickedBy(mouse) || input.isKeyPressed(Input.KEY_P)) {
             game.enterState(getPrevious());
         }
     }
@@ -286,7 +274,7 @@ public class HelpState extends BasicGameState {
      * @param g - the graphics content to render.
      */
     private void renderBackButton(Graphics g) {
-        g.drawImage(back, backButtonDR.getPositionX(), backButtonDR.getPositionY());
+        backButton.draw(g);
         titleFont.drawString(BACK_DRAW_X, BACK_DRAW_Y, BACK_TEXT, myBlue);
     }
     

@@ -81,7 +81,7 @@ public class Main extends StateBasedGame {
      */
     @Override
     public boolean closeRequested() {
-        Main.actionLogger.logLine("Game will colse!", getClass().getSimpleName());
+        Main.actionLogger.logLine("Game will close!", getClass().getSimpleName());
         return true;
     }
 
