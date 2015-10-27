@@ -61,17 +61,10 @@ public class ExtraLife extends Powerup {
     }
     
     /**
-<<<<<<< HEAD
-     * create a random speedUp vector.
-     * @param random the randomizer
-     * @param spawnsLeft whether it spawns left or right.
-     * @return the speedUp vector.
-=======
      * Creates a random velocity vector for the ExtraLife class.
      * @param random - an instance to generate random numbers.
      * @param spawnsLeft - boolean which tells if the opponent spawns left or right.
      * @return Vector with ExtraLife velocity.
->>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
      */
     private static Vector getRandomVelocity(Random random, boolean spawnsLeft) {
         int speed = random.nextInt(4) + 1;

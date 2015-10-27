@@ -12,14 +12,9 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.models.Vector;
 
 /**
-<<<<<<< HEAD
- * An opponent that moves horizontally with a constant speedUp.
-=======
  * Implementation of the LinearOpponent class. 
  * A LinearOpponent is a small opponent that moves
  * horizontally with a constant speed.
- * Software Engineering Methods Project - Group 11.
->>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
  */
 public class LinearOpponent extends NonPlayer {
 	private static final String SPRITE_PATH = "resources/opponent-" 
@@ -27,17 +22,8 @@ public class LinearOpponent extends NonPlayer {
 
 	/**
 	 * Constructor for an opponent that moves in a linear motion.
-<<<<<<< HEAD
-	 * 
-	 * @param dimensions size of the new opponent.
-	 * @param position vector with the start position of the opponent.
-	 * @param velocity initial speedUp of the opponent.
-	 * @param acceleration initial acceleration of the opponent.
-	 * @param loadResources whether the sprite resources should be loaded.
-=======
 	 * @param data - the moveable data the LinearOpponent will have.
 	 * @param loadResources - true when OpenGL context should be loaded, false if not.
->>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
 	 */
 	public LinearOpponent(Moveable data, boolean loadResources) {
 		super(data, loadResources);

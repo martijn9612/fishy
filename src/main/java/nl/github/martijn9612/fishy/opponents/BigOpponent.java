@@ -28,19 +28,9 @@ public class BigOpponent extends NonPlayer {
     
     /**
 	 * Creates an instance of BigOpponent at the given location.
-<<<<<<< HEAD
-	 * 
-	 * @param dimensions size of the new opponent.
-     * @param position vector with the start position of the opponent.
-	 * @param velocity initial speedUp of the opponent.
-	 * @param acceleration initial acceleration of the opponent.
-	 * @param loadResources whether the sprite resources should be loaded.
-	 * @param player instance of the Player class.
-=======
 	 * @param data - the Moveable data the BigOpponent will have.
 	 * @param loadResources - true if OpenGL context should be loaded, false if not.
 	 * @param playerData - the Moveable data of the current player.
->>>>>>> 0e55725f20ac101dfd7c2c07acdf2dd1c757ee4e
 	 */
     public BigOpponent(Moveable data, boolean loadResources, Moveable playerData) {
     	super(data, loadResources);
