@@ -8,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 
 import junit.framework.TestCase;
+import nl.github.martijn9612.fishy.powerups.Shield;
 
 public class PlayerTest extends TestCase {
 
@@ -156,17 +157,17 @@ public class PlayerTest extends TestCase {
     
     @Test
     public void testAddShield() {
-        player.setKey("half");
+        player.setShieldState(Shield.STATE_HALF);
         player.addShield(0, 0);
-        assertEquals("full", player.getKey());
+        assertEquals(Shield.STATE_FULL, player.getShieldState());
 
     }
     
     @Test
     public void testRemoveShield() {
-        player.setKey("full");
+        player.setShieldState(Shield.STATE_FULL);
         player.removeShield(1);
-        assertEquals("half", player.getKey());
+        assertEquals(Shield.STATE_HALF, player.getShieldState());
     }
     
     @Test

@@ -13,6 +13,9 @@ import java.util.Random;
  */
 public class Shield extends Powerup {
     private static final String SPRITE_PATH = "resources/shield.png";
+	public static final int STATE_FULL = 2;
+	public static final int STATE_HALF = 1;
+	public static final int STATE_NONE = 0;
     private int chance;
 
     /**
@@ -75,7 +78,7 @@ public class Shield extends Powerup {
      * Gets the chance that Poison is chosen in the PowerupFactory.
      * @return the chance of Poison.
      */
-    public int getChance(){
+    public int getChance() {
         return chance;
     }
 
@@ -85,7 +88,7 @@ public class Shield extends Powerup {
      * @param player - the current Player in the game.
      */
     @Override
-    public void Effect(Player player){
+    public void Effect(Player player) {
         player.addShield(5000,2000);
     }
 }
