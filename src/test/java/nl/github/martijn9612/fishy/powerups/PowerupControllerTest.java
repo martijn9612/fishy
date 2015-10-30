@@ -1,17 +1,19 @@
 package nl.github.martijn9612.fishy.powerups;
 
-import java.util.Random;
-
-import junit.framework.TestCase;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import nl.github.martijn9612.fishy.models.Player;
+
+import java.util.Random;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.state.StateBasedGame;
+
+import junit.framework.TestCase;
+import nl.github.martijn9612.fishy.models.Moveable;
+import nl.github.martijn9612.fishy.models.Player;
 
 
 /**
@@ -88,8 +90,9 @@ public class PowerupControllerTest extends TestCase {
     @Test 
     public void testUpdatePowerup3() {
         powercontroller.SpawnPowerup();
-        powercontroller.getPower().getData().getDimensions().x = 0;
-        powercontroller.getPower().getData().getPosition().x = 700;
+        Moveable data = powercontroller.getPower().getData();
+        data.getDimensions().x = 0;
+        data.getPosition().x = 700;
         powercontroller.updatePowerup(gc, 0); 
     }
     
@@ -155,7 +158,7 @@ public class PowerupControllerTest extends TestCase {
      */
     @Test
     public void testRemove() {
-        powercontroller.Remove();
+        powercontroller.remove();
         assertEquals(powercontroller.getPower(), null);
     }
 

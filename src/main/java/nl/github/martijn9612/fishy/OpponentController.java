@@ -12,7 +12,6 @@ import nl.github.martijn9612.fishy.models.Player;
 import nl.github.martijn9612.fishy.opponents.BigOpponent;
 import nl.github.martijn9612.fishy.opponents.LinearOpponent;
 import nl.github.martijn9612.fishy.opponents.SinusOpponent;
-import nl.github.martijn9612.fishy.states.LevelState;
 import nl.github.martijn9612.fishy.states.LoseState;
 
 /**
@@ -130,9 +129,6 @@ public class OpponentController {
 				    } else {
 						Main.actionLogger.logLine("Player lost the game", getClass().getSimpleName());
 						ScoreController.getInstance().storePlayerScore(player.getScore());
-						player.resetPlayerVariables();
-						LevelState.getOC().removeAllOpponents();
-						LevelState.getPC().Remove();
 						sbg.enterState(LoseState.STATE_ID);
 					}
 				}
