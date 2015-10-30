@@ -27,9 +27,10 @@ public class LevelState extends BasicGameState {
 	private String lives = "lives: (" + 0 + ")";
 	private static String score = "0";
 	private Image background;
-	private static OpponentController opponentController;
-	private static PowerupController powerupController;
+	private OpponentController opponentController;
+	private PowerupController powerupController;
 	private MusicPlayer musicPlayer = MusicPlayer.getInstance();
+	private boolean nextStateIsHelpState = false;
     private static final int PLAYER_WIN_AT_SCORE = 500;
     private static final int XPOS_STATE_STRING = 300;
     private static final int YPOS_STATE_STRING = 10;
@@ -67,8 +68,9 @@ public class LevelState extends BasicGameState {
     @Override
 	public void enter(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.enter(gameContainer, stateBasedGame);
-		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
 		Main.actionLogger.logLine("Entering LevelState", getClass().getSimpleName());
+		musicPlayer.loopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		nextStateIsHelpState = false;
 	}
 
     /**
@@ -104,6 +106,7 @@ public class LevelState extends BasicGameState {
 			gc.setPaused(!gc.isPaused());
 			HelpState.setPrevious(LevelState.STATE_ID);
 			sbg.enterState(HelpState.STATE_ID);
+			nextStateIsHelpState = true;
 		}
 		
 		player.objectLogic(gc, delta);
@@ -133,8 +136,13 @@ public class LevelState extends BasicGameState {
 	@Override
 	public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
 		super.leave(gameContainer, stateBasedGame);
-		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
 		Main.actionLogger.logLine("Leaving LevelState", getClass().getSimpleName());
+		musicPlayer.stopSound(MusicPlayer.BG_MUSIC_LEVEL);
+		if(!nextStateIsHelpState) {
+			opponentController.removeAllOpponents();
+			player.resetPlayerVariables();
+			powerupController.remove();
+		}
 	}
     
     /**
@@ -157,7 +165,7 @@ public class LevelState extends BasicGameState {
 	 * Get the OpponentController.
 	 * @return the OpponentController
 	 */
-	public static OpponentController getOC() {
+	public OpponentController getOC() {
 		return opponentController;
 	}
 
@@ -165,7 +173,7 @@ public class LevelState extends BasicGameState {
 	 * Get the PowerupController.
 	 * @return the PowerupController.
 	 */
-	public static PowerupController getPC() {
+	public PowerupController getPC() {
 		return powerupController;
 	}
 }

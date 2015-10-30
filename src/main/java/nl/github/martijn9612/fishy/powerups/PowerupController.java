@@ -34,7 +34,7 @@ public class PowerupController {
         if (!(power == null)) {
             power.objectLogic(gc, deltaTime);
             if (power.isOffScreen()) {
-                Remove();
+                remove();
             }
         }
     }
@@ -61,7 +61,7 @@ public class PowerupController {
                         + power.getClass().getSimpleName();
                 player.playBiteSound();
                 power.Effect(player);
-                Remove();
+                remove();
                 Main.actionLogger.logLine(log, getClass().getSimpleName());
             }
         }
@@ -70,7 +70,7 @@ public class PowerupController {
     /**
      * Removes the powerup.
      */
-    public void Remove() {
+    public void remove() {
         if (!(power == null)) {
             power.destroy();
             power = null;
