@@ -1,13 +1,16 @@
 package nl.github.martijn9612.fishy.models;
 
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.geom.Ellipse;
 
 import nl.github.martijn9612.fishy.Main;
+import nl.github.martijn9612.fishy.powerups.Shield;
 import nl.github.martijn9612.fishy.states.LevelState;
 import nl.github.martijn9612.fishy.utils.MusicPlayer;
 
@@ -19,17 +22,16 @@ public class Player extends Entity {
     private static final float PLAYER_WIDTH = 16;
     private static final float PLAYER_HEIGHT = 16;
     private static final float WATER_DRAG = 0.3f;
-    private static float playerMass = 5;
-    private float playerMaxSpeed = 8;
-    private float playerMoveForce = 4;
+    private static final float PLAYER_DEFAULT_MASS = 5;
+    private static final float PLAYER_DEFAULT_FORCE = 4;
+    private static final float PLAYER_DEFAULT_MAX_SPEED = 8;
+    private static final float PLAYER_SPEEDUP_MASS = 3;
+    private static final float PLAYER_SPEEDUP_FORCE = 30;
+    private static final float PLAYER_SPEEDUP_MAX_SPEED = 40;
     private static final float PLAYER_EAT_GROW_FACTOR = 0.5f;
     private static final float PLAYER_EAT_SCORE_FACTOR = 0.2f;
-    private static final String PLAYER_SPRITE = "resources/player-"
-            + Main.PLAYER_CHARACTER + ".png";
-    private static final String PLAYER_FULL_SHIELD_SPRITE = "resources/shield-full.png";
-    private static final String PLAYER_HALF_SHIELD_SPRITE = "resources/shield-half.png";
-
-    private double score = 0;
+    private static final String PLAYER_SPRITE =
+    	"resources/player-" + Main.PLAYER_CHARACTER + ".png";
     private static final String[] BITE_SOUNDS = {
     	MusicPlayer.BITE_SOUND_1,
     	MusicPlayer.BITE_SOUND_2,
@@ -37,15 +39,15 @@ public class Player extends Entity {
     };
 
     private int lives = 0;
+    private double score = 0;
     private boolean poisoned = false;
-    private boolean hasShield = false;
+    private float playerMaxSpeed = PLAYER_DEFAULT_MAX_SPEED;
+    private float playerMoveForce = PLAYER_DEFAULT_FORCE;
+    private int shieldState = Shield.STATE_NONE;
     private Timer speedUpTimer = new Timer();
     private Timer poisonTimer = new Timer();
     private Timer shieldTimer = new Timer();
     private Timer shieldRemover = new Timer();
-    private HashMap<String, String> shieldImages = new HashMap<String, String>();
-    private String key = "none";
-    private String prevkey = "none";
 
     /**
      * Creates a new default Player instance, based on the Entity class.
@@ -57,7 +59,6 @@ public class Player extends Entity {
     	super(data, loadResources);
     	Main.actionLogger.logLine("Player succesfully created", getClass().getSimpleName());
     	loadResources(PLAYER_SPRITE);
-    	fillHashMap();
     }
     
 	/**
@@ -69,8 +70,24 @@ public class Player extends Entity {
 		Moveable data = new Moveable();
 		data.setDimensions(new Vector(PLAYER_WIDTH, PLAYER_HEIGHT));
 		data.setPosition(Vector.centerOfScreen());
-		data.setMass(playerMass);
+		data.setMass(PLAYER_DEFAULT_MASS);
 		return new Player(data, loadResources);
+	}
+	
+	/**
+	 * Extends the super method which renders the object and
+	 * its boundary box by drawing the shield when necessary.
+	 * @param g - the graphics content used to render.
+	 */
+	public void renderObject(Graphics g) {
+        super.renderObject(g);
+        if(shieldState != Shield.STATE_NONE) {
+        	g.setLineWidth(2.0f);
+        	g.setColor(shieldState == Shield.STATE_FULL ? Color.red : Color.yellow);
+        	Ellipse boundingBox = getBoundingBox();
+        	g.drawOval(boundingBox.getX(), boundingBox.getY(), boundingBox.getWidth()+1, boundingBox.getHeight()+1);
+        	g.setLineWidth(1.0f);
+        }
 	}
     
 	/**
@@ -87,17 +104,6 @@ public class Player extends Entity {
         getData().updatePosition(playerMaxSpeed);
         checkGameEdges();
         updateBoundingbox();
-        updateShieldImage(key);
-    }
-
-    /**
-     * Fills the hashmap with the images for the Shield powerup
-     * with the full, half and none sprites.
-     */
-    private void fillHashMap() {
-        shieldImages.put("none", PLAYER_SPRITE);
-        shieldImages.put("half", PLAYER_HALF_SHIELD_SPRITE);
-        shieldImages.put("full", PLAYER_FULL_SHIELD_SPRITE);
     }
 
     /**
@@ -159,8 +165,10 @@ public class Player extends Entity {
 		Main.actionLogger.logLine("Score was " + LevelState.getScore(), getClass().getSimpleName());
         getData().setPosition(Vector.centerOfScreen());
         getData().setDimensions(new Vector(PLAYER_WIDTH, PLAYER_HEIGHT));
-        playerMaxSpeed = 8;
-        playerMoveForce = 4;
+        getData().setMass(PLAYER_DEFAULT_MASS);
+        playerMaxSpeed = PLAYER_DEFAULT_MAX_SPEED;
+        playerMoveForce = PLAYER_DEFAULT_FORCE;
+        shieldState = Shield.STATE_NONE;
         poisoned = false;
         setScore(0);
     }
@@ -212,19 +220,17 @@ public class Player extends Entity {
      */
     public void Speedup(int time) {
         speedUpTimer.cancel();
-        playerMaxSpeed = 40;
-        playerMoveForce = 30;
-        getData().setMass(3);
+        playerMaxSpeed = PLAYER_SPEEDUP_MAX_SPEED;
+        playerMoveForce = PLAYER_SPEEDUP_FORCE;
+        getData().setMass(PLAYER_SPEEDUP_MASS);
         speedUpTimer = new Timer();
-
-        TimerTask action = new TimerTask() {
+        speedUpTimer.schedule(new TimerTask() {
             public void run() {
-                playerMaxSpeed = 8;
-                playerMoveForce = 4;
-                playerMass = 5;
+                playerMaxSpeed = PLAYER_DEFAULT_MAX_SPEED;
+                playerMoveForce = PLAYER_DEFAULT_FORCE;
+                getData().setMass(PLAYER_DEFAULT_MASS);
             }
-        };
-        speedUpTimer.schedule(action, time);
+        }, time);
     }
 
     /**
@@ -235,14 +241,11 @@ public class Player extends Entity {
         poisonTimer.cancel();
         poisoned = true;
         poisonTimer = new Timer();
-
-        TimerTask action = new TimerTask() {
+        poisonTimer.schedule(new TimerTask() {
             public void run() {
                 poisoned = false;
             }
-        };
-
-        poisonTimer.schedule(action, time);
+        }, time);
     }
 
     /**
@@ -279,20 +282,16 @@ public class Player extends Entity {
      * @param activeTime - time the shield is active.
      * @param fadeTime - time the shield takes to remove.
      */
-    public void addShield(int activeTime, int fadeTime) {
-        key = "full";
-        hasShield = true;
-        final int fade = fadeTime;
+    public void addShield(int activeTime, final int fadeTime) {
+        shieldState = Shield.STATE_FULL;
         shieldTimer.cancel();
         shieldRemover.cancel();
         shieldTimer = new Timer();
-
-        TimerTask action = new TimerTask() {
+        shieldTimer.schedule(new TimerTask() {
             public void run() {
-                removeShield(fade);
+                removeShield(fadeTime);
             }
-        };
-        shieldTimer.schedule(action, activeTime);
+        }, activeTime);
     }
 
     /**
@@ -300,53 +299,38 @@ public class Player extends Entity {
      * @param fadeTime - time the shield takes to remove.
      */
     public void removeShield(int fadeTime) {
-        key = "half";
+        shieldState = Shield.STATE_HALF;
+        shieldTimer.cancel();
         shieldRemover.cancel();
         shieldRemover = new Timer();
-        
-        TimerTask action = new TimerTask() {
+        shieldRemover.schedule(new TimerTask() {
             public void run() {
-                hasShield = false;
-                key = "none";
+                shieldState = Shield.STATE_NONE;
             }
-        };
-        shieldRemover.schedule(action, fadeTime);
+        }, fadeTime);
     }
-
-    /**
-     * Updates the image of the shield.
-     * @param key - the key of the shield image to be loaded.
-     */
-    public void updateShieldImage(String key) {
-        if (!key.equals(prevkey)) {
-            String image = shieldImages.get(key);
-            loadImage(image);
-            prevkey = key;
-        }
-    }
-
+    
     /**
      * Checks if the player has a shield.
      * @return boolean, true if the player has a shield, false if not.
      */
 	public boolean hasShield() {
-		return hasShield;
+		return shieldState != Shield.STATE_NONE;
 	}
 	
 	/**
-	 * Sets the key for the shield image.
-	 * @param newKey - new key for the shield image.
+	 * Sets the state for the shield.
+	 * @param newKey - new state for the shield.
 	 */
-	public void setKey(String newKey) {
-	    key = newKey;
+	public void setShieldState(int newState) {
+	    shieldState = newState;
 	}
 	
 	/**
-	 * Gets the current key.
-	 * Method for testing purposes.
-	 * @return the current key.
+	 * Gets the current shield state. Used for testing purposes.
+	 * @return the current state.
 	 */
-	public String getKey() {
-	    return key;
+	public int getShieldState() {
+	    return shieldState;
 	}
 }
