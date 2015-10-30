@@ -160,20 +160,4 @@ public class LevelState extends BasicGameState {
 	public static String getScore() {
 		return score;
 	}
-
-	/**
-	 * Get the OpponentController.
-	 * @return the OpponentController
-	 */
-	public OpponentController getOC() {
-		return opponentController;
-	}
-
-	/**
-	 * Get the PowerupController.
-	 * @return the PowerupController.
-	 */
-	public PowerupController getPC() {
-		return powerupController;
-	}
 }
